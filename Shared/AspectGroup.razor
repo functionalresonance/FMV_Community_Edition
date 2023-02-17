@@ -1,0 +1,158 @@
+﻿@if (true)
+{
+    key = aspectS.SelectSingleNode("Name").InnerText;
+    dictArray = key.Split("|");
+    index = Convert.ToInt32(dictArray[0]);
+    indexO = dictArray[1];
+    indexSub = Convert.ToInt32(dictArray[2]);
+    aspect = dictArray[3];
+    curve = aspectS.SelectSingleNode("Curve").InnerText.Split("|");
+    labelPosx = Convert.ToDouble(aspectS.Attributes["x"].Value);
+    labelPosy = Convert.ToDouble(aspectS.Attributes["y"].Value);
+    textLines = returnTextLines(indexO, 15);
+    foreach (string tLine in textLines)
+    {
+        tempRwidth = Math.Max(tempRwidth, tLine.Length);
+    }
+    tempTwidth = tempRwidth * 4 + 4;
+    tempX = (Convert.ToDouble(curve[8]) + labelPosx * tempLabelPosX) / tempZoomA;
+    tempY2 = (Convert.ToDouble(curve[9]) + labelPosy * tempLabelPosY - (2.5 + textLines.Count * 4) * tempZoomA) / tempZoomA;
+    tempY = tempY2 + 3;
+    tempX2 = tempX - tempTwidth / 2;
+    tempH = Math.Min(5 + textLines.Count * 8, 50);
+}
+@if (selectedFn == index.ToString())
+{// Lines that move with the selected function
+    shape = "drawMoveConnect";
+}
+//else if (selectedFn == Number(functionArray[index].name))
+//{
+//    shape = drawMoveConnect;
+//}
+else if (selectedFn == indexSub.ToString())
+{
+    shape = "drawMoveConnect";
+}
+else if (selectedLabel != null && selectedLabel == key)
+{
+    shape = "drawMoveConnect";
+}
+else //if (drawAll)
+{ // static lines
+    shape = "drawConnect";
+}
+@if (aspectS.Attributes["directionX"].Value == "from")
+{
+    tempLabelPosX = (Convert.ToDouble(curve[2]) - Convert.ToDouble(curve[8]));
+}
+else
+{
+    tempLabelPosX = (Convert.ToDouble(curve[8]) - Convert.ToDouble(curve[0]));
+}
+@if (aspectS.Attributes["directionY"].Value == "from")
+{
+    tempLabelPosY = (Convert.ToDouble(curve[3]) - Convert.ToDouble(curve[9]));
+}
+else
+{
+    tempLabelPosY = (Convert.ToDouble(curve[9]) - Convert.ToDouble(curve[1]));
+}       
+@if (shape == "drawMoveConnect")
+{
+    curve = aspectS.SelectSingleNode("Curve").InnerText.Split("|");
+    <path fill="none" stroke-width="5" stroke="#4444DD" opacity="0.5" d="M @curve[2] @curve[3] Q @curve[4] @curve[5] @curve[8] @curve[9] Q @curve[6] @curve[7] @curve[0] @curve[1]" />
+}
+else // if(drawAll) {
+{
+    //update stroke colour if part of FMI
+    <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d="M @curve[2] @curve[3] Q @curve[4] @curve[5] @curve[8] @curve[9] Q @curve[6] @curve[7] @curve[0] @curve[1]" />
+}
+<g transform="scale(@tempZoomA)" display="@aspectLabelsDisplay">
+    <rect x=@tempX2 y=@tempY2 width=@tempTwidth height=@tempH style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+    <text transform="translate(0,-2)" x=@tempX y=@tempY font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+        @foreach (string tLine in textLines)
+        {
+            <tspan x=@tempX dy="8">@tLine</tspan>
+        }
+    </text>
+</g>
+
+@code {
+    private string key;
+    private string[] dictArray;
+    private int index;
+    private string indexO;
+    private int indexSub;
+    private string aspect;
+    private string[] curve;
+    private double tempLabelPosX;
+    private double tempLabelPosY;
+    private double labelPosx;
+    private double labelPosy;
+    private string shape;
+    private int tempRwidth = 0;
+    private double tempTwidth;
+    private double tempX;
+    private double tempX2;
+    private double tempY;
+    private double tempY2;
+    private double tempH;
+    private List<string> textLines = new List<string>();
+
+    [CascadingParameter] string aspectLabelsDisplay { get; set; }
+
+    [Parameter]
+    public XmlNode aspectS { get; set; }
+
+    [Parameter]
+    public string selectedFn { get; set; }
+
+    [Parameter]
+    public string selectedLabel { get; set; }
+
+    [Parameter]
+    public double tempZoomA { get; set; }
+
+    private List<string> returnTextLines(string text, int length)
+    {
+        var textLines = new List<string>();
+        string[] textWords = text.Split(" ");
+        int tL = 0;
+        textLines.Add("");
+        int lL = length;
+        foreach (string tWord in textWords)
+        {
+            if (tWord.Length <= lL)
+            {
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += tWord;
+                lL -= tWord.Length;
+            }
+            else if (tWord.Length > length)
+            {
+                string tempWord = tWord;
+                while (tempWord.Length > 0)
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
+                    textLines[tL] += addWord;
+                    lL -= addWord.Length;
+                    tempWord = tempWord.Substring(addWord.Length);
+                }
+            }
+            else
+            {
+                textLines.Add("");
+                tL++;
+                textLines[tL] += tWord;
+                lL = length - tWord.Length;
+            }
+        }
+        return textLines;
+    }
+}

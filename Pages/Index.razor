@@ -1,0 +1,1720 @@
+﻿@page "/"
+@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+@inject BrowserService Service
+@inject IJSRuntime JSRuntime
+@inject SignOutSessionStateManager SignOutManager
+
+@if (showModal)
+{
+    <About OnClick="ModalClose"></About>
+}
+<div class="navbar fixed-top bg-light p-2">
+    <div>
+        <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload">
+            <InputFile OnChange="OnInputFileChange" single />
+        </div>
+        <button class="btn btn-menu oi oi-data-transfer-download" @onclick="OnFileSave"></button>
+        <button class="btn btn-menu oi oi-image" @onclick="OnImageSave"></button>
+        <button class="btn btn-menu oi oi-zoom-out" @onclick="zoomMinus"></button>
+        <button class="btn btn-menu oi oi-fullscreen-enter" @onclick="zoomFill"></button>
+        <button class="btn btn-menu oi oi-zoom-in" @onclick="zoomPlus"></button>
+    </div>
+    <div class="float-right">
+        <button class="btn btn-menu oi oi-tags" @onclick="ShowLabels"></button>
+        <AuthorizeView>
+            <Authorized>
+                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
+                <button class="btn btn-menu oi oi-account-logout ml-1" @onclick="@BeginLogout"></button>
+            </Authorized>
+            <NotAuthorized>
+                <button class="btn btn-menu oi oi-account-login ml-1" @onclick="@BeginLogin"></button>
+            </NotAuthorized>
+        </AuthorizeView>
+        <button class="btn btn-menu oi oi-info" @onclick="@ModalShow"></button>
+    </div>
+</div>
+<div class="sidebar">
+    <div class="v-panel pr-2">
+        <div class="d-flex pt-2">
+            <button id="newFnButton" class="btn btn-menu btn-textp" @onclick="NewFunction" @onfocusin="@(() => @isDisabled = false)">+</button>
+            <textarea id="fnNameText" disabled=@isDisabled @oninput="FnNameChange" value="@fnName" @onkeypress="@((e) => @FocusElementKey(e, "newFnButton", "Fn"))" @onkeydown="@((e) => @CheckDeleteKey(e, "newFnButton", "Fn"))" />
+        </div>
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "I" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Input" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))">I</button>
+                <textarea id="@GetID" class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "I" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))">I</button>
+            </div>
+        }
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "O" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Output" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "O" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
+            </div>
+        }
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "P" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Precondition" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "P" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
+            </div>
+        }
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "R" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Resource" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "R" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
+            </div>
+        }
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "C" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Control" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "C" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
+            </div>
+        }
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        {
+            int ListCount = 0;
+            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + selectedFn + "]");
+            string GetID = "T" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            <div class="d-flex pt-2">
+                <button id="Time" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))">T</button>
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            </div>
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    GetID = "T" + GetList.SelectSingleNode("IDNr").InnerText;
+                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        else
+        {
+            <div class="d-flex pt-2">
+                <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))">T</button>
+            </div>
+        }
+    </div>
+</div>
+<div id="mainWindow" class="main @touchAction">
+    <div class="position-relative h-100">
+        @if (inputDropStatus == "file-input-zone-drop")
+        {
+            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single /></div>
+        }
+        <svg id="canvas_1" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" viewBox="0 0 @viewWidth @viewHeight" width=@canvasWidth height=@canvasHeight xmlns="http://www.w3.org/2000/svg" @onmousedown="UnSelect" @ontouchstart="UnSelectTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+            <defs>
+                <style type="text/css">
+                    @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
+                </style>
+                <radialGradient id="4444DD" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#4444DD;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#4444DD;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#4444DD;stop-opacity:0" />
+                </radialGradient>
+                <radialGradient id="FF1100" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#FF1100;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#FF1100;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#FF1100;stop-opacity:0" />
+                </radialGradient>
+                <radialGradient id="11FF55" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#11FF55;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#11FF55;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#11FF55;stop-opacity:0" />
+                </radialGradient>
+                <radialGradient id="2A9B00" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#2A9B00;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#2A9B00;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#2A9B00;stop-opacity:0" />
+                </radialGradient>
+                <radialGradient id="7E9DBC" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#7E9DBC;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#7E9DBC;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#7E9DBC;stop-opacity:0" />
+                </radialGradient>
+                <radialGradient id="00F2FF" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:#00F2FF;stop-opacity:0.75" />
+                    <stop offset="75%" style="stop-color:#00F2FF;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#00F2FF;stop-opacity:0" />
+                </radialGradient>
+            </defs>
+            @if (fileLoaded)
+            {
+                foreach (XmlNode aspectS in projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect"))
+                {
+                    <g transform="scale(@tempZoomA)" @onmousedown="@(e => SelectLabel(e, aspectS.SelectSingleNode("Name").InnerText))" class="@fnClass">
+                        <CascadingValue Value="@AspectLabelsDisplay">
+                            <AspectGroup aspectS=@aspectS selectedFn=@selectedFn selectedLabel=@selectedLabel tempZoomA=@tempZoomA />
+                        </CascadingValue>
+                    </g>
+                }
+                @foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+                {
+                    <g id="@fn.SelectSingleNode("IDNr").InnerText" transform="translate(@fn.Attributes["x"].Value,@fn.Attributes["y"].Value)" @ontouchstart="@(e => SelectFnTouch(e, fn.SelectSingleNode("IDNr").InnerText))" @onmousedown="@(e => SelectFn(e, fn.SelectSingleNode("IDNr").InnerText))" class="@fnClass">
+                        <FnGroup fn=@fn selectedFn=@selectedFn tempZoomF=@tempZoomF />
+                    </g>
+                }
+            }
+        </svg>
+        <p>
+            @debugOutput <br />
+            @debugOutput2
+        </p>
+    </div>
+</div>
+
+
+@code {
+    private string debugOutput = "";
+    private string debugOutput2 = "";
+    private bool fileLoaded = false;
+    private double canvasWidth;
+    private double canvasHeight;
+    private double viewWidth = 0;
+    private double viewHeight = 0;
+    private XmlDocument[] projectData_Undo = new XmlDocument[10];
+    private const double posIx = 6;
+    private const double posIy = 50;
+    private const double posOx = 93.5;
+    private const double posOy = 50;
+    private const double posTx = 28;
+    private const double posTy = 12;
+    private const double posCx = 71.5;
+    private const double posCy = 12;
+    private const double posPx = 28;
+    private const double posPy = 88;
+    private const double posRx = 71.5;
+    private const double posRy = 88;
+    private XmlNode sFn;
+    private XmlNodeList sAs;
+    private string fnName = "";
+    private string selectedLabel = "";
+    private bool dragFn = false;
+    private bool dragAspect = false;
+    private bool isSelected = false;
+    private double startX;
+    private double startY;
+    private double lastX;
+    private double lastY;
+    private double moveInterval = 0;
+    private double scaleZoom;
+    private string fnClass = "fn-hover";
+    private string touchAction = "touch-stop";
+    private double tempZoomA;
+    private double tempZoomF;
+    private string fileName = "FMV_new.xfmv";
+    private List<Aspect> aspectsList = new List<Aspect>();
+    public string selectedFn = "-1";
+    private bool isDisabled = true;
+    private string tempNewName;
+    private string tempOldName;
+    private string tempId;
+    private string tempType;
+    public int newFnStyle = 0;
+    public int maxFn = -1;
+    public int newFnX = -40;
+    public int newFnY = 0;
+    public bool isNewModel = true;
+    private string AspectLabelsDisplay = "";
+    private bool showModal = false;
+    private string inputDropStatus = "file-input-zone-drop";
+
+    private void ModalShow() => showModal = true;
+    void ModalClose(bool state)
+    {
+        showModal = state;
+    }
+    private async Task BeginLogout(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        NavManager.NavigateTo("/authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
+    }
+    private void BeginLogin(MouseEventArgs args)
+    {
+        NavManager.NavigateTo("/authentication/login");
+    }
+       /*
+       protected override void OnInitialized()
+       {
+           var uir = NavManager.ToAbsoluteUri(NavManager.Uri);
+           var querystring = System.Web.HttpUtility.ParseQueryString(uir.Query);
+           var fromBytes = Convert.FromBase64String(querystring["data"]);
+           projectData_Undo[0] = new XmlDocument();
+           projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(fromBytes));
+       }
+       */
+    private void zoomPlus()
+    {
+        if (fileLoaded)
+        {
+            scaleZoom = scaleZoom + 0.25;
+            if (scaleZoom > 4)
+            {
+                scaleZoom = 4;
+            }
+            canvasWidth = viewWidth * scaleZoom;
+            canvasHeight = viewHeight * scaleZoom;
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+        }
+    }
+    private void zoomMinus()
+    {
+        if (fileLoaded)
+        {
+            scaleZoom = scaleZoom - 0.25;
+            if (scaleZoom < 0.25) scaleZoom = 0.25;
+            canvasWidth = viewWidth * scaleZoom;
+            canvasHeight = viewHeight * scaleZoom;
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+        }
+    }
+    public async void zoomFill()
+    {
+        if (fileLoaded)
+        {
+            var dimensions = await Service.GetDimensions();
+            if (canvasWidth / canvasHeight > Convert.ToDouble(dimensions.Width - 250) / Convert.ToDouble(dimensions.Height - 70))
+            {
+                canvasWidth = dimensions.Width - 250;
+                scaleZoom = canvasWidth / viewWidth;
+                canvasHeight = viewHeight * scaleZoom;
+            }
+            else
+            {
+                canvasHeight = dimensions.Height - 70;
+                scaleZoom = canvasHeight / viewHeight;
+                canvasWidth = viewWidth * scaleZoom;
+            }
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+            StateHasChanged();
+        }
+    }
+    public async void OnFileSave()
+    {
+        if (fileLoaded)
+        {
+            var saveXfmv = projectData_Undo[0].OuterXml;
+            //var textBytes = Encoding.UTF8.GetBytes(saveXfmv);
+            //string saveBase = Convert.ToBase64String(textBytes);
+            await JSRuntime.InvokeAsync<object>(
+                "FileSaveAs",
+                fileName,
+                saveXfmv
+            );
+        }
+    }
+    public async void OnImageSave()
+    {
+        string imageName = fileName.Substring(0, fileName.LastIndexOf(".")) + ".svg";
+        await JSRuntime.InvokeAsync<object>(
+        "FileSaveAs",
+        imageName,
+        await JSRuntime.InvokeAsync<string>("getHTML", "canvas_1")
+        );
+    }
+    private void NewFunction()
+    {
+        //projectData_Undo.unshift(projectData_Undo[0].copy());
+        //selectedFn_Undo.unshift(selectedFn);
+        //undoB.enabled = true;
+        if (projectData_Undo[0] == null)
+        {
+            fileLoaded = false;
+            tempZoomA = 1;
+            tempZoomF = 1;
+            scaleZoom = 1.5;
+            projectData_Undo[0] = new XmlDocument();
+            projectData_Undo[0].LoadXml("<FM><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
+            inputDropStatus = "file-input-zone-hide";
+            fileLoaded = true;
+        }
+        maxFn++;
+        if (isNewModel)
+        {
+            fileLoaded = false;
+            inputDropStatus = "file-input-zone-hide";
+            fileLoaded = true;
+            if (maxFn % 2 == 0)
+            {
+                if (maxFn % 8 == 0 && maxFn != 0)
+                {
+                    newFnX = 50;
+                    newFnY += 240;
+                }
+                else
+                {
+                    newFnX += 90;
+                    newFnY += 110;
+                }
+            }
+            else
+            {
+                newFnX += 110;
+                newFnY -= 90;
+            }
+        }
+        else
+        {
+            if (selectedFn == "-1")
+            {
+                newFnX = 20;
+                newFnY = 20;
+            }
+            else
+            {
+                newFnX = Convert.ToInt32(Convert.ToDouble(sFn.SelectSingleNode("@x").Value) + 90);
+                newFnY = Convert.ToInt32(Convert.ToDouble(sFn.SelectSingleNode("@y").Value) + 110);
+            }
+        }
+        viewWidth = Math.Max(viewWidth, newFnX + 120);
+        viewHeight = Math.Max(viewHeight, newFnY + 120);
+        canvasWidth = viewWidth * scaleZoom;
+        canvasHeight = viewHeight * scaleZoom;
+
+        XmlNode itemF = projectData_Undo[0].CreateElement("Function");
+        XmlAttribute fnStyle = projectData_Undo[0].CreateAttribute("fnStyle");
+        fnStyle.Value = newFnStyle.ToString();
+        itemF.Attributes.Append(fnStyle);
+        XmlAttribute isInput = projectData_Undo[0].CreateAttribute("isInput");
+        isInput.Value = "false";
+        itemF.Attributes.Append(isInput);
+        XmlAttribute orphans = projectData_Undo[0].CreateAttribute("orphans");
+        orphans.Value = "0";
+        itemF.Attributes.Append(orphans);
+        XmlNode IDNr = projectData_Undo[0].CreateElement("IDNr");
+        IDNr.InnerText = maxFn.ToString();
+        itemF.AppendChild(IDNr);
+        XmlNode FunctionType = projectData_Undo[0].CreateElement("FunctionType");
+        FunctionType.InnerText = "2";
+        itemF.AppendChild(FunctionType);
+        XmlNode IDName = projectData_Undo[0].CreateElement("IDName");
+        IDName.InnerText = "";
+        itemF.AppendChild(IDName);
+        //if (selectedFn>-1) {selectGroupChildren(false);}
+        selectedFn = maxFn.ToString();
+        isDisabled = false;
+        selectedLabel = "";
+        //checkDirty=true;
+        //initiateFn(itemF, false); Check for Orphans?
+        //performance! if (!enableGroup1) reDraw();
+        XmlAttribute fnX = projectData_Undo[0].CreateAttribute("x");
+        XmlAttribute fnY = projectData_Undo[0].CreateAttribute("y");
+        fnX.Value = newFnX.ToString();
+        fnY.Value = newFnY.ToString();
+        itemF.Attributes.Append(fnX);
+        itemF.Attributes.Append(fnY);
+        //functionArray[selectedFn].drawSelected(0x4444DD);
+        //reDrawAspects(false);
+        //fnList();
+        //fnScroll(selectedFn);
+        //fnName.setFocus();
+        projectData_Undo[0].SelectSingleNode("//FM/Functions").AppendChild(itemF);
+        sFn = itemF;
+        fnName = "";
+        FocusElement("fnNameText");
+        ClearElement("fnNameText");
+
+    }
+    private void NewAspect(MouseEventArgs e, string type)
+    {
+        if (projectData_Undo[0] != null)
+        {
+            if (projectData_Undo[0].SelectSingleNode("//FM/" + type + "s") == null)
+            {
+                projectData_Undo[0].SelectSingleNode("//FM").AppendChild(projectData_Undo[0].CreateElement(type + "s"));
+            }
+            int id;
+            if (projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type).Count == 0)
+            {
+                id = 0;
+            }
+            else
+            {
+                id = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr").InnerText) + 1;
+            }
+            XmlNode itemA = projectData_Undo[0].CreateElement(type);
+            itemA.InnerXml = "<IDNr>" + id.ToString() + "</IDNr><IDName></IDName><FunctionIDNr>" + selectedFn + "</FunctionIDNr><Description/>";
+            XmlAttribute newOrphan = projectData_Undo[0].CreateAttribute("orphan");
+            newOrphan.Value = "false";
+            //int orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
+            //switch (type)
+            //{
+            //    case "Input": orphans |= 1 << 0; break;
+            //    case "Output": orphans |= 1 << 1; break;
+            //    case "Precondition": orphans |= 1 << 2; break;
+            //    case "Resource": orphans |= 1 << 3; break;
+            //    case "Control": orphans |= 1 << 4; break;
+            //    case "Time": orphans |= 1 << 5; break;
+            //}
+            //sFn.SelectSingleNode("@orphans").Value = orphans.ToString();
+            itemA.Attributes.Append(newOrphan);
+            projectData_Undo[0].SelectSingleNode("//FM/" + type + "s").AppendChild(itemA);
+            if (type != "Output")
+            {
+                aspectsList.Add(new Aspect(type, id.ToString(), "true", "", selectedFn));
+                if (type == "Input")
+                {
+                    sFn.SelectSingleNode("@isInput").InnerText = "true";
+                }
+            }
+        }
+    }
+    private void AspectChange(ChangeEventArgs e, string type, string id)
+    {
+        if (selectedFn != "-1")
+        {
+            tempOldName = projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[IDNr=\"" + id + "\"]/IDName").InnerText;
+            tempNewName = e.Value.ToString();
+            tempId = id;
+            tempType = type;
+            AspectChangeCommitt();
+            /*
+            bool oldLine;
+            bool newLine;
+            if (type == "Output")
+            {
+                /*
+                If oldName count >0 then it had a line else no line: O=T/F
+                if aspectName count >0 then should have line: A=T/F
+                O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
+                O=T & A=F : remove line
+                O=F & A=T : add line
+                */
+            /*
+                oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + selectedFn + "|" + tempOldName + "|\")]").Count > 0;
+                newLine = aspectsList.FindAll(x => x.FunctionIDNr != selectedFn && x.IDName == tempNewName).Count > 0;
+            }
+            else
+            {
+                oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + tempOldName + "|" + selectedFn + "|" + type.Substring(0, 1) + "\")]").Count > 0;
+                newLine = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]").Count > 0;
+
+            }
+            if (oldLine != newLine)
+            {
+                //AspectChangeCommitt();
+            }
+            */
+        }
+    }
+    private void AspectChangeCommitt()
+    {
+        if (selectedFn != "-1")
+        {
+            //fileLoaded = false;
+            string oldName = projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText; //NEW
+            int orphans;
+            projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText = tempNewName; //NEW
+            tempOldName = tempNewName;
+            if (tempNewName == "")
+            {
+                projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+            }
+            else
+            {
+                projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "true";
+            }
+            if (tempType == "Output")
+            {
+                XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + selectedFn + "|" + oldName + "|\")]");
+                bool oldOrphans = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]").Count == 0; // if 0 then all oldChildren are orphans
+                bool hasOrphan;
+                if (tempNewName == "")
+                {
+                    hasOrphan = false;
+                }
+                else
+                {
+                    hasOrphan = true;
+                }
+                foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr != selectedFn))
+                {
+                    if (aspect.IDName == tempNewName)
+                    {
+                        List<string> dictArray = new List<string>() { selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
+                        if (tempNewName != "")
+                        {
+                            XmlNode newAspect = reSetAspect(dictArray);
+                            projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
+                            reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
+                        }
+                        hasOrphan = false;
+                        aspect.Orphan = "false";
+                        projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
+                        projectData_Undo[0].SelectSingleNode("//FM/Outputs/Output[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+                        bool subNotOrphan = true;
+                        foreach (XmlNode checkO in projectData_Undo[0].SelectNodes("//FM/" + aspect.Type + "s/" + aspect.Type + "[FunctionIDNr=\"" + aspect.FunctionIDNr + "\"]"))
+                        {
+                            if (projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + checkO.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
+                            {
+                                subNotOrphan = false;
+                            }
+                        }
+                        if (subNotOrphan)
+                        {
+                            orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
+                            switch (aspect.Type)
+                            { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                                case "Input": orphans &= ~(1 << 0); break;
+                                case "Precondition": orphans &= ~(1 << 2); break;
+                                case "Resource": orphans &= ~(1 << 3); break;
+                                case "Control": orphans &= ~(1 << 4); break;
+                                case "Time": orphans &= ~(1 << 5); break;
+                            }
+                            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                        }
+                    }
+                    else if (aspect.IDName == oldName)
+                    {
+                        if (oldOrphans)
+                        {
+                            aspect.Orphan = "true";
+                            projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "true";
+                        }
+                    }
+                }
+                foreach (XmlNode oldChild in oldChildren)
+                {
+                    if (oldOrphans)
+                    {
+                        string toFnID = oldChild.SelectSingleNode("@toFn").Value;
+                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value);
+                        switch (oldChild.SelectSingleNode("Name").InnerText.Substring(oldChild.SelectSingleNode("Name").InnerText.Length - 1, 1))
+                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                            case "I": orphans |= 1 << 0; break;
+                            case "P": orphans |= 1 << 2; break;
+                            case "R": orphans |= 1 << 3; break;
+                            case "C": orphans |= 1 << 4; break;
+                            case "T": orphans |= 1 << 5; break;
+                        }
+                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value = orphans.ToString();
+                    }
+                    projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                }
+                orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
+                if (hasOrphan)
+                {
+                    sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
+                }
+                else
+                {
+                    foreach (XmlNode itemO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
+                    {
+                        if (aspectsList.FindAll(x => x.IDName == itemO.SelectSingleNode("IDName").InnerText).Count == 0)
+                        {
+                            hasOrphan = true;
+                        }
+                    }
+                    if (hasOrphan)
+                    {
+                        sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
+                    }
+                    else
+                    {
+                        sFn.SelectSingleNode("@orphans").Value = (orphans &= ~(1 << 1)).ToString();
+                    }
+                }
+            }
+            else
+            {
+                Aspect getAspect = aspectsList.Find(x => x.IDNr == tempId && x.Type == tempType);
+                getAspect.Orphan = "true";
+                getAspect.IDName = tempNewName;
+                XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + oldName + "|" + selectedFn + "|" + tempType.Substring(0, 1) + "\")]");
+                foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]"))
+                {
+                    List<string> dictArray = new List<string>() { itemI.SelectSingleNode("FunctionIDNr").InnerText, tempNewName, selectedFn, tempType.Substring(0, 1) };
+                    if (tempNewName != "")
+                    {
+                        XmlNode newAspect = reSetAspect(dictArray);
+                        projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
+                        reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
+                    }
+                    itemI.SelectSingleNode("@orphan").Value = "false";
+                    projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+                    getAspect.Orphan = "false";
+                    bool subNotOrphan = true;
+                    foreach (XmlNode checkO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]"))
+                    {
+                        if (aspectsList.FindAll(x => x.IDName == checkO.SelectSingleNode("IDName").InnerText).Count == 0)
+                        {
+                            subNotOrphan = false;
+                        }
+                    }
+                    if (subNotOrphan)
+                    {
+                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value);
+                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value = (orphans &= ~(1 << 1)).ToString();
+                    }
+                }
+                bool oldOrphans = aspectsList.FindAll(x => x.IDName == oldName).Count == 0;
+                foreach (XmlNode oldChild in oldChildren)
+                {
+                    if (oldOrphans)
+                    {
+                        string fromFnID = oldChild.SelectSingleNode("@outputFn").Value;
+                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value);
+                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value = (orphans |= 1 << 1).ToString();
+                    }
+                    projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                }
+                if (oldOrphans)
+                {
+                    foreach (XmlNode oldO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]"))
+                    {
+                        oldO.SelectSingleNode("@orphan").Value = "true";
+                    }
+                }
+                orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
+                if (tempNewName != "" && projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]").Count == 0)
+                {
+                    switch (tempType)
+                    { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                        case "Input": orphans |= 1 << 0; break;
+                        case "Precondition": orphans |= 1 << 2; break;
+                        case "Resource": orphans |= 1 << 3; break;
+                        case "Control": orphans |= 1 << 4; break;
+                        case "Time": orphans |= 1 << 5; break;
+                    }
+                    sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                }
+                else
+                {
+                    bool hasOrphan = false;
+                    foreach (XmlNode itemA in projectData_Undo[0].SelectNodes("//FM/" + tempType + "s/" + tempType + "[FunctionIDNr=\"" + selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
+                    {
+                        if (projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + itemA.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
+                        {
+                            hasOrphan = true;
+                        }
+                    }
+                    if (hasOrphan)
+                    {
+                        switch (tempType)
+                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                            case "Input": orphans |= 1 << 0; break;
+                            case "Precondition": orphans |= 1 << 2; break;
+                            case "Resource": orphans |= 1 << 3; break;
+                            case "Control": orphans |= 1 << 4; break;
+                            case "Time": orphans |= 1 << 5; break;
+                        }
+                        sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                    }
+                    else
+                    {
+                        switch (tempType)
+                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                            case "Input": orphans &= ~(1 << 0); break;
+                            case "Precondition": orphans &= ~(1 << 2); break;
+                            case "Resource": orphans &= ~(1 << 3); break;
+                            case "Control": orphans &= ~(1 << 4); break;
+                            case "Time": orphans &= ~(1 << 5); break;
+                        }
+                        sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                    }
+                }
+            }
+            sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name");
+            checkForBackground();
+            //fileLoaded = true;
+        }
+    }
+    private void AspectChangeCommittOLD()
+    {
+        checkForBackground();
+    }
+    private void checkForBackground()
+    {
+        //var itemF = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr='" + selectedFn + "']");
+        var check1 = projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr='" + selectedFn + "']").Count;
+        check1 += projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr='" + selectedFn + "']").Count;
+        check1 += projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr='" + selectedFn + "']").Count;
+        check1 += projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr='" + selectedFn + "']").Count;
+        var check2 = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr='" + selectedFn + "']").Count;
+        var check3 = projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr= '" + selectedFn + "']").Count;
+        if (check1 == 0 && (check2 == 0 || check3 == 0))
+        { //has only inputs or only outputs
+            sFn.SelectSingleNode("FunctionType").InnerText = "2"; //background
+        }
+        else
+        {
+            sFn.SelectSingleNode("FunctionType").InnerText = "0"; //foreground
+        }
+    }
+    private void FnNameChange(ChangeEventArgs e)
+    {
+        if (selectedFn != "-1")
+        {
+            sFn.SelectSingleNode("IDName").InnerText = e.Value.ToString();
+        }
+    }
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        fileLoaded = false;
+        viewWidth = 0;
+        viewHeight = 0;
+        aspectsList = new List<Aspect>();
+        var buffer = new byte[e.File.Size];
+        await e.File.OpenReadStream(1050000).ReadAsync(buffer);
+        projectData_Undo[0] = new XmlDocument();
+        projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
+        fileName = e.File.Name;
+        inputDropStatus = "file-input-zone-hide";
+        FileIsLoaded();
+    }
+    private void FileIsLoaded()
+    {
+        selectedFn = "-1";
+        isDisabled = true;
+        foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+        { //this is for modern background functions to indicate which side to place the aspect circle, Input (left) or Output (right)
+            if (fn.SelectSingleNode("@orphans") == null)
+            {
+                fn.Attributes.Append(projectData_Undo[0].CreateAttribute("orphans"));
+            }
+            fn.SelectSingleNode("@orphans").Value = "0";
+            XmlAttribute isInput = projectData_Undo[0].CreateAttribute("isInput");
+            if (projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr = " + fn.SelectSingleNode("IDNr").InnerText + "]").Count != 0)
+            {
+                isInput.Value = "true";
+                fn.Attributes.Append(isInput);
+            }
+            else
+            {
+                isInput.Value = "false";
+                fn.Attributes.Append(isInput);
+            }
+            maxFn = Math.Max(maxFn, Convert.ToInt32(fn.SelectSingleNode("IDNr").InnerText));
+            viewWidth = Math.Max(viewWidth, Convert.ToDouble(fn.SelectSingleNode("@x").Value) + 120);
+            viewHeight = Math.Max(viewHeight, Convert.ToDouble(fn.SelectSingleNode("@y").Value) + 120);
+        }
+        if (projectData_Undo[0].SelectSingleNode("//FM/Aspects") == null)
+        {
+            projectData_Undo[0].SelectSingleNode("//FM").AppendChild(projectData_Undo[0].CreateElement("Aspects"));
+        }
+        XmlNode aspectsA = projectData_Undo[0].SelectSingleNode("//FM/Aspects");
+        if (aspectsA.SelectSingleNode("@scaleFunction") == null)
+        {
+            XmlAttribute scaleF = projectData_Undo[0].CreateAttribute("scaleFunction");
+            scaleF.Value = "1";
+            aspectsA.Attributes.Append(scaleF);
+
+        }
+        if (aspectsA.SelectSingleNode("@scaleAspect") == null)
+        {
+            XmlAttribute scaleA = projectData_Undo[0].CreateAttribute("scaleAspect");
+            scaleA.Value = "1";
+            aspectsA.Attributes.Append(scaleA);
+        }
+        if (aspectsA.SelectSingleNode("@scaleZoom") == null)
+        {
+            XmlAttribute scaleZ = projectData_Undo[0].CreateAttribute("scaleZoom");
+            scaleZ.Value = "1";
+            aspectsA.Attributes.Append(scaleZ);
+        }
+        if (aspectsA.SelectSingleNode("@Enhanced") == null)
+        {
+            XmlAttribute enhanced = projectData_Undo[0].CreateAttribute("Enhanced");
+            enhanced.Value = "false";
+            aspectsA.Attributes.Append(enhanced);
+        }
+        if (aspectsA.SelectSingleNode("@WebEnhanced") == null)
+        {
+            XmlAttribute webenhanced = projectData_Undo[0].CreateAttribute("WebEnhanced");
+            webenhanced.Value = "false";
+            aspectsA.Attributes.Append(webenhanced);
+        }
+        int idCount = 0;
+        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Inputs/Input"))
+        {
+            if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+            {
+                itemI.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+            }
+            if (itemI.SelectSingleNode("@orphan") == null)
+            {
+                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+            }
+            itemI.SelectSingleNode("@orphan").Value = "true";
+            aspectsList.Add(new Aspect("Input", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
+            idCount++;
+        }
+        idCount = 0;
+        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition"))
+        {
+            if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+            {
+                itemI.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+            }
+            if (itemI.SelectSingleNode("@orphan") == null)
+            {
+                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+            }
+            itemI.SelectSingleNode("@orphan").Value = "true";
+            aspectsList.Add(new Aspect("Precondition", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
+            idCount++;
+        }
+        idCount = 0;
+        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Resources/Resource"))
+        {
+            if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+            {
+                itemI.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+            }
+            if (itemI.SelectSingleNode("@orphan") == null)
+            {
+                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+            }
+            itemI.SelectSingleNode("@orphan").Value = "true";
+            aspectsList.Add(new Aspect("Resource", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
+            idCount++;
+        }
+        idCount = 0;
+        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Controls/Control"))
+        {
+            if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+            {
+                itemI.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+            }
+            if (itemI.SelectSingleNode("@orphan") == null)
+            {
+                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+            }
+            itemI.SelectSingleNode("@orphan").Value = "true";
+            aspectsList.Add(new Aspect("Control", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
+            idCount++;
+        }
+        idCount = 0;
+        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Times/Time"))
+        {
+            if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+            {
+                itemI.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+            }
+            if (itemI.SelectSingleNode("@orphan") == null)
+            {
+                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+            }
+            itemI.SelectSingleNode("@orphan").Value = "true";
+            aspectsList.Add(new Aspect("Time", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
+            idCount++;
+        }
+        if (aspectsA.SelectSingleNode("@WebEnhanced").Value != "true")
+        {
+            while (aspectsA.FirstChild != null)
+                aspectsA.RemoveChild(aspectsA.FirstChild);
+            List<string> dictArray = new List<string>() { "", "", "", "" };
+            idCount = 0;
+            foreach (XmlNode itemO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output"))
+            {
+                if (itemO.SelectSingleNode("IDNr").InnerText != idCount.ToString())
+                {
+                    itemO.SelectSingleNode("IDNr").InnerText = idCount.ToString();
+                }
+                idCount++;
+                string isOutputOrphan = "true";
+                dictArray[0] = itemO.SelectSingleNode("FunctionIDNr").InnerText;
+                dictArray[1] = itemO.SelectSingleNode("IDName").InnerText;
+                foreach (var aspect in aspectsList)
+                {
+                    if (aspect.IDName == dictArray[1])
+                    {
+                        dictArray[2] = aspect.FunctionIDNr;
+                        dictArray[3] = aspect.Type.Substring(0, 1);
+                        aspectsA.AppendChild(reSetAspect(dictArray));
+                        reDrawLines(string.Join("|", dictArray));
+                        aspect.Orphan = "false";
+                        projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
+                        isOutputOrphan = "false";
+                    }
+                }
+                if (itemO.SelectSingleNode("@orphan") == null)
+                {
+                    itemO.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                }
+                itemO.SelectSingleNode("@orphan").Value = isOutputOrphan;
+                if (isOutputOrphan == "true")
+                {
+                    int orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value);
+                    orphans |= 1 << 1; //orphans &= ~(1 << 1);
+                    projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value = orphans.ToString();
+                }
+            }
+            foreach (var aspect in aspectsList)
+            {
+                if (aspect.Orphan == "true")
+                {
+                    int orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
+                    switch (aspect.Type)
+                    { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                        case "Input": orphans |= 1 << 0; break;
+                        case "Precondition": orphans |= 1 << 2; break;
+                        case "Resource": orphans |= 1 << 3; break;
+                        case "Control": orphans |= 1 << 4; break;
+                        case "Time": orphans |= 1 << 5; break;
+                    }
+                    projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                }
+            }
+            aspectsA.SelectSingleNode("@WebEnhanced").Value = "true";
+        }
+        tempZoomA = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect").Value);
+        tempZoomF = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction").Value);
+        scaleZoom = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value);
+        canvasWidth = viewWidth * scaleZoom;
+        canvasHeight = viewHeight * scaleZoom;
+        newFnX = 20;
+        newFnY = 20;
+        isNewModel = false;
+        fileLoaded = true;
+    }
+
+    private void UnSelectTouch(TouchEventArgs e)
+    {
+        if (tempOldName != tempNewName)
+        {
+            //    AspectChangeCommitt();
+        }
+        if (isSelected)
+        {
+            isSelected = false;
+            touchAction = "touch-stop";
+        }
+        else
+        {
+            selectedFn = "-1";
+            isDisabled = true;
+            selectedLabel = "";
+            fnName = "";
+            touchAction = "";
+        }
+    }
+    private void UnSelect(MouseEventArgs e)
+    {
+        if (tempOldName != tempNewName)
+        {
+            //    AspectChangeCommitt();
+        }
+        if (isSelected)
+        {
+            isSelected = false;
+        }
+        else
+        {
+            //AspectChange
+            selectedFn = "-1";
+            isDisabled = true;
+            selectedLabel = "";
+            fnName = "";
+        }
+    }
+    private void SelectFnTouch(TouchEventArgs e, string IDNr)
+    {
+        if (tempOldName != tempNewName)
+        {
+            //    AspectChangeCommitt();
+        }
+        if (e.Touches.Length == 1)
+        {
+            selectedFn = IDNr;
+            isDisabled = false;
+            selectedLabel = "";
+            sFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]");
+            sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name"); //
+            fnName = sFn.SelectSingleNode("IDName").InnerText;
+            startX = Convert.ToDouble(sFn.Attributes["x"].Value) - e.Touches[0].ClientX / scaleZoom;
+            startY = Convert.ToDouble(sFn.Attributes["y"].Value) - e.Touches[0].ClientY / scaleZoom;
+            dragFn = true;
+            isSelected = true;
+            fnClass = "fn-move";
+            touchAction = "touch-stop";
+        }
+    }
+    private void SelectFn(MouseEventArgs e, string IDNr)
+    {
+        if (tempOldName != tempNewName)
+        {
+            //    AspectChangeCommitt();
+        }
+        selectedFn = IDNr;
+        isDisabled = false;
+        selectedLabel = "";
+        sFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]");
+        sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name");
+        fnName = sFn.SelectSingleNode("IDName").InnerText;
+        startX = Convert.ToDouble(sFn.Attributes["x"].Value) - e.ClientX / scaleZoom;
+        startY = Convert.ToDouble(sFn.Attributes["y"].Value) - e.ClientY / scaleZoom;
+        lastX = e.ClientX;
+        lastY = e.ClientY;
+        if (maxFn > 20)
+            moveInterval = maxFn / 5 + sAs.Count;
+        dragFn = true;
+        isSelected = true;
+        fnClass = "fn-move";
+    }
+    private void SelectLabel(MouseEventArgs e, string key)
+    {
+        selectedLabel = key;
+        selectedFn = "-1";
+        isDisabled = true;
+        fnName = "";
+        sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/Name");
+        dragAspect = true;
+        isSelected = true;
+        fnClass = "fn-move";
+    }
+    private void MoveFnTouch(TouchEventArgs e)
+    {
+        if (e.Touches.Length == 1)
+        {
+            if (dragFn)
+            {
+                sFn.Attributes["x"].Value = (startX + e.Touches[0].ClientX / scaleZoom).ToString();
+                sFn.Attributes["y"].Value = (startY + e.Touches[0].ClientY / scaleZoom).ToString();
+                if (Math.Abs(e.Touches[0].ClientX - lastX) > moveInterval || Math.Abs(e.Touches[0].ClientY - lastY) > moveInterval)
+                {
+                    foreach (XmlNode aspectS in sAs)
+                    {
+                        reDrawLines(aspectS.InnerText);
+                    }
+                    lastX = e.Touches[0].ClientX;
+                    lastY = e.Touches[0].ClientY;
+                }
+                if (Convert.ToDouble(sFn.Attributes["x"].Value) > viewWidth - 120)
+                {
+                    viewWidth += 120;
+                    canvasWidth = viewWidth * scaleZoom;
+                }
+                if (Convert.ToDouble(sFn.Attributes["y"].Value) > viewHeight - 120)
+                {
+                    viewHeight += 120;
+                    canvasHeight = viewHeight * scaleZoom;
+                }
+            }
+            else if (dragAspect)
+            {
+
+            }
+        }
+    }
+    private void MoveFn(MouseEventArgs e)
+    {
+        if (dragFn)
+        {
+            sFn.Attributes["x"].Value = (startX + e.ClientX / scaleZoom).ToString();
+            sFn.Attributes["y"].Value = (startY + e.ClientY / scaleZoom).ToString();
+            if (Math.Abs(e.ClientX - lastX) > moveInterval || Math.Abs(e.ClientY - lastY) > moveInterval)
+            {
+                foreach (XmlNode aspectS in sAs)
+                {
+                    reDrawLines(aspectS.InnerText);
+                }
+                lastX = e.ClientX;
+                lastY = e.ClientY;
+            }
+            if (Convert.ToDouble(sFn.Attributes["x"].Value) > viewWidth - 120)
+            {
+                viewWidth += 120;
+                canvasWidth = viewWidth * scaleZoom;
+            }
+            if (Convert.ToDouble(sFn.Attributes["y"].Value) > viewHeight - 120)
+            {
+                viewHeight += 120;
+                canvasHeight = viewHeight * scaleZoom;
+            }
+        }
+        else if (dragAspect)
+        {
+
+        }
+    }
+    private void MoveFnStopTouch(TouchEventArgs e)
+    {
+        if (dragFn)
+        {
+            if (sAs != null)
+            {
+                foreach (XmlNode aspectS in sAs)
+                {
+                    reDrawLines(aspectS.InnerText);
+                }
+            }
+            dragFn = false;
+            dragAspect = false;
+            fnClass = "fn-hover";
+            touchAction = "";
+            moveInterval = 0;
+        }
+    }
+    private void MoveFnStop(MouseEventArgs e)
+    {
+        if (sAs != null)
+        {
+            foreach (XmlNode aspectS in sAs)
+            {
+                reDrawLines(aspectS.InnerText);
+            }
+        }
+        dragFn = false;
+        dragAspect = false;
+        fnClass = "fn-hover";
+    }
+
+    private List<string> returnTextLines(string text, int length)
+    {
+        var textLines = new List<string>();
+        string[] textWords = text.Split(" ");
+        int tL = 0;
+        textLines.Add("");
+        int lL = length;
+        foreach (string tWord in textWords)
+        {
+            if (tWord.Length <= lL)
+            {
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += tWord;
+                lL -= tWord.Length;
+            }
+            else if (tWord.Length > length)
+            {
+                string tempWord = tWord;
+                while (tempWord.Length > 0)
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
+                    textLines[tL] += addWord;
+                    lL -= addWord.Length;
+                    tempWord = tempWord.Substring(addWord.Length);
+                }
+            }
+            else
+            {
+                textLines.Add("");
+                tL++;
+                textLines[tL] += tWord;
+                lL = length - tWord.Length;
+            }
+        }
+        return textLines;
+    }
+
+    private XmlNode reSetAspect(List<string> dictArray)
+    {
+        XmlNode aspectI = projectData_Undo[0].CreateElement("Aspect");
+        XmlAttribute aspectIx = projectData_Undo[0].CreateAttribute("x");
+        aspectIx.Value = "0";
+        aspectI.Attributes.Append(aspectIx);
+        XmlAttribute aspectIy = projectData_Undo[0].CreateAttribute("y");
+        aspectIy.Value = "0";
+        aspectI.Attributes.Append(aspectIy);
+        XmlAttribute aspectIdx = projectData_Undo[0].CreateAttribute("directionX");
+        aspectIdx.Value = "from";
+        aspectI.Attributes.Append(aspectIdx);
+        XmlAttribute aspectIdy = projectData_Undo[0].CreateAttribute("directionY");
+        aspectIdy.Value = "to";
+        aspectI.Attributes.Append(aspectIdy);
+        XmlAttribute aspectIof = projectData_Undo[0].CreateAttribute("outputFn");
+        aspectIof.Value = dictArray[0];
+        aspectI.Attributes.Append(aspectIof);
+        XmlAttribute aspectItf = projectData_Undo[0].CreateAttribute("toFn");
+        aspectItf.Value = dictArray[2];
+        aspectI.Attributes.Append(aspectItf);
+        XmlNode aspectIname = projectData_Undo[0].CreateElement("Name");
+        aspectIname.InnerText = string.Join("|", dictArray);
+        aspectI.AppendChild(aspectIname);
+        XmlNode aspectIcurve = projectData_Undo[0].CreateElement("Curve");
+        aspectI.AppendChild(aspectIcurve);
+        return aspectI;
+    }
+    private void reDrawLines(string key)
+    {
+        //this function gets all the line coordinates
+        //draws two quadratic Bezier curves to connect an Output with another Aspect
+        //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
+        //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
+        string[] dictArray = key.Split("|");
+        int index = Convert.ToInt32(dictArray[0]);
+        string indexO = dictArray[1];
+        int indexSub = Convert.ToInt32(dictArray[2]);
+        string aspect = dictArray[3];
+        double drawTox = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
+        double drawToy = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
+        double drawFromx = 0;
+        double drawFromy = 0;
+        double drawAx = 0;
+        double drawAy = 0;
+        double drawBx = 0;
+        double drawBy = 0;
+        double drawIntx = 0;
+        double drawInty = 0;
+        XmlNode indexSubFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
+        if (aspect == "I")
+        { //does a fn1 Output connect with a fn2 Input
+            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + 6;
+            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + 50;
+            if (drawFromx > drawTox - 20)
+            {
+                drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                drawAy = drawFromy;
+                drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                drawBy = drawToy;
+            }
+            else
+            {
+                if (Math.Abs(drawToy - drawFromy) > 120)
+                {
+                    drawAx = drawFromx - 20;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.375;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + (drawToy - drawFromy) * 0.625;
+                }
+                else
+                {
+                    drawAx = drawFromx - 20;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                }
+            }
+            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+            drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+        }
+        else if (aspect == "T")
+        { //does a fn1 output connect with a fn2 Time
+            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posTx;
+            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posTy;
+            if (drawFromx > drawTox - 10)
+            {
+                if (drawFromy > drawToy)
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                }
+                else
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawAy = drawFromy;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                }
+            }
+            else
+            {
+                if (drawFromy > drawToy + 40)
+                {
+                    if (Math.Abs(drawToy - drawFromy) > 120)
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                    }
+                }
+                else
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy - 20;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy - 20;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy - 20;
+                }
+            }
+        }
+        else if (aspect == "C")
+        { //does a fn1 output connect with a fn2 Control
+            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posCx;
+            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posCy;
+            if (drawFromx > drawTox - 10)
+            {
+                if (drawFromy > drawToy + 20)
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                }
+                else
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy - 20;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy - 20;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy - 20;
+                }
+            }
+            else
+            {
+                drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
+                drawAy = drawFromy;
+                drawBx = drawTox + 20;
+                drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
+                drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+            }
+        }
+        else if (aspect == "P")
+        { //does a fn1 output connect with a fn2 Precondition
+            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posPx;
+            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posPy;
+            if (drawFromx > drawTox - 10)
+            {
+                if (drawFromy > drawToy)
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawAy = drawFromy;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                }
+                else
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                }
+            }
+            else
+            {
+                if (drawFromy > drawToy - 40)
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy + 20;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + 20;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy + 20;
+                }
+                else
+                {
+                    if (Math.Abs(drawToy - drawFromy) > 120)
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                    }
+                }
+            }
+        }
+        else if (aspect == "R")
+        { //does a fn1 output connect with a fn2 Resource
+            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posRx;
+            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posRy;
+            if (drawFromx > drawTox - 10)
+            {
+                if (drawFromy > drawToy - 20)
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy + 20;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + 20;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy + 20;
+                }
+                else
+                {
+                    drawAx = drawFromx;
+                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
+                    drawBy = drawToy;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                }
+            }
+            else
+            {
+                drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
+                drawAy = drawFromy;
+                drawBx = drawTox + 20;
+                drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
+                drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+            }
+        }
+        StringBuilder curve = new StringBuilder();
+        curve.Append(drawTox.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawToy.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawFromx.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawFromy.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawAx.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawAy.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawBx.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawBy.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawIntx.ToString("#.##"));
+        curve.Append("|");
+        curve.Append(drawInty.ToString("#.##"));
+        projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve").InnerText = curve.ToString();
+    }
+    public async void ClearElement(string elementName)
+    {
+        await JSRuntime.InvokeVoidAsync("clearInput", elementName);
+    }
+    private void CheckDeleteKey(KeyboardEventArgs e, string elementName, string IDNr)
+    {
+        if (e.Key == "Backspace" || e.Key == "Delete")
+        {
+            if (elementName == "newFnButton" && selectedFn != "-1")
+            {
+                if (sFn.SelectSingleNode("IDName").InnerText == "")
+                {
+                    if (aspectsList.FindAll(x => x.FunctionIDNr == selectedFn).Count == 0 && projectData_Undo[0].SelectNodes("//FM//Outputs/Output[FunctionIDNr=\"" + selectedFn + "\"]").Count == 0)
+                    {
+                        projectData_Undo[0].SelectSingleNode("//FM/Functions").RemoveChild(sFn);
+                        //foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr == selectedFn))
+                        //{
+                        //    var child = projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]");
+                        //    projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s").RemoveChild(child);
+                        //}
+                        //aspectsList.RemoveAll(x => x.FunctionIDNr == selectedFn);
+                        XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']");
+                        foreach (XmlNode oldChild in oldChildren)
+                        {
+                            projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                        }
+                        selectedFn = "-1";
+                        isDisabled = true;
+                    }
+                }
+            }
+            else //an Aspect
+            {
+                if (projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]/IDName").InnerText == "")
+                {
+                    if (elementName != "Output")
+                    {
+                        if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName) != null)
+                        {
+                            if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName).IDName == "")
+                            {
+                                aspectsList.RemoveAll(x => x.IDNr == IDNr && x.Type == elementName);
+                            }
+                        }
+                    }
+                    var child = projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]");
+                    projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s").RemoveChild(child);
+                    if (elementName == "Input")
+                    {
+                        if (projectData_Undo[0].SelectNodes("//FM//Inputs/Input[FunctionIDNr=\"" + selectedFn + "\"]").Count == 0)
+                        {
+                            sFn.SelectSingleNode("@isInput").InnerText = "false";
+                        }
+                    }
+                }
+                checkForBackground();
+            }
+        }
+    }
+    private void ShowLabels()
+    {
+        if (fileLoaded)
+        {
+            if (AspectLabelsDisplay == "none")
+            {
+                AspectLabelsDisplay = "";
+            }
+            else
+            {
+                AspectLabelsDisplay = "none";
+            }
+        }
+    }
+    private void ChangeFnStyle()
+    {
+        if (fileLoaded)
+        {
+            newFnStyle += 1;
+            if (newFnStyle > 2)
+            {
+                newFnStyle = 0;
+            }
+            foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+            {
+                fn.SelectSingleNode("@fnStyle").Value = newFnStyle.ToString();
+            }
+        }
+    }
+    public async void FocusElementKey(KeyboardEventArgs e, string elementName, string IDNr)
+    {
+        if (e.Key == "Enter")
+        {
+            await JSRuntime.InvokeVoidAsync("focusInput", elementName);
+        }
+    }
+    public async void FocusElement(string elementName)
+    {
+        await JSRuntime.InvokeVoidAsync("focusInput", elementName);
+    }
+    public async void FocusNext(string elementName)
+    {
+        await JSRuntime.InvokeVoidAsync("focusNext", elementName);
+    }
+}

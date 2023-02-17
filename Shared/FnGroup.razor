@@ -1,0 +1,252 @@
+﻿@if (true)
+{
+    fnStyle = fn.Attributes["fnStyle"].Value;
+    FunctionType = fn.SelectSingleNode("FunctionType").InnerText;
+    textLines = returnTextLines(fn.SelectSingleNode("IDName").InnerText, 11);
+    tempZoomY = 50 / tempZoomF - textLines.Count * 5 - 5;
+    isInput = fn.SelectSingleNode("@isInput").InnerText;
+    orphans = Convert.ToInt32(fn.SelectSingleNode("@orphans").Value);
+}
+@if (fn.SelectSingleNode("IDNr").InnerText == selectedFn)
+{
+    <circle cx="50" cy="50" r="60" fill="url(#4444DD)" />
+    //} else if (selectedGroup[0]==sFn) { //set background highlight colour
+    // svgXML.g.(@id==sFn).appendChild(<circle cx="50" cy="50" r="60" fill="url(#00F2FF)" />);
+    //} else if (checkGroup.indexOf("|"+sFn+"|")>-1){
+    // svgXML.g.(@id==sFn).appendChild(<circle cx="50" cy="50" r="60" fill="url(#11FF55)" />);
+    //} else if (functionArray[sFn].HLColor!=null) {
+    //   svgText = "url(#" + functionArray[sFn].HLColor + ")";
+    //   svgXML.g.(@id==sFn).appendChild(<circle cx="50" cy="50" r="60" fill={svgText} />);
+}
+@if (orphans > 0)
+{
+    if (((orphans >> 0) & 1) == 1) //Input
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="6" cy="50" r="7" />
+    }
+    if (((orphans >> 1) & 1) == 1) //Output
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="93.5" cy="50" r="7" />
+    }
+    if (((orphans >> 2) & 1) == 1) //Precondition
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="28" cy="88" r="7" />
+    }
+    if (((orphans >> 3) & 1) == 1) //Resource
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="71.5" cy="88" r="7" />
+    }
+    if (((orphans >> 4) & 1) == 1) //Control
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="71.5" cy="12" r="7" />
+    }
+    if (((orphans >> 5) & 1) == 1) //Time
+    {
+        <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="28" cy="12" r="7" />
+    }
+}
+@if (fnStyle != "1") //traditional or floating
+{
+    <g stroke-width="1" stroke="#555555">
+        @if (fnStyle == "0") //traditional, not floating
+        {
+            <path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" />
+        }
+        @if (FunctionType == "2") //background
+        {
+            <path fill="#EEEEEE" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" />
+        }
+        else  //foreground
+        {
+            <path fill="#FFFFFF" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" />
+        }
+    </g>
+}
+else if (fnStyle == "1" && FunctionType != "2") //modern and foreground
+{
+    <g stroke-width="1" stroke="#555555">
+        <path fill="#FAFAFA" d="M 6 50 L 28 12 L 71.5 12 L 93.5 50 L 71.5 88 L 28 88 L 6 50 Z" />
+    </g>
+}
+@if (fnStyle != "1" || FunctionType != "2") //not modern or not background (same as not both modern and background)
+{
+    @if (fnStyle == "2") //Floating
+    {
+        <g stroke-width="1" stroke="#999999">
+            <circle cx="6" cy="50" r="5" fill="white" />
+            <circle cx="93.5" cy="50" r="5" fill="white" />
+            <circle cx="28" cy="12" r="5" fill="white" />
+            <circle cx="71.5" cy="12" r="5" fill="white" />
+            <circle cx="28" cy="88" r="5" fill="white" />
+            <circle cx="71.5" cy="88" r="5" fill="white" />
+        </g>
+    }
+    else //not Floating
+    {
+        <g stroke-width="1" stroke="#555555">
+            <circle cx="6" cy="50" r="5" fill="white" />
+            <circle cx="93.5" cy="50" r="5" fill="white" />
+            <circle cx="28" cy="12" r="5" fill="white" />
+            <circle cx="71.5" cy="12" r="5" fill="white" />
+            <circle cx="28" cy="88" r="5" fill="white" />
+            <circle cx="71.5" cy="88" r="5" fill="white" />
+        </g>
+    }
+}
+@if (FunctionType == "1") //variable foreground
+{
+    <g stroke="#BBBBBB"><path fill="none" d="M 30 50 Q 35 30 40 30 Q 45 30 50 50 Q 55 70 60 70 Q 65 70 70 50" /></g>
+}
+@if (fn.Attributes["style"] != null)
+{
+    if (fn.Attributes["style"].Value != "white" && fn.Attributes["style"].Value.Length != 0)
+    {
+        styleStroke = "5";
+        switch (fn.Attributes["style"].Value)
+        {
+            case "blue": styleColor = "#01A6DB"; break;
+            case "green": styleColor = "#17BD01"; break;
+            case "grey": styleColor = "#838383"; break;
+            case "red": styleColor = "#E50000"; break;
+            case "yellow": styleColor = "#BAB727"; break;
+            case "purple": styleColor = "#9070C0"; break;
+            case "white": styleColor = "#FFFFFF"; break;
+            case "custom": styleColor = "#" + "000000".Substring(Convert.ToUInt32(fn.Attributes["color"].Value).ToString("X").Length) + Convert.ToUInt32(fn.Attributes["color"].Value).ToString("X"); break;
+            default: styleColor = "#555555"; styleStroke = "1"; break;
+        }
+        if (fnStyle != "1") //not Modern
+        {
+            <g>
+                <g stroke-width="5" stroke=@styleColor><path fill="none" d="M 16.3 50 L 33.2 21 L 66.3 21 L 83.2 50 L 66.3 79 L 33.2 79 L 16.3 50 Z" /></g>
+                <g stroke-width="1" stroke="#555555"><path fill="none" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" /></g>
+            </g>
+        }
+        else if (fnStyle == "1" && FunctionType != "2") //Modern and not background
+        {
+            <g>
+                <g stroke-width="5" stroke=@styleColor><path fill="none" d="M 8.3 50 L 29.2 14.2 L 70.3 14.2 L 91.2 50 L 70.3 85.9 L 29.2 85.9 L 8.3 50 Z" /></g>
+            </g>
+            <g stroke-width="1" stroke="#555555"><path fill="none" d="M 6 50 L 28 12 L 71.5 12 L 93.5 50 L 71.5 88 L 28 88 L 6 50 Z" /></g>
+            <g stroke-width="1" stroke="#555555">
+                <circle cx="6" cy="50" r="5" fill="white" />
+                <circle cx="93.5" cy="50" r="5" fill="white" />
+                <circle cx="28" cy="12" r="5" fill="white" />
+                <circle cx="71.5" cy="12" r="5" fill="white" />
+                <circle cx="28" cy="88" r="5" fill="white" />
+                <circle cx="71.5" cy="88" r="5" fill="white" />
+            </g>
+        }
+    }
+    else
+    {
+        styleStroke = "1";
+        styleColor = "#999999";
+    }
+}
+else
+{
+    styleStroke = "1";
+    styleColor = "#999999";
+}
+@if (fnStyle == "1" && FunctionType == "2") //modern background
+{
+    if (isInput == "true")
+    {
+        <g stroke-width=@styleStroke stroke=@styleColor><circle cx="6" cy="50" r="5" fill="white" /></g>
+    }
+    else
+    {
+        <g stroke-width=@styleStroke stroke=@styleColor><circle cx="93.5" cy="50" r="5" fill="white" /></g>
+    }
+    tempZoomX = 50 / tempZoomF - 36;
+    tempHeight = Math.Min(9 + textLines.Count * 10, 53);
+
+    <rect transform="scale(@tempZoomF)" x=@tempZoomX y=@tempZoomY rx="5" ry="5" width="71" height=@tempHeight style="fill:#EEEEEE;stroke:none;opacity:1" />
+}
+@if (fnStyle != "1" || FunctionType != "2")
+{
+    <g font-size="6pt" font-family="'PT Sans Caption', sans-serif">
+        <text x="25.4" y="14.8">T</text>
+        <text x="68.4" y="14.8">C</text>
+        <text x="4.2" y="52.8">I</text>
+        <text x="90.4" y="52.8">O</text>
+        <text x="25.6" y="90.8">P</text>
+        <text x="68.8" y="90.8">R</text>
+    </g>
+}
+@if (true)
+{
+    tempZoomX = 50 / tempZoomF;
+    tempZoomY += 2;
+}
+<text transform="scale(@tempZoomF)" x=@tempZoomX y=@tempZoomY font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif">
+    @foreach (string tLine in textLines)
+    {
+        <tspan x=@tempZoomX dy="10">@tLine</tspan>
+    }
+</text>
+
+@code {
+    private double tempZoomX;
+    private double tempZoomY;
+    private double tempHeight;
+    private string styleStroke = "1";
+    private string styleColor = "#999999";
+    private string fnStyle;
+    private string FunctionType;
+    private string isInput;
+    private List<string> textLines = new List<string>();
+    private int orphans;
+
+    [Parameter]
+    public XmlNode fn { get; set; }
+
+    [Parameter]
+    public string selectedFn { get; set; }
+
+    [Parameter]
+    public double tempZoomF { get; set; }
+
+    private List<string> returnTextLines(string text, int length)
+    {
+        var textLines = new List<string>();
+        string[] textWords = text.Split(" ");
+        int tL = 0;
+        textLines.Add("");
+        int lL = length;
+        foreach (string tWord in textWords)
+        {
+            if (tWord.Length <= lL)
+            {
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += tWord;
+                lL -= tWord.Length;
+            }
+            else if (tWord.Length > length)
+            {
+                string tempWord = tWord;
+                while (tempWord.Length > 0)
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
+                    textLines[tL] += addWord;
+                    lL -= addWord.Length;
+                    tempWord = tempWord.Substring(addWord.Length);
+                }
+            }
+            else
+            {
+                textLines.Add("");
+                tL++;
+                textLines[tL] += tWord;
+                lL = length - tWord.Length;
+            }
+        }
+        return textLines;
+    }
+}

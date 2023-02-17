@@ -1,0 +1,59 @@
+﻿
+<div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header sticky-top bg-white">
+                <h4 class="modal-title">FMV - the FRAM Model Visualiser</h4>
+                <button type="button" class="close" @onclick="@(() => OnClick.InvokeAsync(false))">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    For more information on FRAM - the FUNCTIONAL RESONANCE ANALYSIS METHOD
+                    for modelling non-trivial socio-technical systems, please visit the website <a href="https://functionalresonance.com/" target="_blank">functionalresonance.com</a>
+                </p>
+                <p>
+                    <a class="oi oi-data-transfer-upload" /> Upload an existing FMV data file<br />
+                    <a class="oi oi-data-transfer-download" /> Download the model as an FMV data file<br />
+                    <a class="oi oi-image" /> Download the model as an SVG image file<br />
+                    <a class="oi oi-zoom-out" /> <a class="oi oi-fullscreen-enter" /> <a class="oi oi-zoom-in" /> Zoom the model; out, fill and in<br />
+                    <a class="oi oi-tags" /> Hide/Show Aspect labels<br />
+                    <a class="oi oi-eye" /> Change the Function style rendering<br />
+                </p>
+                <p>
+                    <a class="btn-textp">+</a> Add a new Function and enter a Name<br />To delete a Function, delete all Name text and then Delete/Backspace again<br />
+                </p>
+                <p>
+                    <a class="btn-text">I O P R C T</a><br />
+                    Add an Aspect to the selected Function<br />Select a Function by clicking/tapping, it will show a blue highlight<br />
+                    To delete an Aspct, delete all text and then Delete/Backspace again
+                </p>
+                <p>
+                    When an <a class="btn-text">O</a>utput Aspect has the same name as an <a class="btn-text">I P R C T</a> aspect on another Function, a Potential Coupling line will appear to connect the Functions
+                </p>
+                <p>
+                    Drag a Function to arrange the model. On iPad use long-press on the Function to lock the scrolling
+                </p>
+                <p>
+                    Use F11 for full-screen mode, or install the app to your desktop or home page for offline use.
+                </p>
+                <h4>Conditions of Use</h4>
+                <p>
+                    The FMV, regardless of version, is provided by the copyright holders and contributors “as is” and any express or implied warranties, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the copyright holder or contributors be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+                </p>
+                <p>
+                    <strong>The FMV is provided free of charge and must not be sold for commercial purposes in either the original or a repackaged form.</strong>
+                </p>
+            </div>
+            <footer class="modal-footer">
+                <a href="https://zerprize.co.nz/Home/Privacy" target="_blank">Privacy Policy</a>
+                <button type="button" class="btn btn-modal" @onclick="@(() => OnClick.InvokeAsync(false))">Close</button>
+            </footer>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public EventCallback<bool> OnClick { get; set; }
+
+}
