@@ -12,6 +12,8 @@ builder.Services.AddScoped<BrowserService>();
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+    builder.Configuration.Bind("AzureCache", options.ProviderOptions.Cache);
+
 });
 
 await builder.Build().RunAsync();

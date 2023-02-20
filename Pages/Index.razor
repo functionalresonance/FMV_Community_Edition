@@ -40,15 +40,15 @@
             <button id="newFnButton" class="btn btn-menu btn-textp" @onclick="NewFunction" @onfocusin="@(() => @isDisabled = false)">+</button>
             <textarea id="fnNameText" disabled=@isDisabled @oninput="FnNameChange" value="@fnName" @onkeypress="@((e) => @FocusElementKey(e, "newFnButton", "Fn"))" @onkeydown="@((e) => @CheckDeleteKey(e, "newFnButton", "Fn"))" />
         </div>
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]")!.Count != 0)
         {
             int ListCount = 0;
             XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]");
-            string GetID = "I" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+            string GetID = "I" + GetNodes[0].SelectSingleNode("IDNr")!.InnerText;
+            string isOrphan = GetNodes[0].SelectSingleNode("@orphan")!.Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
                 <button id="Input" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))">I</button>
-                <textarea id="@GetID" class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+                <textarea id="@GetID" class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName")!.InnerText @oninput="@((e) => @AspectChange(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
             </div>
             @foreach (XmlNode GetList in GetNodes)
             {
@@ -277,6 +277,7 @@
             }
         </svg>
         <p>
+            <!-- @fileLoaded | @isBackup <br /> -->
             @debugOutput <br />
             @debugOutput2
         </p>
@@ -288,6 +289,7 @@
     private string debugOutput = "";
     private string debugOutput2 = "";
     private bool fileLoaded = false;
+    private bool isBackup = false;
     private double canvasWidth;
     private double canvasHeight;
     private double viewWidth = 0;
@@ -351,18 +353,33 @@
     }
     private void BeginLogin(MouseEventArgs args)
     {
+        //if (fileLoaded)
+        //{
+        //    Save();
+        //}
         NavManager.NavigateTo("/authentication/login");
     }
-       /*
-       protected override void OnInitialized()
-       {
-           var uir = NavManager.ToAbsoluteUri(NavManager.Uri);
-           var querystring = System.Web.HttpUtility.ParseQueryString(uir.Query);
-           var fromBytes = Convert.FromBase64String(querystring["data"]);
-           projectData_Undo[0] = new XmlDocument();
-           projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(fromBytes));
-       }
-       */
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await Read();
+    //}
+    //protected override void OnInitialized()
+    //{
+        /*
+     fileLoaded = false;
+     viewWidth = 0;
+     viewHeight = 0;
+     aspectsList = new List<Aspect>();
+     var buffer = new byte[e.File.Size];
+     await e.File.OpenReadStream(1050000).ReadAsync(buffer);
+     projectData_Undo[0] = new XmlDocument();
+     projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
+     fileName = e.File.Name;
+     inputDropStatus = "file-input-zone-hide";
+     FileIsLoaded();
+        */
+       //}
+       
     private void zoomPlus()
     {
         if (fileLoaded)
@@ -541,16 +558,16 @@
         {
             if (projectData_Undo[0].SelectSingleNode("//FM/" + type + "s") == null)
             {
-                projectData_Undo[0].SelectSingleNode("//FM").AppendChild(projectData_Undo[0].CreateElement(type + "s"));
+                projectData_Undo[0].SelectSingleNode("//FM")!.AppendChild(projectData_Undo[0].CreateElement(type + "s"));
             }
             int id;
-            if (projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type).Count == 0)
+            if (projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type)!.Count == 0)
             {
                 id = 0;
             }
             else
             {
-                id = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr").InnerText) + 1;
+                id = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr")!.InnerText) + 1;
             }
             XmlNode itemA = projectData_Undo[0].CreateElement(type);
             itemA.InnerXml = "<IDNr>" + id.ToString() + "</IDNr><IDName></IDName><FunctionIDNr>" + selectedFn + "</FunctionIDNr><Description/>";
@@ -567,7 +584,7 @@
             //    case "Time": orphans |= 1 << 5; break;
             //}
             //sFn.SelectSingleNode("@orphans").Value = orphans.ToString();
-            itemA.Attributes.Append(newOrphan);
+            itemA.Attributes!.Append(newOrphan);
             projectData_Undo[0].SelectSingleNode("//FM/" + type + "s").AppendChild(itemA);
             if (type != "Output")
             {
@@ -1716,5 +1733,19 @@
     public async void FocusNext(string elementName)
     {
         await JSRuntime.InvokeVoidAsync("focusNext", elementName);
+    }
+    public async Task Save()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "backupData", projectData_Undo[0].OuterXml);
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "isBackup", true);
+    }
+    public async Task Read()
+    {
+        isBackup = await JSRuntime.InvokeAsync<bool>("localStorage.getItem", "isBackup");
+    }
+    public async Task Delete()
+    {
+        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "backupData");
+        await JSRuntime.InvokeAsync<bool>("localStorage.removeItem", "isBackup");
     }
 }
