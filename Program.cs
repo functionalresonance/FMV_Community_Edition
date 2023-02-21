@@ -1,4 +1,5 @@
 using BlazorApp4;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -15,5 +16,7 @@ builder.Services.AddMsalAuthentication(options =>
     builder.Configuration.Bind("AzureCache", options.ProviderOptions.Cache);
 
 });
+
+builder.Services.AddBlazoredLocalStorage();
 
 await builder.Build().RunAsync();

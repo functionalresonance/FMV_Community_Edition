@@ -4,6 +4,7 @@
 @inject BrowserService Service
 @inject IJSRuntime JSRuntime
 @inject SignOutSessionStateManager SignOutManager
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 @if (showModal)
 {
@@ -22,13 +23,14 @@
     </div>
     <div class="float-right">
         <button class="btn btn-menu oi oi-tags" @onclick="ShowLabels"></button>
+        <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
         <AuthorizeView>
             <Authorized>
-                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
-                <button class="btn btn-menu oi oi-account-logout ml-1" @onclick="@BeginLogout"></button>
+                <button class="btn btn-menu oi oi-reload" @onclick="Recover"></button>
+                <button class="btn btn-menu oi oi-account-logout" @onclick="@BeginLogout"></button>
             </Authorized>
             <NotAuthorized>
-                <button class="btn btn-menu oi oi-account-login ml-1" @onclick="@BeginLogin"></button>
+                <button class="btn btn-menu oi oi-account-login" @onclick="@BeginLogin"></button>
             </NotAuthorized>
         </AuthorizeView>
         <button class="btn btn-menu oi oi-info" @onclick="@ModalShow"></button>
@@ -277,9 +279,7 @@
             }
         </svg>
         <p>
-            <!-- @fileLoaded | @isBackup <br /> -->
-            @debugOutput <br />
-            @debugOutput2
+            @debugOutput
         </p>
     </div>
 </div>
@@ -287,7 +287,6 @@
 
 @code {
     private string debugOutput = "";
-    private string debugOutput2 = "";
     private bool fileLoaded = false;
     private bool isBackup = false;
     private double canvasWidth;
@@ -348,38 +347,51 @@
     }
     private async Task BeginLogout(MouseEventArgs args)
     {
+        await Backup();
         await SignOutManager.SetSignOutState();
         NavManager.NavigateTo("/authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
     }
-    private void BeginLogin(MouseEventArgs args)
+    private async Task BeginLogin(MouseEventArgs args)
     {
-        //if (fileLoaded)
-        //{
-        //    Save();
-        //}
+        await Backup();
         NavManager.NavigateTo("/authentication/login");
     }
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    await Read();
-    //}
+    protected override async Task OnInitializedAsync()
+    {
+        await Restore();
+        await base.OnInitializedAsync();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            try
+            {
+                await localStorage.SetItemAsync("backupData", projectData_Undo[0].OuterXml);
+            }
+            catch
+            {
+
+            }
+        }
+    }
     //protected override void OnInitialized()
     //{
-        /*
-     fileLoaded = false;
-     viewWidth = 0;
-     viewHeight = 0;
-     aspectsList = new List<Aspect>();
-     var buffer = new byte[e.File.Size];
-     await e.File.OpenReadStream(1050000).ReadAsync(buffer);
-     projectData_Undo[0] = new XmlDocument();
-     projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
-     fileName = e.File.Name;
-     inputDropStatus = "file-input-zone-hide";
-     FileIsLoaded();
-        */
-       //}
-       
+    /*
+    fileLoaded = false;
+    viewWidth = 0;
+    viewHeight = 0;
+    aspectsList = new List<Aspect>();
+    var buffer = new byte[e.File.Size];
+    await e.File.OpenReadStream(1050000).ReadAsync(buffer);
+    projectData_Undo[0] = new XmlDocument();
+    projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
+    fileName = e.File.Name;
+    inputDropStatus = "file-input-zone-hide";
+    FileIsLoaded();
+    */
+    //}
+
     private void zoomPlus()
     {
         if (fileLoaded)
@@ -610,28 +622,28 @@
             bool newLine;
             if (type == "Output")
             {
-                /*
-                If oldName count >0 then it had a line else no line: O=T/F
-                if aspectName count >0 then should have line: A=T/F
-                O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
-                O=T & A=F : remove line
-                O=F & A=T : add line
-                */
+        /*
+        If oldName count >0 then it had a line else no line: O=T/F
+            if aspectName count >0 then should have line: A=T/F
+            O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
+            O=T & A=F : remove line
+            O=F & A=T : add line
+            */
             /*
-                oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + selectedFn + "|" + tempOldName + "|\")]").Count > 0;
-                newLine = aspectsList.FindAll(x => x.FunctionIDNr != selectedFn && x.IDName == tempNewName).Count > 0;
+            oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + selectedFn + "|" + tempOldName + "|\")]").Count > 0;
+            newLine = aspectsList.FindAll(x => x.FunctionIDNr != selectedFn && x.IDName == tempNewName).Count > 0;
             }
             else
             {
-                oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + tempOldName + "|" + selectedFn + "|" + type.Substring(0, 1) + "\")]").Count > 0;
-                newLine = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]").Count > 0;
+            oldLine = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + tempOldName + "|" + selectedFn + "|" + type.Substring(0, 1) + "\")]").Count > 0;
+            newLine = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]").Count > 0;
 
-            }
-            if (oldLine != newLine)
+        }
+        if (oldLine != newLine)
             {
-                //AspectChangeCommitt();
-            }
-            */
+            //AspectChangeCommitt();
+        }
+        */
         }
     }
     private void AspectChangeCommitt()
@@ -1734,18 +1746,47 @@
     {
         await JSRuntime.InvokeVoidAsync("focusNext", elementName);
     }
-    public async Task Save()
+    public async Task Backup()
     {
-        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "backupData", projectData_Undo[0].OuterXml);
-        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "isBackup", true);
+        try
+        {
+            await localStorage.SetItemAsync("backupData", projectData_Undo[0].OuterXml);
+            await localStorage.SetItemAsync("backupFileName", fileName);
+            await localStorage.SetItemAsync("isBackup", true);
+        }
+        catch
+        {
+            
+        }
     }
-    public async Task Read()
+    public async Task Restore()
     {
-        isBackup = await JSRuntime.InvokeAsync<bool>("localStorage.getItem", "isBackup");
+        try
+        {
+            isBackup = await localStorage.GetItemAsync<bool>("isBackup");
+            if (isBackup)
+            {
+                fileLoaded = false;
+                viewWidth = 0;
+                viewHeight = 0;
+                aspectsList = new List<Aspect>();
+                projectData_Undo[0] = new XmlDocument();
+                projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
+                fileName = await localStorage.GetItemAsync<string>("backupFileName");
+                inputDropStatus = "file-input-zone-hide";
+                isBackup = false;
+                FileIsLoaded();
+                await localStorage.SetItemAsync("isBackup", false);
+            }
+        }
+        catch 
+        {
+        }
     }
-    public async Task Delete()
+    public async Task Recover()
     {
-        await JSRuntime.InvokeAsync<string>("localStorage.removeItem", "backupData");
-        await JSRuntime.InvokeAsync<bool>("localStorage.removeItem", "isBackup");
+        await localStorage.SetItemAsync("isBackup", true);
+        await Restore();
     }
+
 }
