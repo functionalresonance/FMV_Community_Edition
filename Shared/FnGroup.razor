@@ -1,13 +1,4 @@
-﻿@if (true)
-{
-    fnStyle = fn.Attributes["fnStyle"].Value;
-    FunctionType = fn.SelectSingleNode("FunctionType").InnerText;
-    textLines = returnTextLines(fn.SelectSingleNode("IDName").InnerText, 11);
-    tempZoomY = 50 / tempZoomF - textLines.Count * 5 - 5;
-    isInput = fn.SelectSingleNode("@isInput").InnerText;
-    orphans = Convert.ToInt32(fn.SelectSingleNode("@orphans").Value);
-}
-@if (fn.SelectSingleNode("IDNr").InnerText == selectedFn)
+﻿@if (fnID == indexState[0])
 {
     <circle cx="50" cy="50" r="60" fill="url(#4444DD)" />
     //} else if (selectedGroup[0]==sFn) { //set background highlight colour
@@ -97,12 +88,12 @@ else if (fnStyle == "1" && FunctionType != "2") //modern and foreground
 {
     <g stroke="#BBBBBB"><path fill="none" d="M 30 50 Q 35 30 40 30 Q 45 30 50 50 Q 55 70 60 70 Q 65 70 70 50" /></g>
 }
-@if (fn.Attributes["style"] != null)
+@if (fnColorStyle != null)
 {
-    if (fn.Attributes["style"].Value != "white" && fn.Attributes["style"].Value.Length != 0)
+    if (fnColorStyle != "white" && fnColorStyle.Length != 0)
     {
         styleStroke = "5";
-        switch (fn.Attributes["style"].Value)
+        switch (fnColorStyle)
         {
             case "blue": styleColor = "#01A6DB"; break;
             case "green": styleColor = "#17BD01"; break;
@@ -111,7 +102,7 @@ else if (fnStyle == "1" && FunctionType != "2") //modern and foreground
             case "yellow": styleColor = "#BAB727"; break;
             case "purple": styleColor = "#9070C0"; break;
             case "white": styleColor = "#FFFFFF"; break;
-            case "custom": styleColor = "#" + "000000".Substring(Convert.ToUInt32(fn.Attributes["color"].Value).ToString("X").Length) + Convert.ToUInt32(fn.Attributes["color"].Value).ToString("X"); break;
+            case "custom": styleColor = "#" + "000000".Substring(Convert.ToUInt32(fnColorValue).ToString("X").Length) + Convert.ToUInt32(fnColorValue).ToString("X"); break;
             default: styleColor = "#555555"; styleStroke = "1"; break;
         }
         if (fnStyle != "1") //not Modern
@@ -142,11 +133,13 @@ else if (fnStyle == "1" && FunctionType != "2") //modern and foreground
         styleStroke = "1";
         styleColor = "#999999";
     }
+    lineCount = displayText.Count;
 }
 else
 {
     styleStroke = "1";
     styleColor = "#999999";
+    lineCount = displayText.Count;
 }
 @if (fnStyle == "1" && FunctionType == "2") //modern background
 {
@@ -158,10 +151,8 @@ else
     {
         <g stroke-width=@styleStroke stroke=@styleColor><circle cx="93.5" cy="50" r="5" fill="white" /></g>
     }
-    tempZoomX = 50 / tempZoomF - 36;
-    tempHeight = Math.Min(9 + textLines.Count * 10, 53);
 
-    <rect transform="scale(@tempZoomF)" x=@tempZoomX y=@tempZoomY rx="5" ry="5" width="71" height=@tempHeight style="fill:#EEEEEE;stroke:none;opacity:1" />
+    <rect transform="scale(@double.Parse(indexState[1]))" x="@(50 / double.Parse(indexState[1]) - 36)" y="@(50 / double.Parse(indexState[1]) - lineCount * 5 - 5)" rx="5" ry="5" width="71" height="@(9 + lineCount * 10)" style="fill:#EEEEEE;stroke:none;opacity:1" />
 }
 @if (fnStyle != "1" || FunctionType != "2")
 {
@@ -174,79 +165,46 @@ else
         <text x="68.8" y="90.8">R</text>
     </g>
 }
-@if (true)
-{
-    tempZoomX = 50 / tempZoomF;
-    tempZoomY += 2;
-}
-<text transform="scale(@tempZoomF)" x=@tempZoomX y=@tempZoomY font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif">
-    @foreach (string tLine in textLines)
+<text transform="scale(@double.Parse(indexState[1]))" x="@(50 / double.Parse(indexState[1]))" y="@(50 / double.Parse(indexState[1]) - lineCount * 5 - 3)" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif">
+    @for (int i = 0; i < lineCount; i++)
     {
-        <tspan x=@tempZoomX dy="10">@tLine</tspan>
+       <tspan x="@(50 / double.Parse(indexState[1]))" dy="10">@displayText[i]</tspan>
     }
 </text>
 
 @code {
-    private double tempZoomX;
-    private double tempZoomY;
-    private double tempHeight;
+    //private double tempZoomX;
+    //private double tempZoomXmb;
+    //private double tempZoomY;
+    //private double tempZoomYmb;
+    //private double tempHeight;
     private string styleStroke = "1";
     private string styleColor = "#999999";
-    private string fnStyle;
-    private string FunctionType;
-    private string isInput;
-    private List<string> textLines = new List<string>();
-    private int orphans;
+    private int lineCount;
+    //private string fnStyle;
+    //private string FunctionType;
+    //private string isInput;
+    //private List<string> textLines = new List<string>();
+    //private int orphans;
+
+    //indexState[0]=selectedFn; [1]=tempZoomF
+    [CascadingParameter] string[] indexState { get; set; }
 
     [Parameter]
-    public XmlNode fn { get; set; }
-
+    public string fnID { get; set; }
     [Parameter]
-    public string selectedFn { get; set; }
-
+    public string fnColorValue { get; set; }
     [Parameter]
-    public double tempZoomF { get; set; }
+    public string fnColorStyle { get; set; }
+    [Parameter]
+    public List<string> displayText { get; set; }
+    [Parameter]
+    public string fnStyle { get; set; }
+    [Parameter]
+    public string FunctionType { get; set; }
+    [Parameter]
+    public string isInput { get; set; }
+    [Parameter]
+    public int orphans { get; set; }
 
-    private List<string> returnTextLines(string text, int length)
-    {
-        var textLines = new List<string>();
-        string[] textWords = text.Split(" ");
-        int tL = 0;
-        textLines.Add("");
-        int lL = length;
-        foreach (string tWord in textWords)
-        {
-            if (tWord.Length <= lL)
-            {
-                if (lL < length)
-                {
-                    textLines[tL] += " ";
-                }
-                textLines[tL] += tWord;
-                lL -= tWord.Length;
-            }
-            else if (tWord.Length > length)
-            {
-                string tempWord = tWord;
-                while (tempWord.Length > 0)
-                {
-                    textLines.Add("");
-                    tL++;
-                    lL = length;
-                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
-                    textLines[tL] += addWord;
-                    lL -= addWord.Length;
-                    tempWord = tempWord.Substring(addWord.Length);
-                }
-            }
-            else
-            {
-                textLines.Add("");
-                tL++;
-                textLines[tL] += tWord;
-                lL = length - tWord.Length;
-            }
-        }
-        return textLines;
-    }
 }
