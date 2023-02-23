@@ -5,6 +5,7 @@
 @inject IJSRuntime JSRuntime
 @inject SignOutSessionStateManager SignOutManager
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject StateContainer stateContainer
 
 @if (showModal)
 {
@@ -42,10 +43,10 @@
             <button id="newFnButton" class="btn btn-menu btn-textp" @onclick="NewFunction" @onfocusin="@(() => @isDisabled = false)">+</button>
             <textarea id="fnNameText" disabled=@isDisabled @oninput="FnNameChange" value="@fnName" @onkeypress="@((e) => @FocusElementKey(e, "newFnButton", "Fn"))" @onkeydown="@((e) => @CheckDeleteKey(e, "newFnButton", "Fn"))" />
         </div>
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + stateContainer.selectedFn + "]");
             @foreach (XmlNode GetList in GetNodes)
             {
                 string GetID = "I" + GetList.SelectSingleNode("IDNr").InnerText;
@@ -72,10 +73,10 @@
                 <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))">I</button>
             </div>
         }
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]");
             string GetID = "O" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
             string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
@@ -101,10 +102,10 @@
                 <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
             </div>
         }
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]");
             string GetID = "P" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
             string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
@@ -130,10 +131,10 @@
                 <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
             </div>
         }
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]");
             string GetID = "R" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
             string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
@@ -159,10 +160,10 @@
                 <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
             </div>
         }
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]");
             string GetID = "C" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
             string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
@@ -188,10 +189,10 @@
                 <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
             </div>
         }
-        @if (selectedFn != "-1" && projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + selectedFn + "]").Count != 0)
+        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + selectedFn + "]");
+            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]");
             string GetID = "T" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
             string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
             <div class="d-flex pt-2">
@@ -225,7 +226,7 @@
         {
             <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single /></div>
         }
-        <svg id="canvas_1" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" viewBox="0 0 @viewWidth @viewHeight" width=@canvasWidth height=@canvasHeight xmlns="http://www.w3.org/2000/svg" @onmousedown="UnSelect" @ontouchstart="UnSelectTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+        <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <style type="text/css">
                     @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
@@ -263,35 +264,30 @@
             </defs>
             @if (fileLoaded)
             {
-                AspectState = new string[4] { selectedFn, tempZoomA.ToString(), selectedLabel, AspectLabelsDisplay };
-                foreach (XmlNode aspectS in projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect"))
+                <g @onmousedown="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(UnSelect)">
+                    <rect fill="white" width="100%" height="100%" />
+                </g>
+                //AspectState = new string[4] { stateContainer.selectedFn, stateContainer.tempZoomA.ToString(), selectedLabel, AspectLabelsDisplay };
+                //AspectState = new string[4] { "0","1", "", "true" };
+                foreach (XmlNode aspectS in stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect"))
                 {
                     string[] dictArray = aspectS.SelectSingleNode("Name").InnerText.Split("|");
-                    <g transform="scale(@tempZoomA)" @onmousedown="@(e => SelectLabel(e, aspectS.SelectSingleNode("Name").InnerText))" class="@fnClass">
-                        <CascadingValue Value="AspectState">
-                            <AspectGroup aspectS=@aspectS displayText=@returnTextLines(dictArray[1], 15) index=@int.Parse(dictArray[0])
-                                 indexSub=@int.Parse(dictArray[2]) curve=@aspectS.SelectSingleNode("Curve").InnerText.Split("|") />
-                        </CascadingValue>
+                    <g transform="scale(@stateContainer.tempZoomA)" @onmousedown="@(e => SelectLabel(e, aspectS.SelectSingleNode("Name").InnerText))" class="@fnClass">
+                        <AspectGroup aspectS=@aspectS displayText=@returnTextLines(dictArray[1], 15) index=@int.Parse(dictArray[0])
+                             indexSub=@int.Parse(dictArray[2]) curve=@aspectS.SelectSingleNode("Curve").InnerText.Split("|") selectedLabel="@selectedLabel" AspectLabelsDisplay="@AspectLabelsDisplay" />
                     </g>
                 }
-                IndexState = new string[2] { selectedFn, tempZoomF.ToString() };
-                foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+                //IndexState = new string[2] { "0", "1" };
+                //stateContainer.IndexState = new string[3] { selectedFn, tempZoomF.ToString(), previousFn };
+                //stateContainer.selectedFn = selectedFn;
+                //stateContainer.tempZoomF = tempZoomF;
+                stateContainer.previousFn = previousFn;
+                foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
                 {
-                    string fnColorStyle = "";
-                    string fnColorValue = "";
-                    if (fn.Attributes["style"] != null)
-                    {
-                        fnColorStyle = fn.Attributes["style"].Value;
-                        fnColorValue = fn.Attributes["color"].Value;
-                    } 
-                    <g id="@fn.SelectSingleNode("IDNr").InnerText" transform="translate(@fn.Attributes["x"].Value,@fn.Attributes["y"].Value)" @ontouchstart="@(e => SelectFnTouch(e, fn.SelectSingleNode("IDNr").InnerText))" @onmousedown="@(e => SelectFn(e, fn.SelectSingleNode("IDNr").InnerText))" class="@fnClass">
-                        <CascadingValue Value="IndexState">
-                            <FnGroup fnID=@fn.SelectSingleNode("IDNr").InnerText displayText=@returnTextLines(fn.SelectSingleNode("IDName").InnerText,11) orphans=@Convert.ToInt32(fn.SelectSingleNode("@orphans").Value)
-                             fnStyle=@fn.Attributes["fnStyle"].Value FunctionType=@fn.SelectSingleNode("FunctionType").InnerText isInput=@fn.SelectSingleNode("@isInput").InnerText
-                             fnColorStyle=@fnColorStyle fnColorValue=@fnColorValue />
-                        </CascadingValue>  
-                    </g>
+                    debugOutput += fn.SelectSingleNode("IDNr").InnerText + ":";
+                    <FnGroup fn="@fn" refreshParent="@refreshParent" />
                 }
+                debugOutput += "\n";
             }
         </svg>
         <p>
@@ -304,11 +300,11 @@
     private string debugOutput = "";
     private bool fileLoaded = false;
     private bool isBackup = false;
-    private double canvasWidth;
-    private double canvasHeight;
-    private double viewWidth = 0;
-    private double viewHeight = 0;
-    private XmlDocument[] projectData_Undo = new XmlDocument[10];
+    //    private double canvasWidth;
+    //    private double canvasHeight;
+    //    private double viewWidth = 0;
+    //    private double viewHeight = 0;
+ //   private XmlDocument[] projectData_Undo = new XmlDocument[10];
     private const double posIx = 6;
     private const double posIy = 50;
     private const double posOx = 93.5;
@@ -321,8 +317,8 @@
     private const double posPy = 88;
     private const double posRx = 71.5;
     private const double posRy = 88;
-    private XmlNode sFn;
-    private XmlNodeList sAs;
+//    private XmlNode sFn;
+//    private XmlNodeList sAs;
     private string fnName = "";
     private string selectedLabel = "";
     private bool dragFn = false;
@@ -333,14 +329,15 @@
     private double lastX;
     private double lastY;
     private double moveInterval = 0;
-    private double scaleZoom;
+    //   private double scaleZoom;
     private string fnClass = "fn-hover";
     private string touchAction = "touch-stop";
-    private double tempZoomA;
-    private double tempZoomF;
+//    private double tempZoomA;
+//    private double tempZoomF;
     private string fileName = "FMV_new.xfmv";
     private List<Aspect> aspectsList = new List<Aspect>();
-    public string selectedFn = "-1";
+    //public string selectedFn = "-1";
+    public string previousFn = "-1";
     private bool isDisabled = true;
     private string tempNewName;
     private string tempOldName;
@@ -357,6 +354,10 @@
     private bool showModal = false;
     private string inputDropStatus = "file-input-zone-drop";
 
+    private void refreshParent()
+    {
+        StateHasChanged();
+    }
     private void ModalShow() => showModal = true;
     void ModalClose(bool state)
     {
@@ -375,6 +376,7 @@
     }
     protected override async Task OnInitializedAsync()
     {
+        stateContainer.selectedFn = "-1";
         await Restore();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -383,7 +385,7 @@
         {
             try
             {
-                await localStorage.SetItemAsync("backupData", projectData_Undo[0].OuterXml);
+                await localStorage.SetItemAsync("backupData", stateContainer.projectData_Undo[0].OuterXml);
             }
             catch
             {
@@ -395,25 +397,25 @@
     {
         if (fileLoaded)
         {
-            scaleZoom = scaleZoom + 0.25;
-            if (scaleZoom > 4)
+            stateContainer.scaleZoom += 0.25;
+            if (stateContainer.scaleZoom > 4)
             {
-                scaleZoom = 4;
+                stateContainer.scaleZoom = 4;
             }
-            canvasWidth = viewWidth * scaleZoom;
-            canvasHeight = viewHeight * scaleZoom;
-            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+            stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+            stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = stateContainer.scaleZoom.ToString();
         }
     }
     private void zoomMinus()
     {
         if (fileLoaded)
         {
-            scaleZoom = scaleZoom - 0.25;
-            if (scaleZoom < 0.25) scaleZoom = 0.25;
-            canvasWidth = viewWidth * scaleZoom;
-            canvasHeight = viewHeight * scaleZoom;
-            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+            stateContainer.scaleZoom -= 0.25;
+            if (stateContainer.scaleZoom < 0.25) stateContainer.scaleZoom = 0.25;
+            stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+            stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = stateContainer.scaleZoom.ToString();
         }
     }
     public async void zoomFill()
@@ -421,19 +423,19 @@
         if (fileLoaded)
         {
             var dimensions = await Service.GetDimensions();
-            if (canvasWidth / canvasHeight > Convert.ToDouble(dimensions.Width - 250) / Convert.ToDouble(dimensions.Height - 70))
+            if (stateContainer.canvasWidth / stateContainer.canvasHeight > Convert.ToDouble(dimensions.Width - 250) / Convert.ToDouble(dimensions.Height - 70))
             {
-                canvasWidth = dimensions.Width - 250;
-                scaleZoom = canvasWidth / viewWidth;
-                canvasHeight = viewHeight * scaleZoom;
+                stateContainer.canvasWidth = dimensions.Width - 250;
+                stateContainer.scaleZoom = stateContainer.canvasWidth / stateContainer.viewWidth;
+                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
             }
             else
             {
-                canvasHeight = dimensions.Height - 70;
-                scaleZoom = canvasHeight / viewHeight;
-                canvasWidth = viewWidth * scaleZoom;
+                stateContainer.canvasHeight = dimensions.Height - 70;
+                stateContainer.scaleZoom = stateContainer.canvasHeight / stateContainer.viewHeight;
+                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             }
-            projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = scaleZoom.ToString();
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value = stateContainer.scaleZoom.ToString();
             StateHasChanged();
         }
     }
@@ -441,7 +443,7 @@
     {
         if (fileLoaded)
         {
-            var saveXfmv = projectData_Undo[0].OuterXml;
+            var saveXfmv = stateContainer.projectData_Undo[0].OuterXml;
             //var textBytes = Encoding.UTF8.GetBytes(saveXfmv);
             //string saveBase = Convert.ToBase64String(textBytes);
             await JSRuntime.InvokeAsync<object>(
@@ -462,24 +464,24 @@
     }
     private void NewFunction()
     {
-        if (sFn != null)
+        if (stateContainer.sFn != null)
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn!="-1")
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn!="-1")
             {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
         //projectData_Undo.unshift(projectData_Undo[0].copy());
         //selectedFn_Undo.unshift(selectedFn);
         //undoB.enabled = true;
-        if (projectData_Undo[0] == null)
+        if (stateContainer.projectData_Undo[0] == null)
         {
             fileLoaded = false;
-            tempZoomA = 1;
-            tempZoomF = 1;
-            scaleZoom = 1.5;
-            projectData_Undo[0] = new XmlDocument();
-            projectData_Undo[0].LoadXml("<FM><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
+            stateContainer.tempZoomA = 1;
+            stateContainer.tempZoomF = 1;
+            stateContainer.scaleZoom = 1.5;
+            stateContainer.projectData_Undo[0] = new XmlDocument();
+            stateContainer.projectData_Undo[0].LoadXml("<FM><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
             inputDropStatus = "file-input-zone-hide";
             fileLoaded = true;
         }
@@ -510,50 +512,51 @@
         }
         else
         {
-            if (selectedFn == "-1")
+            if (stateContainer.selectedFn == "-1")
             {
                 newFnX = 20;
                 newFnY = 20;
             }
             else
             {
-                newFnX = Convert.ToInt32(Convert.ToDouble(sFn.SelectSingleNode("@x").Value) + 90);
-                newFnY = Convert.ToInt32(Convert.ToDouble(sFn.SelectSingleNode("@y").Value) + 110);
+                newFnX = Convert.ToInt32(Convert.ToDouble(stateContainer.sFn.SelectSingleNode("@x").Value) + 90);
+                newFnY = Convert.ToInt32(Convert.ToDouble(stateContainer.sFn.SelectSingleNode("@y").Value) + 110);
             }
         }
-        viewWidth = Math.Max(viewWidth, newFnX + 120);
-        viewHeight = Math.Max(viewHeight, newFnY + 120);
-        canvasWidth = viewWidth * scaleZoom;
-        canvasHeight = viewHeight * scaleZoom;
+        stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, newFnX + 120);
+        stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, newFnY + 120);
+        stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+        stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
 
-        XmlNode itemF = projectData_Undo[0].CreateElement("Function");
-        XmlAttribute fnStyle = projectData_Undo[0].CreateAttribute("fnStyle");
+        XmlNode itemF = stateContainer.projectData_Undo[0].CreateElement("Function");
+        XmlAttribute fnStyle = stateContainer.projectData_Undo[0].CreateAttribute("fnStyle");
         fnStyle.Value = newFnStyle.ToString();
         itemF.Attributes.Append(fnStyle);
-        XmlAttribute isInput = projectData_Undo[0].CreateAttribute("isInput");
+        XmlAttribute isInput = stateContainer.projectData_Undo[0].CreateAttribute("isInput");
         isInput.Value = "false";
         itemF.Attributes.Append(isInput);
-        XmlAttribute orphans = projectData_Undo[0].CreateAttribute("orphans");
+        XmlAttribute orphans = stateContainer.projectData_Undo[0].CreateAttribute("orphans");
         orphans.Value = "0";
         itemF.Attributes.Append(orphans);
-        XmlNode IDNr = projectData_Undo[0].CreateElement("IDNr");
+        XmlNode IDNr = stateContainer.projectData_Undo[0].CreateElement("IDNr");
         IDNr.InnerText = maxFn.ToString();
         itemF.AppendChild(IDNr);
-        XmlNode FunctionType = projectData_Undo[0].CreateElement("FunctionType");
+        XmlNode FunctionType = stateContainer.projectData_Undo[0].CreateElement("FunctionType");
         FunctionType.InnerText = "2";
         itemF.AppendChild(FunctionType);
-        XmlNode IDName = projectData_Undo[0].CreateElement("IDName");
+        XmlNode IDName = stateContainer.projectData_Undo[0].CreateElement("IDName");
         IDName.InnerText = "";
         itemF.AppendChild(IDName);
         //if (selectedFn>-1) {selectGroupChildren(false);}
-        selectedFn = maxFn.ToString();
+        previousFn = stateContainer.selectedFn;
+        stateContainer.selectedFn = maxFn.ToString();
         isDisabled = false;
         selectedLabel = "";
         //checkDirty=true;
         //initiateFn(itemF, false); Check for Orphans?
         //performance! if (!enableGroup1) reDraw();
-        XmlAttribute fnX = projectData_Undo[0].CreateAttribute("x");
-        XmlAttribute fnY = projectData_Undo[0].CreateAttribute("y");
+        XmlAttribute fnX = stateContainer.projectData_Undo[0].CreateAttribute("x");
+        XmlAttribute fnY = stateContainer.projectData_Undo[0].CreateAttribute("y");
         fnX.Value = newFnX.ToString();
         fnY.Value = newFnY.ToString();
         itemF.Attributes.Append(fnX);
@@ -563,8 +566,8 @@
         //fnList();
         //fnScroll(selectedFn);
         //fnName.setFocus();
-        projectData_Undo[0].SelectSingleNode("//FM/Functions").AppendChild(itemF);
-        sFn = itemF;
+        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions").AppendChild(itemF);
+        stateContainer.sFn = itemF;
         fnName = "";
         FocusElement("fnNameText");
         ClearElement("fnNameText");
@@ -572,24 +575,24 @@
     }
     private void NewAspect(MouseEventArgs e, string type)
     {
-        if (projectData_Undo[0] != null)
+        if (stateContainer.projectData_Undo[0] != null)
         {
-            if (projectData_Undo[0].SelectSingleNode("//FM/" + type + "s") == null)
+            if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s") == null)
             {
-                projectData_Undo[0].SelectSingleNode("//FM").AppendChild(projectData_Undo[0].CreateElement(type + "s"));
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM").AppendChild(stateContainer.projectData_Undo[0].CreateElement(type + "s"));
             }
             int id;
-            if (projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type).Count == 0)
+            if (stateContainer.projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type).Count == 0)
             {
                 id = 0;
             }
             else
             {
-                id = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr").InnerText) + 1;
+                id = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr").InnerText) + 1;
             }
-            XmlNode itemA = projectData_Undo[0].CreateElement(type);
-            itemA.InnerXml = "<IDNr>" + id.ToString() + "</IDNr><IDName></IDName><FunctionIDNr>" + selectedFn + "</FunctionIDNr><Description/>";
-            XmlAttribute newOrphan = projectData_Undo[0].CreateAttribute("orphan");
+            XmlNode itemA = stateContainer.projectData_Undo[0].CreateElement(type);
+            itemA.InnerXml = "<IDNr>" + id.ToString() + "</IDNr><IDName></IDName><FunctionIDNr>" + stateContainer.selectedFn + "</FunctionIDNr><Description/>";
+            XmlAttribute newOrphan = stateContainer.projectData_Undo[0].CreateAttribute("orphan");
             newOrphan.Value = "false";
             //int orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
             //switch (type)
@@ -603,34 +606,34 @@
             //}
             //sFn.SelectSingleNode("@orphans").Value = orphans.ToString();
             itemA.Attributes.Append(newOrphan);
-            projectData_Undo[0].SelectSingleNode("//FM/" + type + "s").AppendChild(itemA);
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s").AppendChild(itemA);
             if (type != "Output")
             {
-                aspectsList.Add(new Aspect(type, id.ToString(), "true", "", selectedFn));
+                aspectsList.Add(new Aspect(type, id.ToString(), "true", "", stateContainer.selectedFn));
                 if (type == "Input")
                 {
-                    sFn.SelectSingleNode("@isInput").InnerText = "true";
+                    stateContainer.sFn.SelectSingleNode("@isInput").InnerText = "true";
                 }
             }
         }
     }
     private void AspectChange(ChangeEventArgs e, string type, string id)
     {
-        if (selectedFn != "-1")
+        if (stateContainer.selectedFn != "-1")
         {
-            tempOldName = projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[IDNr=\"" + id + "\"]/IDName").InnerText;
+            tempOldName = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[IDNr=\"" + id + "\"]/IDName").InnerText;
             tempNewName = e.Value.ToString();
             tempId = id;
             tempType = type;
             AspectChangeCommitt();
-            /*
+        /*
             bool oldLine;
             bool newLine;
             if (type == "Output")
             {
             /*
             If oldName count >0 then it had a line else no line: O=T/F
-        if aspectName count >0 then should have line: A=T/F
+            if aspectName count >0 then should have line: A=T/F
             O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
             O=T & A=F : remove line
             O=F & A=T : add line
@@ -654,26 +657,26 @@
     }
     private void AspectChangeCommitt()
     {
-        if (selectedFn != "-1")
+        if (stateContainer.selectedFn != "-1")
         {
-            debugOutput = "selectedFn = " + tempType + " | " + tempId + ":  ";
+            debugOutput = "stateContainer.selectedFn = " + tempType + " | " + tempId + ":  ";
             //fileLoaded = false;
-            string oldName = projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText; //NEW
+            string oldName = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText; //NEW
             int orphans;
-            projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText = tempNewName; //NEW
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName").InnerText = tempNewName; //NEW
             tempOldName = tempNewName;
             if (tempNewName == "")
             {
-                projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
             }
             else
             {
-                projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "true";
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "true";
             }
             if (tempType == "Output")
             {
-                XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + selectedFn + "|" + oldName + "|\")]");
-                bool oldOrphans = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]").Count == 0; // if 0 then all oldChildren are orphans
+                XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + stateContainer.selectedFn + "|" + oldName + "|\")]");
+                bool oldOrphans = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]").Count == 0; // if 0 then all oldChildren are orphans
                 debugOutput += "oldOrphans = " + oldOrphans + ":  ";
                 bool hasOrphan;
                 if (tempNewName == "")
@@ -685,32 +688,32 @@
                     hasOrphan = true;
                 }
                 debugOutput += "hasOrphan = " + hasOrphan + ":  "; 
-                foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr != selectedFn))
+                foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr != stateContainer.selectedFn))
                 {
                     if (aspect.IDName == tempNewName)
                     {
-                        List<string> dictArray = new List<string>() { selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
+                        List<string> dictArray = new List<string>() { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
                         if (tempNewName != "")
                         {
                             XmlNode newAspect = reSetAspect(dictArray);
-                            projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
+                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
                             reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
                         }
                         hasOrphan = false;
                         aspect.Orphan = "false";
-                        projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
-                        projectData_Undo[0].SelectSingleNode("//FM/Outputs/Output[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Outputs/Output[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
                         bool subNotOrphan = true;
-                        foreach (XmlNode checkO in projectData_Undo[0].SelectNodes("//FM/" + aspect.Type + "s/" + aspect.Type + "[FunctionIDNr=\"" + aspect.FunctionIDNr + "\"]"))
+                        foreach (XmlNode checkO in stateContainer.projectData_Undo[0].SelectNodes("//FM/" + aspect.Type + "s/" + aspect.Type + "[FunctionIDNr=\"" + aspect.FunctionIDNr + "\"]"))
                         {
-                            if (projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + checkO.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
+                            if (stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + checkO.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
                             {
                                 subNotOrphan = false;
                             }
                         }
                         if (subNotOrphan)
                         {
-                            orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
+                            orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
                             switch (aspect.Type)
                             { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
                                 case "Input": orphans &= ~(1 << 0); break;
@@ -719,7 +722,7 @@
                                 case "Control": orphans &= ~(1 << 4); break;
                                 case "Time": orphans &= ~(1 << 5); break;
                             }
-                            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
                             debugOutput += aspect.FunctionIDNr + "FunctionIDNr = " + orphans.ToString() + ":  ";
                         }
                     }
@@ -728,7 +731,7 @@
                         if (oldOrphans)
                         {
                             aspect.Orphan = "true";
-                            projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "true";
+                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "true";
                             debugOutput += aspect.IDNr + "Aspect = true:  ";
                         }
                     }
@@ -738,7 +741,7 @@
                     if (oldOrphans)
                     {
                         string toFnID = oldChild.SelectSingleNode("@toFn").Value;
-                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value);
+                        orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value);
                         switch (oldChild.SelectSingleNode("Name").InnerText.Substring(oldChild.SelectSingleNode("Name").InnerText.Length - 1, 1))
                         { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
                             case "I": orphans |= 1 << 0; break;
@@ -747,19 +750,19 @@
                             case "C": orphans |= 1 << 4; break;
                             case "T": orphans |= 1 << 5; break;
                         }
-                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value = orphans.ToString();
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans").Value = orphans.ToString();
                         debugOutput += toFnID + "FunctionIDNr = " + orphans.ToString() + ":  ";
                     }
-                    projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
                 }
-                orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
+                orphans = Convert.ToInt32(stateContainer.sFn.SelectSingleNode("@orphans").Value);
                 if (hasOrphan)
                 {
-                    sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
+                    stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
                 }
                 else
                 {
-                    foreach (XmlNode itemO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
+                    foreach (XmlNode itemO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + stateContainer.selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
                     {
                         if (aspectsList.FindAll(x => x.IDName == itemO.SelectSingleNode("IDName").InnerText).Count == 0)
                         {
@@ -768,12 +771,12 @@
                     }
                     if (hasOrphan)
                     {
-                        sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
+                        stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans |= 1 << 1).ToString();
                         debugOutput += "sFn = " + (orphans |= 1 << 1).ToString() + ":  ";
                     }
                     else
                     {
-                        sFn.SelectSingleNode("@orphans").Value = (orphans &= ~(1 << 1)).ToString();
+                        stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans &= ~(1 << 1)).ToString();
                         debugOutput += "sFn = " + (orphans &= ~(1 << 1)).ToString() + ":  ";
                     }
                 }
@@ -783,21 +786,21 @@
                 Aspect getAspect = aspectsList.Find(x => x.IDNr == tempId && x.Type == tempType);
                 getAspect.Orphan = "true";
                 getAspect.IDName = tempNewName;
-                XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + oldName + "|" + selectedFn + "|" + tempType.Substring(0, 1) + "\")]");
-                foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]"))
+                XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + oldName + "|" + stateContainer.selectedFn + "|" + tempType.Substring(0, 1) + "\")]");
+                foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]"))
                 {
-                    List<string> dictArray = new List<string>() { itemI.SelectSingleNode("FunctionIDNr").InnerText, tempNewName, selectedFn, tempType.Substring(0, 1) };
+                    List<string> dictArray = new List<string>() { itemI.SelectSingleNode("FunctionIDNr").InnerText, tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
                     if (tempNewName != "")
                     {
                         XmlNode newAspect = reSetAspect(dictArray);
-                        projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
                         reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
                     }
                     itemI.SelectSingleNode("@orphan").Value = "false";
-                    projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
                     getAspect.Orphan = "false";
                     bool subNotOrphan = true;
-                    foreach (XmlNode checkO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]"))
+                    foreach (XmlNode checkO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]"))
                     {
                         if (aspectsList.FindAll(x => x.IDName == checkO.SelectSingleNode("IDName").InnerText).Count == 0)
                         {
@@ -806,8 +809,8 @@
                     }
                     if (subNotOrphan)
                     {
-                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value);
-                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value = (orphans &= ~(1 << 1)).ToString();
+                        orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value);
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr").InnerText + "\"]/@orphans").Value = (orphans &= ~(1 << 1)).ToString();
                     }
                 }
                 bool oldOrphans = aspectsList.FindAll(x => x.IDName == oldName).Count == 0;
@@ -816,20 +819,20 @@
                     if (oldOrphans)
                     {
                         string fromFnID = oldChild.SelectSingleNode("@outputFn").Value;
-                        orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value);
-                        projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value = (orphans |= 1 << 1).ToString();
+                        orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value);
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value = (orphans |= 1 << 1).ToString();
                     }
-                    projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
                 }
                 if (oldOrphans)
                 {
-                    foreach (XmlNode oldO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]"))
+                    foreach (XmlNode oldO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]"))
                     {
                         oldO.SelectSingleNode("@orphan").Value = "true";
                     }
                 }
-                orphans = Convert.ToInt32(sFn.SelectSingleNode("@orphans").Value);
-                if (tempNewName != "" && projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + selectedFn + "\"]").Count == 0)
+                orphans = Convert.ToInt32(stateContainer.sFn.SelectSingleNode("@orphans").Value);
+                if (tempNewName != "" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]").Count == 0)
                 {
                     switch (tempType)
                     { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
@@ -839,14 +842,14 @@
                         case "Control": orphans |= 1 << 4; break;
                         case "Time": orphans |= 1 << 5; break;
                     }
-                    sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                    stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
                 }
                 else
                 {
                     bool hasOrphan = false;
-                    foreach (XmlNode itemA in projectData_Undo[0].SelectNodes("//FM/" + tempType + "s/" + tempType + "[FunctionIDNr=\"" + selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
+                    foreach (XmlNode itemA in stateContainer.projectData_Undo[0].SelectNodes("//FM/" + tempType + "s/" + tempType + "[FunctionIDNr=\"" + stateContainer.selectedFn + "\" and IDNr!=\"" + tempId + "\"]"))
                     {
-                        if (projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + itemA.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
+                        if (stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + itemA.SelectSingleNode("IDName").InnerText + "\"]").Count == 0)
                         {
                             hasOrphan = true;
                         }
@@ -861,7 +864,7 @@
                             case "Control": orphans |= 1 << 4; break;
                             case "Time": orphans |= 1 << 5; break;
                         }
-                        sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                        stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
                     }
                     else
                     {
@@ -873,67 +876,68 @@
                             case "Control": orphans &= ~(1 << 4); break;
                             case "Time": orphans &= ~(1 << 5); break;
                         }
-                        sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
+                        stateContainer.sFn.SelectSingleNode("@orphans").Value = (orphans).ToString();
                     }
                 }
             }
-            sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name");
+            stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name");
             checkForBackground();
             //fileLoaded = true;
         }
     }
     private void checkForBackground()
     {
-        //var itemF = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr='" + selectedFn + "']");
-        var check1 = projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr='" + selectedFn + "']").Count;
-        check1 += projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr='" + selectedFn + "']").Count;
-        check1 += projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr='" + selectedFn + "']").Count;
-        check1 += projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr='" + selectedFn + "']").Count;
-        var check2 = projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr='" + selectedFn + "']").Count;
-        var check3 = projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr= '" + selectedFn + "']").Count;
+        //var itemF = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr='" + selectedFn + "']");
+        var check1 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr='" + stateContainer.selectedFn + "']").Count;
+        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr='" + stateContainer.selectedFn + "']").Count;
+        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr='" + stateContainer.selectedFn + "']").Count;
+        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr='" + stateContainer.selectedFn + "']").Count;
+        var check2 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr='" + stateContainer.selectedFn + "']").Count;
+        var check3 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr= '" + stateContainer.selectedFn + "']").Count;
         if (check1 == 0 && (check2 == 0 || check3 == 0))
         { //has only inputs or only outputs
-            sFn.SelectSingleNode("FunctionType").InnerText = "2"; //background
+            stateContainer.sFn.SelectSingleNode("FunctionType").InnerText = "2"; //background
         }
         else
         {
-            sFn.SelectSingleNode("FunctionType").InnerText = "0"; //foreground
+            stateContainer.sFn.SelectSingleNode("FunctionType").InnerText = "0"; //foreground
         }
     }
     private void FnNameChange(ChangeEventArgs e)
     {
-        if (selectedFn != "-1")
+        if (stateContainer.selectedFn != "-1")
         {
-            sFn.SelectSingleNode("IDName").InnerText = e.Value.ToString();
+            stateContainer.sFn.SelectSingleNode("IDName").InnerText = e.Value.ToString();
         }
     }
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         fileLoaded = false;
-        viewWidth = 0;
-        viewHeight = 0;
+        stateContainer.viewWidth = 0;
+        stateContainer.viewHeight = 0;
         aspectsList = new List<Aspect>();
         var buffer = new byte[e.File.Size];
         await e.File.OpenReadStream(1050000).ReadAsync(buffer);
-        projectData_Undo[0] = new XmlDocument();
-        projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
+        stateContainer.projectData_Undo[0] = new XmlDocument();
+        stateContainer.projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
         fileName = e.File.Name;
         inputDropStatus = "file-input-zone-hide";
         FileIsLoaded();
     }
     private void FileIsLoaded()
     {
-        selectedFn = "-1";
+        previousFn = "-1";
+        stateContainer.selectedFn = "-1";
         isDisabled = true;
-        foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+        foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
         { //this is for modern background functions to indicate which side to place the aspect circle, Input (left) or Output (right)
             if (fn.SelectSingleNode("@orphans") == null)
             {
-                fn.Attributes.Append(projectData_Undo[0].CreateAttribute("orphans"));
+                fn.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphans"));
             }
             fn.SelectSingleNode("@orphans").Value = "0";
-            XmlAttribute isInput = projectData_Undo[0].CreateAttribute("isInput");
-            if (projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr = " + fn.SelectSingleNode("IDNr").InnerText + "]").Count != 0)
+            XmlAttribute isInput = stateContainer.projectData_Undo[0].CreateAttribute("isInput");
+            if (stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr = " + fn.SelectSingleNode("IDNr").InnerText + "]").Count != 0)
             {
                 isInput.Value = "true";
                 fn.Attributes.Append(isInput);
@@ -944,46 +948,46 @@
                 fn.Attributes.Append(isInput);
             }
             maxFn = Math.Max(maxFn, Convert.ToInt32(fn.SelectSingleNode("IDNr").InnerText));
-            viewWidth = Math.Max(viewWidth, Convert.ToDouble(fn.SelectSingleNode("@x").Value) + 120);
-            viewHeight = Math.Max(viewHeight, Convert.ToDouble(fn.SelectSingleNode("@y").Value) + 120);
+            stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, Convert.ToDouble(fn.SelectSingleNode("@x").Value) + 120);
+            stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, Convert.ToDouble(fn.SelectSingleNode("@y").Value) + 120);
         }
-        if (projectData_Undo[0].SelectSingleNode("//FM/Aspects") == null)
+        if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects") == null)
         {
-            projectData_Undo[0].SelectSingleNode("//FM").AppendChild(projectData_Undo[0].CreateElement("Aspects"));
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM").AppendChild(stateContainer.projectData_Undo[0].CreateElement("Aspects"));
         }
-        XmlNode aspectsA = projectData_Undo[0].SelectSingleNode("//FM/Aspects");
+        XmlNode aspectsA = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects");
         if (aspectsA.SelectSingleNode("@scaleFunction") == null)
         {
-            XmlAttribute scaleF = projectData_Undo[0].CreateAttribute("scaleFunction");
+            XmlAttribute scaleF = stateContainer.projectData_Undo[0].CreateAttribute("scaleFunction");
             scaleF.Value = "1";
             aspectsA.Attributes.Append(scaleF);
         }
         if (aspectsA.SelectSingleNode("@scaleAspect") == null)
         {
-            XmlAttribute scaleA = projectData_Undo[0].CreateAttribute("scaleAspect");
+            XmlAttribute scaleA = stateContainer.projectData_Undo[0].CreateAttribute("scaleAspect");
             scaleA.Value = "1";
             aspectsA.Attributes.Append(scaleA);
         }
         if (aspectsA.SelectSingleNode("@scaleZoom") == null)
         {
-            XmlAttribute scaleZ = projectData_Undo[0].CreateAttribute("scaleZoom");
+            XmlAttribute scaleZ = stateContainer.projectData_Undo[0].CreateAttribute("scaleZoom");
             scaleZ.Value = "1";
             aspectsA.Attributes.Append(scaleZ);
         }
         if (aspectsA.SelectSingleNode("@Enhanced") == null)
         {
-            XmlAttribute enhanced = projectData_Undo[0].CreateAttribute("Enhanced");
+            XmlAttribute enhanced = stateContainer.projectData_Undo[0].CreateAttribute("Enhanced");
             enhanced.Value = "false";
             aspectsA.Attributes.Append(enhanced);
         }
         if (aspectsA.SelectSingleNode("@WebEnhanced") == null)
         {
-            XmlAttribute webenhanced = projectData_Undo[0].CreateAttribute("WebEnhanced");
+            XmlAttribute webenhanced = stateContainer.projectData_Undo[0].CreateAttribute("WebEnhanced");
             webenhanced.Value = "false";
             aspectsA.Attributes.Append(webenhanced);
         }
         int idCount = 0;
-        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Inputs/Input"))
+        foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input"))
         {
             if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
             {
@@ -991,14 +995,14 @@
             }
             if (itemI.SelectSingleNode("@orphan") == null)
             {
-                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                itemI.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan").Value = "true";
             aspectsList.Add(new Aspect("Input", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
             idCount++;
         }
         idCount = 0;
-        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition"))
+        foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition"))
         {
             if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
             {
@@ -1006,14 +1010,14 @@
             }
             if (itemI.SelectSingleNode("@orphan") == null)
             {
-                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                itemI.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan").Value = "true";
             aspectsList.Add(new Aspect("Precondition", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
             idCount++;
         }
         idCount = 0;
-        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Resources/Resource"))
+        foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource"))
         {
             if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
             {
@@ -1021,14 +1025,14 @@
             }
             if (itemI.SelectSingleNode("@orphan") == null)
             {
-                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                itemI.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan").Value = "true";
             aspectsList.Add(new Aspect("Resource", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
             idCount++;
         }
         idCount = 0;
-        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Controls/Control"))
+        foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control"))
         {
             if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
             {
@@ -1036,14 +1040,14 @@
             }
             if (itemI.SelectSingleNode("@orphan") == null)
             {
-                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                itemI.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan").Value = "true";
             aspectsList.Add(new Aspect("Control", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
             idCount++;
         }
         idCount = 0;
-        foreach (XmlNode itemI in projectData_Undo[0].SelectNodes("//FM/Times/Time"))
+        foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time"))
         {
             if (itemI.SelectSingleNode("IDNr").InnerText != idCount.ToString())
             {
@@ -1051,7 +1055,7 @@
             }
             if (itemI.SelectSingleNode("@orphan") == null)
             {
-                itemI.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                itemI.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan").Value = "true";
             aspectsList.Add(new Aspect("Time", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
@@ -1063,7 +1067,7 @@
                 aspectsA.RemoveChild(aspectsA.FirstChild);
             List<string> dictArray = new List<string>() { "", "", "", "" };
             idCount = 0;
-            foreach (XmlNode itemO in projectData_Undo[0].SelectNodes("//FM/Outputs/Output"))
+            foreach (XmlNode itemO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output"))
             {
                 if (itemO.SelectSingleNode("IDNr").InnerText != idCount.ToString())
                 {
@@ -1082,27 +1086,27 @@
                         aspectsA.AppendChild(reSetAspect(dictArray));
                         reDrawLines(string.Join("|", dictArray));
                         aspect.Orphan = "false";
-                        projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
                         isOutputOrphan = "false";
                     }
                 }
                 if (itemO.SelectSingleNode("@orphan") == null)
                 {
-                    itemO.Attributes.Append(projectData_Undo[0].CreateAttribute("orphan"));
+                    itemO.Attributes.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
                 }
                 itemO.SelectSingleNode("@orphan").Value = isOutputOrphan;
                 if (isOutputOrphan == "true")
                 {
-                    int orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value);
+                    int orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value);
                     orphans |= 1 << 1; //orphans &= ~(1 << 1);
-                    projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value = orphans.ToString();
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value = orphans.ToString();
                 }
             }
             foreach (var aspect in aspectsList)
             {
                 if (aspect.Orphan == "true")
                 {
-                    int orphans = Convert.ToInt32(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
+                    int orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
                     switch (aspect.Type)
                     { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
                         case "Input": orphans |= 1 << 0; break;
@@ -1111,16 +1115,16 @@
                         case "Control": orphans |= 1 << 4; break;
                         case "Time": orphans |= 1 << 5; break;
                     }
-                    projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
                 }
             }
             aspectsA.SelectSingleNode("@WebEnhanced").Value = "true";
         }
-        tempZoomA = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect").Value);
-        tempZoomF = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction").Value);
-        scaleZoom = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value);
-        canvasWidth = viewWidth * scaleZoom;
-        canvasHeight = viewHeight * scaleZoom;
+        stateContainer.tempZoomA = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect").Value);
+        stateContainer.tempZoomF = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction").Value);
+        stateContainer.scaleZoom = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom").Value);
+        stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+        stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
         newFnX = 20;
         newFnY = 20;
         isNewModel = false;
@@ -1132,11 +1136,11 @@
         {
             //    AspectChangeCommitt();
         }
-        if (sFn != null)
+        if (stateContainer.sFn != null)
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn != "-1")
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
             {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
         if (isSelected)
@@ -1146,7 +1150,8 @@
         }
         else
         {
-            selectedFn = "-1";
+            previousFn = stateContainer.selectedFn;
+            stateContainer.selectedFn = "-1";
             isDisabled = true;
             selectedLabel = "";
             fnName = "";
@@ -1155,15 +1160,16 @@
     }
     private void UnSelect(MouseEventArgs e)
     {
+        debugOutput += "UnSelect|";
         if (tempOldName != tempNewName)
         {
             //    AspectChangeCommitt();
         }
-        if (sFn != null)
+        if (stateContainer.sFn != null)
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn != "-1")
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
             {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
         if (isSelected)
@@ -1173,7 +1179,8 @@
         else
         {
             //AspectChange
-            selectedFn = "-1";
+            previousFn = stateContainer.selectedFn;
+            stateContainer.selectedFn = "-1";
             isDisabled = true;
             selectedLabel = "";
             fnName = "";
@@ -1185,27 +1192,28 @@
         {
             //    AspectChangeCommitt();
         }
-        if (sFn != null)
+        if (stateContainer.sFn != null)
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn != "-1")
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
             {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
         if (e.Touches.Length == 1)
         {
-            selectedFn = IDNr;
+            previousFn = stateContainer.selectedFn;
+            stateContainer.selectedFn = IDNr;
             isDisabled = false;
             selectedLabel = "";
-            sFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]");
-            sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name"); //
-            fnName = sFn.SelectSingleNode("IDName").InnerText;
-            startX = Convert.ToDouble(sFn.Attributes["x"].Value) - e.Touches[0].ClientX / scaleZoom;
-            startY = Convert.ToDouble(sFn.Attributes["y"].Value) - e.Touches[0].ClientY / scaleZoom;
+            stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]");
+            stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name"); //
+            fnName = stateContainer.sFn.SelectSingleNode("IDName").InnerText;
+            startX = Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) - e.Touches[0].ClientX / stateContainer.scaleZoom;
+            startY = Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) - e.Touches[0].ClientY / stateContainer.scaleZoom;
             lastX = e.Touches[0].ClientX;
             lastY = e.Touches[0].ClientY;
             if (maxFn > 20)
-                moveInterval = maxFn / 5 + sAs.Count;
+                moveInterval = maxFn / 5 + stateContainer.sAs.Count;
             dragFn = true;
             isSelected = true;
             fnClass = "fn-move";
@@ -1216,45 +1224,44 @@
     {
         //if (tempOldName != tempNewName)
         //{
-            //    AspectChangeCommitt();
+        //    AspectChangeCommitt();
         //}
-        if (sFn != null)
+        if (stateContainer.sFn?.SelectSingleNode("IDName")!.InnerText == "" && stateContainer.selectedFn != "-1")
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn != "-1")
-            {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
-            }
+            stateContainer.sFn.SelectSingleNode("IDName")!.InnerText = stateContainer.selectedFn;
         }
-        selectedFn = IDNr;
+        previousFn = stateContainer.selectedFn;
+        stateContainer.selectedFn = IDNr;
         isDisabled = false;
         selectedLabel = "";
-        sFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]");
-        sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']/Name");
-        fnName = sFn.SelectSingleNode("IDName").InnerText;
-        startX = Convert.ToDouble(sFn.Attributes["x"].Value) - e.ClientX / scaleZoom;
-        startY = Convert.ToDouble(sFn.Attributes["y"].Value) - e.ClientY / scaleZoom;
+        stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]");
+        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name");
+        fnName = stateContainer.sFn.SelectSingleNode("IDName").InnerText;
+        startX = Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) - e.ClientX / stateContainer.scaleZoom;
+        startY = Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) - e.ClientY / stateContainer.scaleZoom;
         lastX = e.ClientX;
         lastY = e.ClientY;
         if (maxFn > 20)
-            moveInterval = maxFn / 5 + sAs.Count;
+            moveInterval = maxFn / 5 + stateContainer.sAs.Count;
         dragFn = true;
         isSelected = true;
         fnClass = "fn-move";
     }
     private void SelectLabel(MouseEventArgs e, string key)
     {
-        if (sFn != null)
+        if (stateContainer.sFn != null)
         {
-            if (sFn.SelectSingleNode("IDName").InnerText == "" && selectedFn != "-1")
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
             {
-                sFn.SelectSingleNode("IDName").InnerText = selectedFn;
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
         selectedLabel = key;
-        selectedFn = "-1";
+        previousFn = stateContainer.selectedFn;
+        stateContainer.selectedFn = "-1";
         isDisabled = true;
         fnName = "";
-        sAs = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/Name");
+        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/Name");
         dragAspect = true;
         isSelected = true;
         fnClass = "fn-move";
@@ -1265,26 +1272,26 @@
         {
             if (dragFn)
             {
-                sFn.Attributes["x"].Value = (startX + e.Touches[0].ClientX / scaleZoom).ToString();
-                sFn.Attributes["y"].Value = (startY + e.Touches[0].ClientY / scaleZoom).ToString();
+                stateContainer.sFn.Attributes["x"].Value = (startX + e.Touches[0].ClientX / stateContainer.scaleZoom).ToString();
+                stateContainer.sFn.Attributes["y"].Value = (startY + e.Touches[0].ClientY / stateContainer.scaleZoom).ToString();
                 if (Math.Abs(e.Touches[0].ClientX - lastX) > moveInterval || Math.Abs(e.Touches[0].ClientY - lastY) > moveInterval)
                 {
-                    foreach (XmlNode aspectS in sAs)
+                    foreach (XmlNode aspectS in stateContainer.sAs)
                     {
                         reDrawLines(aspectS.InnerText);
                     }
                     lastX = e.Touches[0].ClientX;
                     lastY = e.Touches[0].ClientY;
                 }
-                if (Convert.ToDouble(sFn.Attributes["x"].Value) > viewWidth - 120)
+                if (Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
                 {
-                    viewWidth += 120;
-                    canvasWidth = viewWidth * scaleZoom;
+                    stateContainer.viewWidth += 120;
+                    stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
                 }
-                if (Convert.ToDouble(sFn.Attributes["y"].Value) > viewHeight - 120)
+                if (Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
                 {
-                    viewHeight += 120;
-                    canvasHeight = viewHeight * scaleZoom;
+                    stateContainer.viewHeight += 120;
+                    stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
                 }
             }
             else if (dragAspect)
@@ -1297,26 +1304,26 @@
     {
         if (dragFn)
         {
-            sFn.Attributes["x"].Value = (startX + e.ClientX / scaleZoom).ToString();
-            sFn.Attributes["y"].Value = (startY + e.ClientY / scaleZoom).ToString();
+            stateContainer.sFn.Attributes["x"].Value = (startX + e.ClientX / stateContainer.scaleZoom).ToString();
+            stateContainer.sFn.Attributes["y"].Value = (startY + e.ClientY / stateContainer.scaleZoom).ToString();
             if (Math.Abs(e.ClientX - lastX) > moveInterval || Math.Abs(e.ClientY - lastY) > moveInterval)
             {
-                foreach (XmlNode aspectS in sAs)
+                foreach (XmlNode aspectS in stateContainer.sAs)
                 {
                     reDrawLines(aspectS.InnerText);
                 }
                 lastX = e.ClientX;
                 lastY = e.ClientY;
             }
-            if (Convert.ToDouble(sFn.Attributes["x"].Value) > viewWidth - 120)
+            if (Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
             {
-                viewWidth += 120;
-                canvasWidth = viewWidth * scaleZoom;
+                stateContainer.viewWidth += 120;
+                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             }
-            if (Convert.ToDouble(sFn.Attributes["y"].Value) > viewHeight - 120)
+            if (Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
             {
-                viewHeight += 120;
-                canvasHeight = viewHeight * scaleZoom;
+                stateContainer.viewHeight += 120;
+                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
             }
         }
         else if (dragAspect)
@@ -1328,9 +1335,9 @@
     {
         if (dragFn)
         {
-            if (sAs != null)
+            if (stateContainer.sAs != null)
             {
-                foreach (XmlNode aspectS in sAs)
+                foreach (XmlNode aspectS in stateContainer.sAs)
                 {
                     reDrawLines(aspectS.InnerText);
                 }
@@ -1344,11 +1351,12 @@
     }
     private void MoveFnStop(MouseEventArgs e)
     {
+        debugOutput += "MoveFnStop";
         if (dragFn)
         {
-            if (sAs != null)
+            if (stateContainer.sAs != null)
             {
-                foreach (XmlNode aspectS in sAs)
+                foreach (XmlNode aspectS in stateContainer.sAs)
                 {
                     reDrawLines(aspectS.InnerText);
                 }
@@ -1403,29 +1411,29 @@
     }
     private XmlNode reSetAspect(List<string> dictArray)
     {
-        XmlNode aspectI = projectData_Undo[0].CreateElement("Aspect");
-        XmlAttribute aspectIx = projectData_Undo[0].CreateAttribute("x");
+        XmlNode aspectI = stateContainer.projectData_Undo[0].CreateElement("Aspect");
+        XmlAttribute aspectIx = stateContainer.projectData_Undo[0].CreateAttribute("x");
         aspectIx.Value = "0";
         aspectI.Attributes.Append(aspectIx);
-        XmlAttribute aspectIy = projectData_Undo[0].CreateAttribute("y");
+        XmlAttribute aspectIy = stateContainer.projectData_Undo[0].CreateAttribute("y");
         aspectIy.Value = "0";
         aspectI.Attributes.Append(aspectIy);
-        XmlAttribute aspectIdx = projectData_Undo[0].CreateAttribute("directionX");
+        XmlAttribute aspectIdx = stateContainer.projectData_Undo[0].CreateAttribute("directionX");
         aspectIdx.Value = "from";
         aspectI.Attributes.Append(aspectIdx);
-        XmlAttribute aspectIdy = projectData_Undo[0].CreateAttribute("directionY");
+        XmlAttribute aspectIdy = stateContainer.projectData_Undo[0].CreateAttribute("directionY");
         aspectIdy.Value = "to";
         aspectI.Attributes.Append(aspectIdy);
-        XmlAttribute aspectIof = projectData_Undo[0].CreateAttribute("outputFn");
+        XmlAttribute aspectIof = stateContainer.projectData_Undo[0].CreateAttribute("outputFn");
         aspectIof.Value = dictArray[0];
         aspectI.Attributes.Append(aspectIof);
-        XmlAttribute aspectItf = projectData_Undo[0].CreateAttribute("toFn");
+        XmlAttribute aspectItf = stateContainer.projectData_Undo[0].CreateAttribute("toFn");
         aspectItf.Value = dictArray[2];
         aspectI.Attributes.Append(aspectItf);
-        XmlNode aspectIname = projectData_Undo[0].CreateElement("Name");
+        XmlNode aspectIname = stateContainer.projectData_Undo[0].CreateElement("Name");
         aspectIname.InnerText = string.Join("|", dictArray);
         aspectI.AppendChild(aspectIname);
-        XmlNode aspectIcurve = projectData_Undo[0].CreateElement("Curve");
+        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve");
         aspectI.AppendChild(aspectIcurve);
         return aspectI;
     }
@@ -1440,8 +1448,8 @@
         string indexO = dictArray[1];
         int indexSub = Convert.ToInt32(dictArray[2]);
         string aspect = dictArray[3];
-        double drawTox = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
-        double drawToy = Convert.ToDouble(projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
+        double drawTox = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
+        double drawToy = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
         double drawFromx = 0;
         double drawFromy = 0;
         double drawAx = 0;
@@ -1450,7 +1458,7 @@
         double drawBy = 0;
         double drawIntx = 0;
         double drawInty = 0;
-        XmlNode indexSubFn = projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
+        XmlNode indexSubFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
         if (aspect == "I")
         { //does a fn1 Output connect with a fn2 Input
             drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + 6;
@@ -1690,7 +1698,273 @@
         curve.Append(drawIntx.ToString("#.##"));
         curve.Append("|");
         curve.Append(drawInty.ToString("#.##"));
-        projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve").InnerText = curve.ToString();
+        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve").InnerText = curve.ToString();
+    }
+    private void reDrawLines2()
+    {
+        //this function gets all the line coordinates
+        //draws two quadratic Bezier curves to connect an Output with another Aspect
+        //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
+        //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
+        foreach (XmlNode aspectS in stateContainer.sAs)
+        {
+            string[] dictArray = aspectS.InnerText.Split("|");
+            int index = Convert.ToInt32(dictArray[0]);
+            string indexO = dictArray[1];
+            int indexSub = Convert.ToInt32(dictArray[2]);
+            string aspect = dictArray[3];
+            double drawTox = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
+            double drawToy = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
+            double drawFromx = 0;
+            double drawFromy = 0;
+            double drawAx = 0;
+            double drawAy = 0;
+            double drawBx = 0;
+            double drawBy = 0;
+            double drawIntx = 0;
+            double drawInty = 0;
+            XmlNode indexSubFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
+            if (aspect == "I")
+            { //does a fn1 Output connect with a fn2 Input
+                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + 6;
+                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + 50;
+                if (drawFromx > drawTox - 20)
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                    drawAy = drawFromy;
+                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                    drawBy = drawToy;
+                }
+                else
+                {
+                    if (Math.Abs(drawToy - drawFromy) > 120)
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.375;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.625;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx - 20;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    }
+                }
+                drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+            }
+            else if (aspect == "T")
+            { //does a fn1 output connect with a fn2 Time
+                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posTx;
+                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posTy;
+                if (drawFromx > drawTox - 10)
+                {
+                    if (drawFromy > drawToy)
+                    {
+                        drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawAy = drawFromy;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                    }
+                }
+                else
+                {
+                    if (drawFromy > drawToy + 40)
+                    {
+                        if (Math.Abs(drawToy - drawFromy) > 120)
+                        {
+                            drawAx = drawFromx - 20;
+                            drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
+                            drawBx = drawTox + 20;
+                            drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
+                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        }
+                        else
+                        {
+                            drawAx = drawFromx - 20;
+                            drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
+                            drawBx = drawTox + 20;
+                            drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
+                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        }
+                    }
+                    else
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy - 20;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy - 20;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy - 20;
+                    }
+                }
+            }
+            else if (aspect == "C")
+            { //does a fn1 output connect with a fn2 Control
+                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posCx;
+                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posCy;
+                if (drawFromx > drawTox - 10)
+                {
+                    if (drawFromy > drawToy + 20)
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy - 20;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy - 20;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy - 20;
+                    }
+                }
+                else
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
+                    drawAy = drawFromy;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                }
+            }
+            else if (aspect == "P")
+            { //does a fn1 output connect with a fn2 Precondition
+                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posPx;
+                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posPy;
+                if (drawFromx > drawTox - 10)
+                {
+                    if (drawFromy > drawToy)
+                    {
+                        drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawAy = drawFromy;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    }
+                }
+                else
+                {
+                    if (drawFromy > drawToy - 40)
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy + 20;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + 20;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy + 20;
+                    }
+                    else
+                    {
+                        if (Math.Abs(drawToy - drawFromy) > 120)
+                        {
+                            drawAx = drawFromx - 20;
+                            drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
+                            drawBx = drawTox + 20;
+                            drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
+                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        }
+                        else
+                        {
+                            drawAx = drawFromx - 20;
+                            drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
+                            drawBx = drawTox + 20;
+                            drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
+                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
+                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        }
+                    }
+                }
+            }
+            else if (aspect == "R")
+            { //does a fn1 output connect with a fn2 Resource
+                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posRx;
+                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posRy;
+                if (drawFromx > drawTox - 10)
+                {
+                    if (drawFromy > drawToy - 20)
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy + 20;
+                        drawBx = drawTox + 20;
+                        drawBy = drawFromy + 20;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy + 20;
+                    }
+                    else
+                    {
+                        drawAx = drawFromx;
+                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
+                        drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
+                        drawBy = drawToy;
+                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
+                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    }
+                }
+                else
+                {
+                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
+                    drawAy = drawFromy;
+                    drawBx = drawTox + 20;
+                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
+                    drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                }
+            }
+            StringBuilder curve = new StringBuilder();
+            curve.Append(drawTox.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawToy.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawFromx.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawFromy.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawAx.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawAy.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawBx.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawBy.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawIntx.ToString("#.##"));
+            curve.Append("|");
+            curve.Append(drawInty.ToString("#.##"));
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + aspectS.InnerText + "\"]/Curve").InnerText = curve.ToString();
+        }
     }
     public async void ClearElement(string elementName)
     {
@@ -1700,32 +1974,33 @@
     {
         if (e.Key == "Backspace" || e.Key == "Delete")
         {
-            if (elementName == "newFnButton" && selectedFn != "-1")
+            if (elementName == "newFnButton" && stateContainer.selectedFn != "-1")
             {
-                if (sFn.SelectSingleNode("IDName").InnerText == "")
+                if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "")
                 {
-                    if (aspectsList.FindAll(x => x.FunctionIDNr == selectedFn).Count == 0 && projectData_Undo[0].SelectNodes("//FM//Outputs/Output[FunctionIDNr=\"" + selectedFn + "\"]").Count == 0)
+                    if (aspectsList.FindAll(x => x.FunctionIDNr == stateContainer.selectedFn).Count == 0 && stateContainer.projectData_Undo[0].SelectNodes("//FM//Outputs/Output[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]").Count == 0)
                     {
-                        projectData_Undo[0].SelectSingleNode("//FM/Functions").RemoveChild(sFn);
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions").RemoveChild(stateContainer.sFn);
                         //foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr == selectedFn))
                         //{
                         //    var child = projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]");
                         //    projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s").RemoveChild(child);
                         //}
                         //aspectsList.RemoveAll(x => x.FunctionIDNr == selectedFn);
-                        XmlNodeList oldChildren = projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + selectedFn + "' or @toFn='" + selectedFn + "']");
+                        XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']");
                         foreach (XmlNode oldChild in oldChildren)
                         {
-                            projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
                         }
-                        selectedFn = "-1";
+                        previousFn = stateContainer.selectedFn;
+                        stateContainer.selectedFn = "-1";
                         isDisabled = true;
                     }
                 }
             }
             else //an Aspect
             {
-                if (projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]/IDName").InnerText == "")
+                if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]/IDName").InnerText == "")
                 {
                     if (elementName != "Output")
                     {
@@ -1737,13 +2012,13 @@
                             }
                         }
                     }
-                    var child = projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]");
-                    projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s").RemoveChild(child);
+                    var child = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]");
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s").RemoveChild(child);
                     if (elementName == "Input")
                     {
-                        if (projectData_Undo[0].SelectNodes("//FM//Inputs/Input[FunctionIDNr=\"" + selectedFn + "\"]").Count == 0)
+                        if (stateContainer.projectData_Undo[0].SelectNodes("//FM//Inputs/Input[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]").Count == 0)
                         {
-                            sFn.SelectSingleNode("@isInput").InnerText = "false";
+                            stateContainer.sFn.SelectSingleNode("@isInput").InnerText = "false";
                         }
                     }
                 }
@@ -1774,7 +2049,7 @@
             {
                 newFnStyle = 0;
             }
-            foreach (XmlNode fn in projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+            foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
             {
                 fn.SelectSingleNode("@fnStyle").Value = newFnStyle.ToString();
             }
@@ -1799,7 +2074,7 @@
     {
         try
         {
-            await localStorage.SetItemAsync("backupData", projectData_Undo[0].OuterXml);
+            await localStorage.SetItemAsync("backupData", stateContainer.projectData_Undo[0].OuterXml);
             await localStorage.SetItemAsync("backupFileName", fileName);
             await localStorage.SetItemAsync("isBackup", true);
         }
@@ -1816,11 +2091,11 @@
             if (isBackup)
             {
                 fileLoaded = false;
-                viewWidth = 0;
-                viewHeight = 0;
+                stateContainer.viewWidth = 0;
+                stateContainer.viewHeight = 0;
                 aspectsList = new List<Aspect>();
-                projectData_Undo[0] = new XmlDocument();
-                projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
+                stateContainer.projectData_Undo[0] = new XmlDocument();
+                stateContainer.projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
                 fileName = await localStorage.GetItemAsync<string>("backupFileName");
                 inputDropStatus = "file-input-zone-hide";
                 isBackup = false;

@@ -1,4 +1,8 @@
-﻿@if (fnID == indexState[0])
+﻿@inject StateContainer stateContainer
+
+<g class=@fnClass transform="translate(@fn.Attributes["x"].Value,@fn.Attributes["y"].Value)"
+   @onmousedown="SelectFn" @onmousemove="MoveFn" @onmouseup="MoveFnStop" @onmouseout="MoveFnStop" >
+@if (fnID == stateContainer.selectedFn)
 {
     <circle cx="50" cy="50" r="60" fill="url(#4444DD)" />
     //} else if (selectedGroup[0]==sFn) { //set background highlight colour
@@ -152,7 +156,7 @@ else
         <g stroke-width=@styleStroke stroke=@styleColor><circle cx="93.5" cy="50" r="5" fill="white" /></g>
     }
 
-    <rect transform="scale(@double.Parse(indexState[1]))" x="@(50 / double.Parse(indexState[1]) - 36)" y="@(50 / double.Parse(indexState[1]) - lineCount * 5 - 5)" rx="5" ry="5" width="71" height="@(9 + lineCount * 10)" style="fill:#EEEEEE;stroke:none;opacity:1" />
+    <rect transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF - 36)" y="@(50 / stateContainer.tempZoomF - lineCount * 5 - 5)" rx="5" ry="5" width="71" height="@(9 + lineCount * 10)" style="fill:#EEEEEE;stroke:none;opacity:1" />
 }
 @if (fnStyle != "1" || FunctionType != "2")
 {
@@ -165,46 +169,181 @@ else
         <text x="68.8" y="90.8">R</text>
     </g>
 }
-<text transform="scale(@double.Parse(indexState[1]))" x="@(50 / double.Parse(indexState[1]))" y="@(50 / double.Parse(indexState[1]) - lineCount * 5 - 3)" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif">
+<text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - lineCount * 5 - 3)" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif">
     @for (int i = 0; i < lineCount; i++)
     {
-       <tspan x="@(50 / double.Parse(indexState[1]))" dy="10">@displayText[i]</tspan>
+        <tspan x="@(50 / stateContainer.tempZoomF)" dy="10">@displayText[i]</tspan>
     }
 </text>
+</g>
 
 @code {
-    //private double tempZoomX;
-    //private double tempZoomXmb;
-    //private double tempZoomY;
-    //private double tempZoomYmb;
-    //private double tempHeight;
     private string styleStroke = "1";
     private string styleColor = "#999999";
     private int lineCount;
-    //private string fnStyle;
-    //private string FunctionType;
-    //private string isInput;
-    //private List<string> textLines = new List<string>();
-    //private int orphans;
+    private string fnID = "-1";
+    private string fnColorValue = "";
+    private string fnColorStyle = "";
+    private List<string> displayText = new List<string> { "" };
+    private string fnStyle = "0";
+    private string FunctionType = "0";
+    private string isInput = "false";
+    private int orphans = 0;
+    private bool shouldRender;
+    private bool dragFn = false;
+    private bool dragAspect = false;
+    private bool isSelected = false;
+    private double startX;
+    private double startY;
+    private double lastX;
+    private double lastY;
+    private double moveInterval = 0;
+    private string fnClass = "fn-hover";
+    //   private double scaleZoom = 1.5;
 
-    //indexState[0]=selectedFn; [1]=tempZoomF
-    [CascadingParameter] string[] indexState { get; set; }
+    //{ selectedFn, tempZoomF.ToString(), previousFn }
+    //[CascadingParameter] string[] indexState { get; set; }
 
     [Parameter]
-    public string fnID { get; set; }
+    public XmlNode? fn { get; set; }
     [Parameter]
-    public string fnColorValue { get; set; }
+    public EventCallback refreshParent { get; set; }
     [Parameter]
-    public string fnColorStyle { get; set; }
-    [Parameter]
-    public List<string> displayText { get; set; }
-    [Parameter]
-    public string fnStyle { get; set; }
-    [Parameter]
-    public string FunctionType { get; set; }
-    [Parameter]
-    public string isInput { get; set; }
-    [Parameter]
-    public int orphans { get; set; }
+    public EventCallback reDrawLines { get; set; }
 
+    protected override void OnParametersSet()
+    {
+        fnID = fn.SelectSingleNode("IDNr").InnerText;
+        //fnX = double.Parse(fn.Attributes["x"].Value);
+        //fnY = double.Parse(fn.Attributes["y"].Value);
+        displayText = returnTextLines(fn.SelectSingleNode("IDName").InnerText, 11);
+        orphans = Convert.ToInt32(fn.SelectSingleNode("@orphans").Value);
+        fnStyle = fn.Attributes["fnStyle"].Value;
+        FunctionType = fn.SelectSingleNode("FunctionType").InnerText;
+        isInput = fn.SelectSingleNode("@isInput").InnerText;
+        fnColorStyle = fn.Attributes["style"]?.Value;
+        fnColorValue = fn.Attributes["color"]?.Value;
+        if (fnID == stateContainer.selectedFn || fnID == stateContainer.previousFn)
+        {
+            shouldRender = true;
+        }
+        else
+        {
+            shouldRender = false;
+        }
+    }
+    //protected override bool ShouldRender() => shouldRender;
+
+    private List<string> returnTextLines(string text, int length)
+    {
+        var textLines = new List<string>();
+        string[] textWords = text.Split(" ");
+        int tL = 0;
+        textLines.Add("");
+        int lL = length;
+        foreach (string tWord in textWords)
+        {
+            if (tWord.Length <= lL)
+            {
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += tWord;
+                lL -= tWord.Length;
+            }
+            else if (tWord.Length > length)
+            {
+                string tempWord = tWord;
+                while (tempWord.Length > 0)
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
+                    textLines[tL] += addWord;
+                    lL -= addWord.Length;
+                    tempWord = tempWord.Substring(addWord.Length);
+                }
+            }
+            else
+            {
+                textLines.Add("");
+                tL++;
+                textLines[tL] += tWord;
+                lL = length - tWord.Length;
+            }
+        }
+        return textLines;
+    }
+    private void SelectFn(MouseEventArgs e)
+    {
+        stateContainer.selectedFn = fnID;
+        refreshParent.InvokeAsync();
+        //isDisabled = false;
+        //selectedLabel = "";
+        stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + fnID + "]");
+        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + fnID + "' or @toFn='" + fnID + "']/Name");
+        //fnName = sFn.SelectSingleNode("IDName").InnerText;
+        startX = e.ClientX / stateContainer.scaleZoom - double.Parse(stateContainer.sFn.Attributes["x"].Value);
+        startY = e.ClientY / stateContainer.scaleZoom - double.Parse(stateContainer.sFn.Attributes["y"].Value);
+        //lastX = e.ClientX;
+        //lastY = e.ClientY;
+        dragFn = true;
+        isSelected = true;
+        fnClass = "fn-move";
+    }
+    private void MoveFn(MouseEventArgs e)
+    {
+        if (dragFn)
+        {
+            stateContainer.sFn.Attributes["x"].Value = (e.ClientX / stateContainer.scaleZoom - startX).ToString();
+            stateContainer.sFn.Attributes["y"].Value = (e.ClientY / stateContainer.scaleZoom - startY).ToString();
+            //if (Math.Abs(e.ClientX - lastX) > moveInterval || Math.Abs(e.ClientY - lastY) > moveInterval)
+            //{
+                foreach (XmlNode aspectS in stateContainer.sAs)
+                {
+                    reDrawLines.InvokeAsync();
+            }
+            //lastX = e.ClientX;
+                //lastY = e.ClientY;
+            //}
+            if (double.Parse(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
+            {
+                stateContainer.viewWidth += 120;
+                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+                refreshParent.InvokeAsync();
+            }
+            if (double.Parse(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
+            {
+                stateContainer.viewHeight += 120;
+                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
+                refreshParent.InvokeAsync();
+            }
+        }
+        else if (dragAspect)
+        {
+
+        }
+    }
+    private void MoveFnStop(MouseEventArgs e)
+    {
+        if (dragFn)
+        {
+            /*
+            if (sAs != null)
+            {
+                foreach (XmlNode aspectS in sAs)
+                {
+                    reDrawLines(aspectS.InnerText);
+                }
+            }
+            */
+            dragFn = false;
+            dragAspect = false;
+            fnClass = "fn-hover";
+            moveInterval = 0;
+            refreshParent.InvokeAsync();
+        }
+    }
 }

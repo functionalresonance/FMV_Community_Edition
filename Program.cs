@@ -1,4 +1,5 @@
 using BlazorApp4;
+using BlazorApp4.Shared;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -18,5 +19,6 @@ builder.Services.AddMsalAuthentication(options =>
 });
 
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddSingleton<StateContainer>();
 
 await builder.Build().RunAsync();
