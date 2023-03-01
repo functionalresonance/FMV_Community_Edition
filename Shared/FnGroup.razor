@@ -1,10 +1,31 @@
 ﻿@inject StateContainer stateContainer
 
-<g class=@fnClass transform="translate(@fn.Attributes["x"].Value,@fn.Attributes["y"].Value)"
-   @onmousedown="SelectFn" @onmousemove="MoveFn" @onmouseup="MoveFnStop" @onmouseout="MoveFnStop" >
 @if (fnID == stateContainer.selectedFn)
 {
-    <circle cx="50" cy="50" r="60" fill="url(#4444DD)" />
+    foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn == fnID || x.toFn == fnID))
+    {
+        <path fill="none" stroke-width="5" stroke="#4444DD" stroke-linecap="round" opacity="0.5" d=@reDrawLines(couplingS.Name) />
+        couplingS.resetPosition();
+        <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay">
+            <rect x=@(couplingS.labelX - couplingS.Twidth / 2) y=@couplingS.labelY width=@couplingS.Twidth height=@(Math.Min(5 + couplingS.displayText.Count * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+            <text transform="translate(0,-2)" x=@couplingS.labelX y=@(couplingS.labelY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+                @for (int i = 0; i < couplingS.displayText.Count; i++)
+                {
+                    <tspan x=@couplingS.labelX dy="8">@couplingS.displayText[i]</tspan>
+                }
+            </text>
+        </g>
+    }
+}
+<g class=@fnClass transform="translate(@fn.Attributes["x"].Value,@fn.Attributes["y"].Value)"
+   @onmousedown="SelectFn" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+@if (fnID == stateContainer.selectedFn)
+    {
+        if (stateContainer.dragFn)
+        {
+            <circle cx="50" cy="50" fill="white" opacity="0" r="100%" />
+        }
+        <circle cx="50" cy="50" r="60" fill="url(#4444DD)" />
     //} else if (selectedGroup[0]==sFn) { //set background highlight colour
     // svgXML.g.(@id==sFn).appendChild(<circle cx="50" cy="50" r="60" fill="url(#00F2FF)" />);
     //} else if (checkGroup.indexOf("|"+sFn+"|")>-1){
@@ -137,13 +158,11 @@ else if (fnStyle == "1" && FunctionType != "2") //modern and foreground
         styleStroke = "1";
         styleColor = "#999999";
     }
-    lineCount = displayText.Count;
 }
 else
 {
     styleStroke = "1";
     styleColor = "#999999";
-    lineCount = displayText.Count;
 }
 @if (fnStyle == "1" && FunctionType == "2") //modern background
 {
@@ -178,6 +197,8 @@ else
 </g>
 
 @code {
+    private Dictionary<string, double> posX = new Dictionary<string, double> { { "I", 6 }, { "O", 93.5 }, { "T", 28 }, { "C", 71.5 }, { "P", 28 }, { "R", 71.5 } };
+    private Dictionary<string, double> posY = new Dictionary<string, double> { { "I", 50 }, { "O", 50 }, { "T", 12 }, { "C", 12 }, { "P", 88 }, { "R", 88 } };
     private string styleStroke = "1";
     private string styleColor = "#999999";
     private int lineCount;
@@ -190,15 +211,20 @@ else
     private string isInput = "false";
     private int orphans = 0;
     private bool shouldRender;
-    private bool dragFn = false;
+    //private bool dragFn = false;
     private bool dragAspect = false;
-    private bool isSelected = false;
-    private double startX;
-    private double startY;
-    private double lastX;
-    private double lastY;
-    private double moveInterval = 0;
+    //private bool isSelected = false;
+    //private double startX;
+    //private double startY;
+    //private double lastX;
+    //private double lastY;
+    //private double moveInterval = 0;
     private string fnClass = "fn-hover";
+    //private string[]? curve;
+    //private int iTo;
+    //private bool moveAspects = false;
+    //private double moveX = 0;
+    //private double moveY = 0;
     //   private double scaleZoom = 1.5;
 
     //{ selectedFn, tempZoomF.ToString(), previousFn }
@@ -208,8 +234,6 @@ else
     public XmlNode? fn { get; set; }
     [Parameter]
     public EventCallback refreshParent { get; set; }
-    [Parameter]
-    public EventCallback reDrawLines { get; set; }
 
     protected override void OnParametersSet()
     {
@@ -217,20 +241,13 @@ else
         //fnX = double.Parse(fn.Attributes["x"].Value);
         //fnY = double.Parse(fn.Attributes["y"].Value);
         displayText = returnTextLines(fn.SelectSingleNode("IDName").InnerText, 11);
+        lineCount = displayText.Count;
         orphans = Convert.ToInt32(fn.SelectSingleNode("@orphans").Value);
         fnStyle = fn.Attributes["fnStyle"].Value;
         FunctionType = fn.SelectSingleNode("FunctionType").InnerText;
         isInput = fn.SelectSingleNode("@isInput").InnerText;
         fnColorStyle = fn.Attributes["style"]?.Value;
         fnColorValue = fn.Attributes["color"]?.Value;
-        if (fnID == stateContainer.selectedFn || fnID == stateContainer.previousFn)
-        {
-            shouldRender = true;
-        }
-        else
-        {
-            shouldRender = false;
-        }
     }
     //protected override bool ShouldRender() => shouldRender;
 
@@ -276,74 +293,353 @@ else
         }
         return textLines;
     }
+    private void SelectFnTouch(TouchEventArgs e)
+    {
+        if (e.Touches.Length == 1)
+        {
+            stateContainer.selectedFn = fnID;
+            refreshParent.InvokeAsync();
+            stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + fnID + "]");
+            stateContainer.moveX = double.Parse(stateContainer.sFn.Attributes["x"].Value);
+            stateContainer.moveY = double.Parse(stateContainer.sFn.Attributes["y"].Value);
+            stateContainer.startX = e.Touches[0].ClientX / stateContainer.scaleZoom - stateContainer.moveX;
+            stateContainer.startY = e.Touches[0].ClientY / stateContainer.scaleZoom - stateContainer.moveY;
+            stateContainer.dragFn = true;
+            fnClass = "fn-move";
+            // ? touchAction = "touch-stop";
+        }
+    }
     private void SelectFn(MouseEventArgs e)
     {
         stateContainer.selectedFn = fnID;
         refreshParent.InvokeAsync();
-        //isDisabled = false;
-        //selectedLabel = "";
         stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + fnID + "]");
-        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + fnID + "' or @toFn='" + fnID + "']/Name");
-        //fnName = sFn.SelectSingleNode("IDName").InnerText;
-        startX = e.ClientX / stateContainer.scaleZoom - double.Parse(stateContainer.sFn.Attributes["x"].Value);
-        startY = e.ClientY / stateContainer.scaleZoom - double.Parse(stateContainer.sFn.Attributes["y"].Value);
-        //lastX = e.ClientX;
-        //lastY = e.ClientY;
-        dragFn = true;
-        isSelected = true;
+        stateContainer.moveX = double.Parse(stateContainer.sFn.Attributes["x"].Value);
+        stateContainer.moveY = double.Parse(stateContainer.sFn.Attributes["y"].Value);
+        stateContainer.startX = e.ClientX / stateContainer.scaleZoom - stateContainer.moveX;
+        stateContainer.startY = e.ClientY / stateContainer.scaleZoom - stateContainer.moveY;
+        stateContainer.dragFn = true;
         fnClass = "fn-move";
     }
-    private void MoveFn(MouseEventArgs e)
+    private void MoveFnTouch(TouchEventArgs e)
     {
-        if (dragFn)
+        if (stateContainer.dragFn && e.Touches.Length == 1)
         {
-            stateContainer.sFn.Attributes["x"].Value = (e.ClientX / stateContainer.scaleZoom - startX).ToString();
-            stateContainer.sFn.Attributes["y"].Value = (e.ClientY / stateContainer.scaleZoom - startY).ToString();
-            //if (Math.Abs(e.ClientX - lastX) > moveInterval || Math.Abs(e.ClientY - lastY) > moveInterval)
-            //{
-                foreach (XmlNode aspectS in stateContainer.sAs)
-                {
-                    reDrawLines.InvokeAsync();
-            }
-            //lastX = e.ClientX;
-                //lastY = e.ClientY;
-            //}
-            if (double.Parse(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
+            stateContainer.moveX = (e.Touches[0].ClientX / stateContainer.scaleZoom - stateContainer.startX);
+            stateContainer.moveY = (e.Touches[0].ClientY / stateContainer.scaleZoom - stateContainer.startY);
+            if (stateContainer.moveX > stateContainer.viewWidth - 120)
             {
                 stateContainer.viewWidth += 120;
                 stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
                 refreshParent.InvokeAsync();
             }
-            if (double.Parse(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
+            if (stateContainer.moveY > stateContainer.viewHeight - 120)
             {
                 stateContainer.viewHeight += 120;
                 stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
                 refreshParent.InvokeAsync();
             }
+            stateContainer.sFn.Attributes["x"].Value = stateContainer.moveX.ToString("#.##");
+            stateContainer.sFn.Attributes["y"].Value = stateContainer.moveY.ToString("#.##");
         }
         else if (dragAspect)
         {
 
         }
     }
-    private void MoveFnStop(MouseEventArgs e)
+    private void MoveFn(MouseEventArgs e)
     {
-        if (dragFn)
+        if (stateContainer.dragFn)
         {
-            /*
-            if (sAs != null)
+            stateContainer.moveX = (e.ClientX / stateContainer.scaleZoom - stateContainer.startX);
+            stateContainer.moveY = (e.ClientY / stateContainer.scaleZoom - stateContainer.startY);
+            if (stateContainer.moveX > stateContainer.viewWidth - 120)
             {
-                foreach (XmlNode aspectS in sAs)
+                stateContainer.viewWidth += 120;
+                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
+                refreshParent.InvokeAsync();
+            }
+            if (stateContainer.moveY > stateContainer.viewHeight - 120)
+            {
+                stateContainer.viewHeight += 120;
+                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
+                refreshParent.InvokeAsync();
+            }
+            stateContainer.sFn.Attributes["x"].Value = stateContainer.moveX.ToString("#.##");
+            stateContainer.sFn.Attributes["y"].Value = stateContainer.moveY.ToString("#.##");
+        }
+        else if (dragAspect)
+        {
+
+        }
+    }
+    private void MoveFnStopTouch(TouchEventArgs e)
+    {
+        if (stateContainer.dragFn)
+        {
+            if (stateContainer.couplingList.Count > 0)
+            {
+                foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn == fnID || x.toFn == fnID))
                 {
-                    reDrawLines(aspectS.InnerText);
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2").InnerText = reDrawLines(couplingS.Name);
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve").InnerText = couplingS.UpdateCurve();
                 }
             }
-            */
-            dragFn = false;
+            stateContainer.dragFn = false;
             dragAspect = false;
             fnClass = "fn-hover";
-            moveInterval = 0;
-            refreshParent.InvokeAsync();
+            // ? touchAction = "";
         }
+    }
+    private void MoveFnStop(MouseEventArgs e)
+    {
+        if (stateContainer.dragFn)
+        {
+            if (stateContainer.couplingList.Count > 0)
+            {
+                foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn == fnID || x.toFn == fnID))
+                {
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2").InnerText = reDrawLines(couplingS.Name);
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve").InnerText = couplingS.UpdateCurve();
+                }
+            }
+            stateContainer.dragFn = false;
+            dragAspect = false;
+            fnClass = "fn-hover";
+        }
+    }
+    private string reDrawLines(string key)
+    {
+        //this function gets all the line coordinates
+        //draws two quadratic Bezier curves to connect an Output with another Aspect
+        //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
+        //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
+        Coupling getCoupling = stateContainer.couplingList.Find(x => x.Name == key);
+        if (getCoupling.outputFn == fnID)
+        {
+            getCoupling.drawTox = stateContainer.moveX + posX["O"];
+            getCoupling.drawToy = stateContainer.moveY + posY["O"];
+        } else
+        {
+            getCoupling.drawFromx = stateContainer.moveX + posX[getCoupling.toType];
+            getCoupling.drawFromy = stateContainer.moveY + posY[getCoupling.toType];
+        }
+        //XmlNode indexSubFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.toFn + "]");
+        if (getCoupling.toType == "I")
+        { //does a fn1 Output connect with a fn2 Input
+            if (getCoupling.drawFromx > getCoupling.drawTox - 20)
+            {
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                getCoupling.drawBy = getCoupling.drawToy;
+            }
+            else
+            {
+                if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx - 20;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.625;
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx - 20;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                }
+            }
+            getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+            getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+        }
+        else if (getCoupling.toType == "T")
+        { //does a fn1 output connect with a fn2 Time
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawAy = getCoupling.drawFromy;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                }
+            }
+            else
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy + 40)
+                {
+                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
+                    {
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                    }
+                    else
+                    {
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                    }
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy - 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy - 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy - 20;
+                }
+            }
+        }
+        else if (getCoupling.toType == "C")
+        { //does a fn1 output connect with a fn2 Control
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy + 20)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy - 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy - 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy - 20;
+                }
+            }
+            else
+            {
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawTox + 20;
+                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
+                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+            }
+        }
+        else if (getCoupling.toType == "P")
+        { //does a fn1 output connect with a fn2 Precondition
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawAy = getCoupling.drawFromy;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
+                }
+            }
+            else
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy - 40)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + 20;
+                }
+                else
+                {
+                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
+                    {
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                    }
+                    else
+                    {
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                    }
+                }
+            }
+        }
+        else if (getCoupling.toType == "R")
+        { //does a fn1 output connect with a fn2 Resource
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
+            {
+                if (getCoupling.drawFromy > getCoupling.drawToy - 20)
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + 20;
+                }
+                else
+                {
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
+                }
+            }
+            else
+            {
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawTox + 20;
+                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
+                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+            }
+        }
+        
+        string[] curve2 = new string[13] {
+            "M", getCoupling.drawFromx.ToString("#.##"), getCoupling.drawFromy.ToString("#.##"),
+            "Q", getCoupling.drawAx.ToString("#.##"), getCoupling.drawAy.ToString("#.##"), getCoupling.drawIntx.ToString("#.##"), getCoupling.drawInty.ToString("#.##"),
+            "Q", getCoupling.drawBx.ToString("#.##"), getCoupling.drawBy.ToString("#.##"), getCoupling.drawTox.ToString("#.##"), getCoupling.drawToy.ToString("#.##")
+        };
+        return string.Join(" ", curve2);
     }
 }

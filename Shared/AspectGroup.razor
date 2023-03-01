@@ -1,78 +1,44 @@
 ﻿@inject StateContainer stateContainer
 
-@if (stateContainer.selectedFn == index.ToString())
-{// Lines that move with the selected function
-    shape = "drawMoveConnect";
-}
-//else if (selectedFn == Number(functionArray[index].name))
-//{
-//    shape = drawMoveConnect;
-//}
-else if (stateContainer.selectedFn == indexSub.ToString())
-{
-    shape = "drawMoveConnect";
-}
-else if (selectedLabel == aspectS.SelectSingleNode("Name").InnerText)
-{
-    shape = "drawMoveConnect";
-}
-else //if (drawAll)
-{ // static lines
-    shape = "drawConnect";
-}
-@if (aspectS.Attributes["directionX"].Value == "from")
-{
-    tempLabelPosX = (double.Parse(curve[2]) - double.Parse(curve[8]));
-    labelPosx = double.Parse(aspectS.Attributes["x"].Value);
-    tempX = (double.Parse(curve[8]) + labelPosx * tempLabelPosX) / stateContainer.tempZoomA;
-    lineCount = displayText.Count;
-    for (int i = 0; i < lineCount; i++)
-    {
-        tempRwidth = Math.Max(tempRwidth, displayText[i].Length);
+<g transform="scale(@stateContainer.tempZoomA)" class="@fnClass">
+    @if (stateContainer.selectedFn == couplingS.outputFn)
+    {// Lines that move with the selected function
+        shape = "drawMoveConnect";
     }
-    tempTwidth = tempRwidth * 4 + 4;
-}
-else
-{
-    tempLabelPosX = (double.Parse(curve[8]) - double.Parse(curve[0]));
-    labelPosx = double.Parse(aspectS.Attributes["x"].Value);
-    tempX = (double.Parse(curve[8]) + labelPosx * tempLabelPosX) / stateContainer.tempZoomA;
-    lineCount = displayText.Count;
-    for (int i = 0; i < lineCount; i++)
+    //else if (selectedFn == Number(functionArray[index].name))
+    //{
+    //    shape = drawMoveConnect;
+    //}
+    else if (stateContainer.selectedFn == couplingS.toFn)
     {
-        tempRwidth = Math.Max(tempRwidth, displayText[i].Length);
+        shape = "drawMoveConnect";
     }
-    tempTwidth = tempRwidth * 4 + 4;
-}
-@if (aspectS.Attributes["directionY"].Value == "from")
-{
-    tempLabelPosY = (double.Parse(curve[3]) - double.Parse(curve[9]));
-    labelPosy = double.Parse(aspectS.Attributes["y"].Value);
-    tempY = (double.Parse(curve[9]) + labelPosy * tempLabelPosY - (2.5 + displayText.Count * 4) * stateContainer.tempZoomA) / stateContainer.tempZoomA;
-}
-else
-{
-    tempLabelPosY = (double.Parse(curve[9]) - double.Parse(curve[1]));
-    labelPosy = double.Parse(aspectS.Attributes["y"].Value);
-    tempY = (double.Parse(curve[9]) + labelPosy * tempLabelPosY - (2.5 + displayText.Count * 4) * stateContainer.tempZoomA) / stateContainer.tempZoomA;
-}       
-@if (shape == "drawMoveConnect")
-{
-    <path fill="none" stroke-width="5" stroke="#4444DD" opacity="0.5" d="M @curve[2] @curve[3] Q @curve[4] @curve[5] @curve[8] @curve[9] Q @curve[6] @curve[7] @curve[0] @curve[1]" />
-}
-else // if(drawAll) {
-{
-    //update stroke colour if part of FMI
-    <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d="M @curve[2] @curve[3] Q @curve[4] @curve[5] @curve[8] @curve[9] Q @curve[6] @curve[7] @curve[0] @curve[1]" />
-}
-<g transform="scale(@(stateContainer.tempZoomA))" display="@AspectLabelsDisplay">
-    <rect x=@(tempX - tempTwidth / 2) y=@tempY width=@tempTwidth height=@(Math.Min(5 + displayText.Count * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-    <text transform="translate(0,-2)" x=@tempX y=@(tempY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
-        @for (int i = 0; i < lineCount; i++)
-        {
-            <tspan x=@tempX dy="8">@displayText[i]</tspan>
-        }
-    </text>
+    else if (stateContainer.selectedLabel == couplingS.Name)
+    {
+        shape = "drawMoveConnect";
+    }
+    else //if (drawAll)
+    { // static lines
+        shape = "drawConnect";
+    }
+    @if (shape == "drawMoveConnect")
+    {
+        <path fill="none" stroke-width="5" stroke="#4444DD" opacity="0.5" d=@couplingS.UpdateCurve2() />
+    }
+    else // if(drawAll) {
+    {
+        //update stroke colour if part of FMI
+        <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@couplingS.UpdateCurve2() />
+    }
+    <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay">
+        <rect x=@(couplingS.labelX - couplingS.Twidth / 2) y=@couplingS.labelY width=@couplingS.Twidth height=@(Math.Min(5 + couplingS.displayText.Count * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+        <text transform="translate(0,-2)" x=@couplingS.labelX y=@(couplingS.labelY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+            @for (int i = 0; i < couplingS.displayText.Count; i++)
+            {
+                <tspan x=@couplingS.labelX dy="8">@couplingS.displayText[i]</tspan>
+            }
+        </text>
+    </g>
 </g>
 
 @code {
@@ -82,66 +48,24 @@ else // if(drawAll) {
     //private string indexO;
     //private int indexSub;
     //private string aspect;
-    //private string[] curve;
-    private double tempLabelPosX;
-    private double tempLabelPosY;
-    private double labelPosx;
-    private double labelPosy;
-    private string shape;
+    //private string[]? curve;
+    //private double tempLabelPosX;
+    //private double tempLabelPosY;
+    //private double labelPosx;
+    //private double labelPosy;
+    [Parameter]
+    public string shape { get; set; } = "drawConnect";
     private int tempRwidth = 0;
     private double tempTwidth;
     private double tempX;
     //private double tempX2;
     private double tempY;
     //private double tempH;
-    //private List<string> textLines = new List<string>();
+    //private List<string> displayText = new List<string> { "" };
     private int lineCount;
+    private string fnClass = "fn-hover";
 
     [Parameter]
-    public XmlNode aspectS { get; set; }
-    [Parameter]
-    public List<string> displayText { get; set; }
-    [Parameter]
-    public int index { get; set; }
-    [Parameter]
-    public int indexSub { get; set; }
-    [Parameter]
-    public string[] curve { get; set; }
-    [Parameter]
-    public string selectedLabel { get; set; }
-    [Parameter]
-    public string AspectLabelsDisplay { get; set; }
-
-    //[Parameter]
-    //public string selectedFn { get; set; }
-
-    //[Parameter]
-    //public string selectedLabel { get; set; }
-
-    //[Parameter]
-    //public double tempZoomA { get; set; }
-
-    //protected override void OnInitialized()
-    //{
-        //key = aspectS.SelectSingleNode("Name").InnerText;
-        //dictArray = key.Split("|");
-        //index = Convert.ToInt32(dictArray[0]);
-        //indexO = dictArray[1];
-        //indexSub = Convert.ToInt32(dictArray[2]);
-        //aspect = dictArray[3];
-        //curve = aspectS.SelectSingleNode("Curve").InnerText.Split("|");
-        //labelPosx = Convert.ToDouble(aspectS.Attributes["x"].Value);
-        //labelPosy = Convert.ToDouble(aspectS.Attributes["y"].Value);
-        //textLines = returnTextLines(indexO, 15);
-        //foreach (string tLine in displayText)
-        //{
-        //    tempRwidth = Math.Max(tempRwidth, tLine.Length);
-        //}
-        //tempTwidth = tempRwidth * 4 + 4;
-        //tempY2 = (Convert.ToDouble(curve[9]) + labelPosy * tempLabelPosY - (2.5 + displayText.Count * 4) * double.Parse(aspectState[1])) / double.Parse(aspectState[1]);
-        //tempY = tempY2 + 3;
-        //tempX2 = tempX - tempTwidth / 2;
-        //tempH = Math.Min(5 + displayText.Count * 8, 50);
-    //}
+    public Coupling couplingS { get; set; }
 
 }

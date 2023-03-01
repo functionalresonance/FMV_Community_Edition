@@ -226,7 +226,7 @@
         {
             <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single /></div>
         }
-        <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
+        <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight >
             <defs>
                 <style type="text/css">
                     @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
@@ -264,30 +264,18 @@
             </defs>
             @if (fileLoaded)
             {
-                <g @onmousedown="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(UnSelect)">
-                    <rect fill="white" width="100%" height="100%" />
+                <!-- onmousedown="EventUtil.AsNonRenderingEventHandler<MouseEventArgs>(UnSelect)" -->
+                <g @onmousedown="UnSelect" @ontouchstart="UnSelectTouch">
+                    <rect fill="white" opacity="0" width="100%" height="100%" />
                 </g>
-                //AspectState = new string[4] { stateContainer.selectedFn, stateContainer.tempZoomA.ToString(), selectedLabel, AspectLabelsDisplay };
-                //AspectState = new string[4] { "0","1", "", "true" };
-                foreach (XmlNode aspectS in stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect"))
+                foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn))
                 {
-                    string[] dictArray = aspectS.SelectSingleNode("Name").InnerText.Split("|");
-                    <g transform="scale(@stateContainer.tempZoomA)" @onmousedown="@(e => SelectLabel(e, aspectS.SelectSingleNode("Name").InnerText))" class="@fnClass">
-                        <AspectGroup aspectS=@aspectS displayText=@returnTextLines(dictArray[1], 15) index=@int.Parse(dictArray[0])
-                             indexSub=@int.Parse(dictArray[2]) curve=@aspectS.SelectSingleNode("Curve").InnerText.Split("|") selectedLabel="@selectedLabel" AspectLabelsDisplay="@AspectLabelsDisplay" />
-                    </g>
+                    <AspectGroup couplingS=@couplingS />
                 }
-                //IndexState = new string[2] { "0", "1" };
-                //stateContainer.IndexState = new string[3] { selectedFn, tempZoomF.ToString(), previousFn };
-                //stateContainer.selectedFn = selectedFn;
-                //stateContainer.tempZoomF = tempZoomF;
-                stateContainer.previousFn = previousFn;
                 foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
                 {
-                    debugOutput += fn.SelectSingleNode("IDNr").InnerText + ":";
-                    <FnGroup fn="@fn" refreshParent="@refreshParent" />
+                    <FnGroup fn="@fn" refreshParent="refreshParent" />
                 }
-                debugOutput += "\n";
             }
         </svg>
         <p>
@@ -297,6 +285,8 @@
 </div>
 
 @code {
+    private Dictionary<string, double> posX = new Dictionary<string, double> { { "I", 6 }, { "O", 93.5 }, { "T", 28 }, { "C", 71.5 }, { "P", 28 }, { "R", 71.5 } };
+    private Dictionary<string, double> posY = new Dictionary<string, double> { { "I", 50 }, { "O", 50 }, { "T", 12 }, { "C", 12 }, { "P", 88 }, { "R", 88 } };
     private string debugOutput = "";
     private bool fileLoaded = false;
     private bool isBackup = false;
@@ -304,40 +294,28 @@
     //    private double canvasHeight;
     //    private double viewWidth = 0;
     //    private double viewHeight = 0;
- //   private XmlDocument[] projectData_Undo = new XmlDocument[10];
-    private const double posIx = 6;
-    private const double posIy = 50;
-    private const double posOx = 93.5;
-    private const double posOy = 50;
-    private const double posTx = 28;
-    private const double posTy = 12;
-    private const double posCx = 71.5;
-    private const double posCy = 12;
-    private const double posPx = 28;
-    private const double posPy = 88;
-    private const double posRx = 71.5;
-    private const double posRy = 88;
-//    private XmlNode sFn;
-//    private XmlNodeList sAs;
+    //   private XmlDocument[] projectData_Undo = new XmlDocument[10];
+    //    private XmlNode sFn;
+    //    private XmlNodeList sAs;
     private string fnName = "";
-    private string selectedLabel = "";
-    private bool dragFn = false;
+    //private string selectedLabel = "";
+    //private bool dragFn = false;
     private bool dragAspect = false;
     private bool isSelected = false;
-    private double startX;
-    private double startY;
-    private double lastX;
-    private double lastY;
-    private double moveInterval = 0;
+    //private double startX;
+    //private double startY;
+    //private double lastX;
+    //private double lastY;
+    //private double moveInterval = 0;
     //   private double scaleZoom;
     private string fnClass = "fn-hover";
     private string touchAction = "touch-stop";
-//    private double tempZoomA;
-//    private double tempZoomF;
+    //    private double tempZoomA;
+    //    private double tempZoomF;
     private string fileName = "FMV_new.xfmv";
     private List<Aspect> aspectsList = new List<Aspect>();
     //public string selectedFn = "-1";
-    public string previousFn = "-1";
+    //public string previousFn = "-1";
     private bool isDisabled = true;
     private string tempNewName;
     private string tempOldName;
@@ -348,7 +326,7 @@
     public int newFnX = -40;
     public int newFnY = 0;
     public bool isNewModel = true;
-    private string AspectLabelsDisplay = "";
+    //   private string AspectLabelsDisplay = "";
     private string[] IndexState;
     private string[] AspectState;
     private bool showModal = false;
@@ -548,10 +526,9 @@
         IDName.InnerText = "";
         itemF.AppendChild(IDName);
         //if (selectedFn>-1) {selectGroupChildren(false);}
-        previousFn = stateContainer.selectedFn;
         stateContainer.selectedFn = maxFn.ToString();
         isDisabled = false;
-        selectedLabel = "";
+        stateContainer.selectedLabel = "";
         //checkDirty=true;
         //initiateFn(itemF, false); Check for Orphans?
         //performance! if (!enableGroup1) reDraw();
@@ -692,7 +669,7 @@
                 {
                     if (aspect.IDName == tempNewName)
                     {
-                        List<string> dictArray = new List<string>() { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
+                        string[] dictArray = new string[4] { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
                         if (tempNewName != "")
                         {
                             XmlNode newAspect = reSetAspect(dictArray);
@@ -732,7 +709,6 @@
                         {
                             aspect.Orphan = "true";
                             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "true";
-                            debugOutput += aspect.IDNr + "Aspect = true:  ";
                         }
                     }
                 }
@@ -754,6 +730,7 @@
                         debugOutput += toFnID + "FunctionIDNr = " + orphans.ToString() + ":  ";
                     }
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                    stateContainer.couplingList.RemoveAll(x => x.Name == oldChild.SelectSingleNode("Name").InnerText);
                 }
                 orphans = Convert.ToInt32(stateContainer.sFn.SelectSingleNode("@orphans").Value);
                 if (hasOrphan)
@@ -789,7 +766,7 @@
                 XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + oldName + "|" + stateContainer.selectedFn + "|" + tempType.Substring(0, 1) + "\")]");
                 foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]"))
                 {
-                    List<string> dictArray = new List<string>() { itemI.SelectSingleNode("FunctionIDNr").InnerText, tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
+                    string[] dictArray = new string[4] { itemI.SelectSingleNode("FunctionIDNr").InnerText, tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
                     if (tempNewName != "")
                     {
                         XmlNode newAspect = reSetAspect(dictArray);
@@ -823,6 +800,7 @@
                         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans").Value = (orphans |= 1 << 1).ToString();
                     }
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
+                    stateContainer.couplingList.RemoveAll(x => x.Name == oldChild.SelectSingleNode("Name").InnerText);
                 }
                 if (oldOrphans)
                 {
@@ -880,7 +858,7 @@
                     }
                 }
             }
-            stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name");
+            //           stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']");
             checkForBackground();
             //fileLoaded = true;
         }
@@ -912,6 +890,7 @@
     }
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
+        debugOutput = "File loading ...";
         fileLoaded = false;
         stateContainer.viewWidth = 0;
         stateContainer.viewHeight = 0;
@@ -926,7 +905,6 @@
     }
     private void FileIsLoaded()
     {
-        previousFn = "-1";
         stateContainer.selectedFn = "-1";
         isDisabled = true;
         foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
@@ -1061,11 +1039,11 @@
             aspectsList.Add(new Aspect("Time", idCount.ToString(), "true", itemI.SelectSingleNode("IDName").InnerText, itemI.SelectSingleNode("FunctionIDNr").InnerText));
             idCount++;
         }
-        if (aspectsA.SelectSingleNode("@WebEnhanced").Value != "true")
+        if (aspectsA.SelectSingleNode("@WebEnhanced").Value != "updated")
         {
             while (aspectsA.FirstChild != null)
                 aspectsA.RemoveChild(aspectsA.FirstChild);
-            List<string> dictArray = new List<string>() { "", "", "", "" };
+            string[] dictArray = new string[4] { "", "", "", "" };
             idCount = 0;
             foreach (XmlNode itemO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output"))
             {
@@ -1077,18 +1055,16 @@
                 string isOutputOrphan = "true";
                 dictArray[0] = itemO.SelectSingleNode("FunctionIDNr").InnerText;
                 dictArray[1] = itemO.SelectSingleNode("IDName").InnerText;
-                foreach (var aspect in aspectsList)
+                int iTo = aspectsList.Count;
+                foreach (var aspect in aspectsList.FindAll(x => x.IDName == dictArray[1]))
                 {
-                    if (aspect.IDName == dictArray[1])
-                    {
-                        dictArray[2] = aspect.FunctionIDNr;
-                        dictArray[3] = aspect.Type.Substring(0, 1);
-                        aspectsA.AppendChild(reSetAspect(dictArray));
-                        reDrawLines(string.Join("|", dictArray));
-                        aspect.Orphan = "false";
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
-                        isOutputOrphan = "false";
-                    }
+                    dictArray[2] = aspect.FunctionIDNr;
+                    dictArray[3] = aspect.Type.Substring(0, 1);
+                    aspectsA.AppendChild(reSetAspect(dictArray));
+                    reDrawLines(string.Join("|", dictArray));
+                    aspect.Orphan = "false";
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
+                    isOutputOrphan = "false";
                 }
                 if (itemO.SelectSingleNode("@orphan") == null)
                 {
@@ -1102,23 +1078,23 @@
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans").Value = orphans.ToString();
                 }
             }
-            foreach (var aspect in aspectsList)
+            foreach (var aspect in aspectsList.FindAll(x => x.Orphan == "true"))
             {
-                if (aspect.Orphan == "true")
-                {
-                    int orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
-                    switch (aspect.Type)
-                    { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                        case "Input": orphans |= 1 << 0; break;
-                        case "Precondition": orphans |= 1 << 2; break;
-                        case "Resource": orphans |= 1 << 3; break;
-                        case "Control": orphans |= 1 << 4; break;
-                        case "Time": orphans |= 1 << 5; break;
-                    }
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                //if (aspect.Orphan == "true")
+                //{
+                int orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value);
+                switch (aspect.Type)
+                { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
+                    case "Input": orphans |= 1 << 0; break;
+                    case "Precondition": orphans |= 1 << 2; break;
+                    case "Resource": orphans |= 1 << 3; break;
+                    case "Control": orphans |= 1 << 4; break;
+                    case "Time": orphans |= 1 << 5; break;
                 }
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans").Value = orphans.ToString();
+                //}
             }
-            aspectsA.SelectSingleNode("@WebEnhanced").Value = "true";
+            aspectsA.SelectSingleNode("@WebEnhanced").Value = "updated";
         }
         stateContainer.tempZoomA = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect").Value);
         stateContainer.tempZoomF = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction").Value);
@@ -1143,109 +1119,45 @@
                 stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
-        if (isSelected)
-        {
-            isSelected = false;
-            touchAction = "touch-stop";
-        }
-        else
-        {
-            previousFn = stateContainer.selectedFn;
-            stateContainer.selectedFn = "-1";
-            isDisabled = true;
-            selectedLabel = "";
-            fnName = "";
-            touchAction = "";
-        }
+        //if (isSelected)
+        //{
+        //    isSelected = false;
+        touchAction = "touch-stop";
+        //}
+        //else
+        //{
+        stateContainer.selectedFn = "-1";
+        isDisabled = true;
+        stateContainer.selectedLabel = "";
+        fnName = "";
+        touchAction = "";
+        //}
     }
     private void UnSelect(MouseEventArgs e)
-    {
-        debugOutput += "UnSelect|";
-        if (tempOldName != tempNewName)
-        {
-            //    AspectChangeCommitt();
-        }
-        if (stateContainer.sFn != null)
-        {
-            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
-            {
-                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
-            }
-        }
-        if (isSelected)
-        {
-            isSelected = false;
-        }
-        else
-        {
-            //AspectChange
-            previousFn = stateContainer.selectedFn;
-            stateContainer.selectedFn = "-1";
-            isDisabled = true;
-            selectedLabel = "";
-            fnName = "";
-        }
-    }
-    private void SelectFnTouch(TouchEventArgs e, string IDNr)
-    {
-        if (tempOldName != tempNewName)
-        {
-            //    AspectChangeCommitt();
-        }
-        if (stateContainer.sFn != null)
-        {
-            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
-            {
-                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
-            }
-        }
-        if (e.Touches.Length == 1)
-        {
-            previousFn = stateContainer.selectedFn;
-            stateContainer.selectedFn = IDNr;
-            isDisabled = false;
-            selectedLabel = "";
-            stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]");
-            stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name"); //
-            fnName = stateContainer.sFn.SelectSingleNode("IDName").InnerText;
-            startX = Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) - e.Touches[0].ClientX / stateContainer.scaleZoom;
-            startY = Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) - e.Touches[0].ClientY / stateContainer.scaleZoom;
-            lastX = e.Touches[0].ClientX;
-            lastY = e.Touches[0].ClientY;
-            if (maxFn > 20)
-                moveInterval = maxFn / 5 + stateContainer.sAs.Count;
-            dragFn = true;
-            isSelected = true;
-            fnClass = "fn-move";
-            touchAction = "touch-stop";
-        }
-    }
-    private void SelectFn(MouseEventArgs e, string IDNr)
     {
         //if (tempOldName != tempNewName)
         //{
         //    AspectChangeCommitt();
         //}
-        if (stateContainer.sFn?.SelectSingleNode("IDName")!.InnerText == "" && stateContainer.selectedFn != "-1")
+        if (stateContainer.sFn != null)
         {
-            stateContainer.sFn.SelectSingleNode("IDName")!.InnerText = stateContainer.selectedFn;
+            if (stateContainer.sFn.SelectSingleNode("IDName").InnerText == "" && stateContainer.selectedFn != "-1")
+            {
+                stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
+            }
         }
-        previousFn = stateContainer.selectedFn;
-        stateContainer.selectedFn = IDNr;
-        isDisabled = false;
-        selectedLabel = "";
-        stateContainer.sFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]");
-        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']/Name");
-        fnName = stateContainer.sFn.SelectSingleNode("IDName").InnerText;
-        startX = Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) - e.ClientX / stateContainer.scaleZoom;
-        startY = Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) - e.ClientY / stateContainer.scaleZoom;
-        lastX = e.ClientX;
-        lastY = e.ClientY;
-        if (maxFn > 20)
-            moveInterval = maxFn / 5 + stateContainer.sAs.Count;
-        dragFn = true;
-        isSelected = true;
-        fnClass = "fn-move";
+        //if (isSelected)
+        //{
+        //    isSelected = false;
+        //}
+        //else
+        //{
+        //AspectChange
+        stateContainer.selectedFn = "-1";
+        isDisabled = true;
+        stateContainer.selectedLabel = "";
+        fnName = "";
+        //}
     }
     private void SelectLabel(MouseEventArgs e, string key)
     {
@@ -1256,116 +1168,13 @@
                 stateContainer.sFn.SelectSingleNode("IDName").InnerText = stateContainer.selectedFn;
             }
         }
-        selectedLabel = key;
-        previousFn = stateContainer.selectedFn;
+        stateContainer.selectedLabel = key;
         stateContainer.selectedFn = "-1";
         isDisabled = true;
         fnName = "";
-        stateContainer.sAs = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/Name");
         dragAspect = true;
         isSelected = true;
         fnClass = "fn-move";
-    }
-    private void MoveFnTouch(TouchEventArgs e)
-    {
-        if (e.Touches.Length == 1)
-        {
-            if (dragFn)
-            {
-                stateContainer.sFn.Attributes["x"].Value = (startX + e.Touches[0].ClientX / stateContainer.scaleZoom).ToString();
-                stateContainer.sFn.Attributes["y"].Value = (startY + e.Touches[0].ClientY / stateContainer.scaleZoom).ToString();
-                if (Math.Abs(e.Touches[0].ClientX - lastX) > moveInterval || Math.Abs(e.Touches[0].ClientY - lastY) > moveInterval)
-                {
-                    foreach (XmlNode aspectS in stateContainer.sAs)
-                    {
-                        reDrawLines(aspectS.InnerText);
-                    }
-                    lastX = e.Touches[0].ClientX;
-                    lastY = e.Touches[0].ClientY;
-                }
-                if (Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
-                {
-                    stateContainer.viewWidth += 120;
-                    stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
-                }
-                if (Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
-                {
-                    stateContainer.viewHeight += 120;
-                    stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-                }
-            }
-            else if (dragAspect)
-            {
-
-            }
-        }
-    }
-    private void MoveFn(MouseEventArgs e)
-    {
-        if (dragFn)
-        {
-            stateContainer.sFn.Attributes["x"].Value = (startX + e.ClientX / stateContainer.scaleZoom).ToString();
-            stateContainer.sFn.Attributes["y"].Value = (startY + e.ClientY / stateContainer.scaleZoom).ToString();
-            if (Math.Abs(e.ClientX - lastX) > moveInterval || Math.Abs(e.ClientY - lastY) > moveInterval)
-            {
-                foreach (XmlNode aspectS in stateContainer.sAs)
-                {
-                    reDrawLines(aspectS.InnerText);
-                }
-                lastX = e.ClientX;
-                lastY = e.ClientY;
-            }
-            if (Convert.ToDouble(stateContainer.sFn.Attributes["x"].Value) > stateContainer.viewWidth - 120)
-            {
-                stateContainer.viewWidth += 120;
-                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
-            }
-            if (Convert.ToDouble(stateContainer.sFn.Attributes["y"].Value) > stateContainer.viewHeight - 120)
-            {
-                stateContainer.viewHeight += 120;
-                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            }
-        }
-        else if (dragAspect)
-        {
-
-        }
-    }
-    private void MoveFnStopTouch(TouchEventArgs e)
-    {
-        if (dragFn)
-        {
-            if (stateContainer.sAs != null)
-            {
-                foreach (XmlNode aspectS in stateContainer.sAs)
-                {
-                    reDrawLines(aspectS.InnerText);
-                }
-            }
-            dragFn = false;
-            dragAspect = false;
-            fnClass = "fn-hover";
-            touchAction = "";
-            moveInterval = 0;
-        }
-    }
-    private void MoveFnStop(MouseEventArgs e)
-    {
-        debugOutput += "MoveFnStop";
-        if (dragFn)
-        {
-            if (stateContainer.sAs != null)
-            {
-                foreach (XmlNode aspectS in stateContainer.sAs)
-                {
-                    reDrawLines(aspectS.InnerText);
-                }
-            }
-            dragFn = false;
-            dragAspect = false;
-            fnClass = "fn-hover";
-            moveInterval = 0;
-        }
     }
     private List<string> returnTextLines(string text, int length)
     {
@@ -1409,7 +1218,7 @@
         }
         return textLines;
     }
-    private XmlNode reSetAspect(List<string> dictArray)
+    private XmlNode reSetAspect(string[] dictArray)
     {
         XmlNode aspectI = stateContainer.projectData_Undo[0].CreateElement("Aspect");
         XmlAttribute aspectIx = stateContainer.projectData_Undo[0].CreateAttribute("x");
@@ -1433,8 +1242,11 @@
         XmlNode aspectIname = stateContainer.projectData_Undo[0].CreateElement("Name");
         aspectIname.InnerText = string.Join("|", dictArray);
         aspectI.AppendChild(aspectIname);
-        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve");
+        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve"); 
         aspectI.AppendChild(aspectIcurve);
+        XmlNode aspectIcurve2 = stateContainer.projectData_Undo[0].CreateElement("Curve2");
+        aspectI.AppendChild(aspectIcurve2);
+        stateContainer.couplingList.Add(new Coupling(string.Join("|", dictArray), 0, 0, "from", "to", "true", dictArray[0], dictArray[1], dictArray[2],dictArray[3]));
         return aspectI;
     }
     private void reDrawLines(string key)
@@ -1443,528 +1255,252 @@
         //draws two quadratic Bezier curves to connect an Output with another Aspect
         //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
         //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
-        string[] dictArray = key.Split("|");
-        int index = Convert.ToInt32(dictArray[0]);
-        string indexO = dictArray[1];
-        int indexSub = Convert.ToInt32(dictArray[2]);
-        string aspect = dictArray[3];
-        double drawTox = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
-        double drawToy = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
-        double drawFromx = 0;
-        double drawFromy = 0;
-        double drawAx = 0;
-        double drawAy = 0;
-        double drawBx = 0;
-        double drawBy = 0;
-        double drawIntx = 0;
-        double drawInty = 0;
-        XmlNode indexSubFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
-        if (aspect == "I")
+        Coupling getCoupling = stateContainer.couplingList.Find(x => x.Name == key);
+        getCoupling.drawTox = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.outputFn + "]").Attributes["x"].Value) + posX["O"];
+        getCoupling.drawToy = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.outputFn + "]").Attributes["y"].Value) + posY["O"];
+        getCoupling.drawFromx = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.toFn + "]").Attributes["x"].Value) + posX[getCoupling.toType];
+        getCoupling.drawFromy = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.toFn + "]").Attributes["y"].Value) + posY[getCoupling.toType]; 
+        if (getCoupling.toType == "I")
         { //does a fn1 Output connect with a fn2 Input
-            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + 6;
-            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + 50;
-            if (drawFromx > drawTox - 20)
+            if (getCoupling.drawFromx > getCoupling.drawTox - 20)
             {
-                drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                drawAy = drawFromy;
-                drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                drawBy = drawToy;
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                getCoupling.drawBy = getCoupling.drawToy;
             }
             else
             {
-                if (Math.Abs(drawToy - drawFromy) > 120)
+                if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
                 {
-                    drawAx = drawFromx - 20;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.375;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + (drawToy - drawFromy) * 0.625;
+                    getCoupling.drawAx = getCoupling.drawFromx - 20;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.625;
                 }
                 else
                 {
-                    drawAx = drawFromx - 20;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
+                    getCoupling.drawAx = getCoupling.drawFromx - 20;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
                 }
             }
-            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-            drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+            getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+            getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
         }
-        else if (aspect == "T")
+        else if (getCoupling.toType == "T")
         { //does a fn1 output connect with a fn2 Time
-            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posTx;
-            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posTy;
-            if (drawFromx > drawTox - 10)
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
             {
-                if (drawFromy > drawToy)
+                if (getCoupling.drawFromy > getCoupling.drawToy)
                 {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
                 }
                 else
                 {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawAy = drawFromy;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawAy = getCoupling.drawFromy;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
                 }
             }
             else
             {
-                if (drawFromy > drawToy + 40)
+                if (getCoupling.drawFromy > getCoupling.drawToy + 40)
                 {
-                    if (Math.Abs(drawToy - drawFromy) > 120)
+                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
                     {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
                     }
                     else
                     {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
                     }
                 }
                 else
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy - 20;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy - 20;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy - 20;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy - 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy - 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy - 20;
                 }
             }
         }
-        else if (aspect == "C")
+        else if (getCoupling.toType == "C")
         { //does a fn1 output connect with a fn2 Control
-            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posCx;
-            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posCy;
-            if (drawFromx > drawTox - 10)
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
             {
-                if (drawFromy > drawToy + 20)
+                if (getCoupling.drawFromy > getCoupling.drawToy + 20)
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
                 }
                 else
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy - 20;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy - 20;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy - 20;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy - 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy - 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy - 20;
                 }
             }
             else
             {
-                drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
-                drawAy = drawFromy;
-                drawBx = drawTox + 20;
-                drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
-                drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
-                drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawTox + 20;
+                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
+                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
             }
         }
-        else if (aspect == "P")
+        else if (getCoupling.toType == "P")
         { //does a fn1 output connect with a fn2 Precondition
-            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posPx;
-            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posPy;
-            if (drawFromx > drawTox - 10)
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
             {
-                if (drawFromy > drawToy)
+                if (getCoupling.drawFromy > getCoupling.drawToy)
                 {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawAy = drawFromy;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawAy = getCoupling.drawFromy;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
                 }
                 else
                 {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
                 }
             }
             else
             {
-                if (drawFromy > drawToy - 40)
+                if (getCoupling.drawFromy > getCoupling.drawToy - 40)
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy + 20;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + 20;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy + 20;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + 20;
                 }
                 else
                 {
-                    if (Math.Abs(drawToy - drawFromy) > 120)
+                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
                     {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
                     }
                     else
                     {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                        getCoupling.drawAx = getCoupling.drawFromx - 20;
+                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawBx = getCoupling.drawTox + 20;
+                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
+                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
                     }
                 }
             }
         }
-        else if (aspect == "R")
+        else if (getCoupling.toType == "R")
         { //does a fn1 output connect with a fn2 Resource
-            drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posRx;
-            drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posRy;
-            if (drawFromx > drawTox - 10)
+            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
             {
-                if (drawFromy > drawToy - 20)
+                if (getCoupling.drawFromy > getCoupling.drawToy - 20)
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy + 20;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + 20;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy + 20;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + 20;
+                    getCoupling.drawBx = getCoupling.drawTox + 20;
+                    getCoupling.drawBy = getCoupling.drawFromy + 20;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + 20;
                 }
                 else
                 {
-                    drawAx = drawFromx;
-                    drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
-                    drawBy = drawToy;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
+                    getCoupling.drawAx = getCoupling.drawFromx;
+                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
+                    getCoupling.drawBy = getCoupling.drawToy;
+                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
+                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
                 }
             }
             else
             {
-                drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
-                drawAy = drawFromy;
-                drawBx = drawTox + 20;
-                drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
-                drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
-                drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
+                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
+                getCoupling.drawAy = getCoupling.drawFromy;
+                getCoupling.drawBx = getCoupling.drawTox + 20;
+                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
+                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
+                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
             }
         }
+        string[] curve2 = new string[13] {
+            "M", getCoupling.drawFromx.ToString("#.##"), getCoupling.drawFromy.ToString("#.##"),
+            "Q", getCoupling.drawAx.ToString("#.##"), getCoupling.drawAy.ToString("#.##"), getCoupling.drawIntx.ToString("#.##"), getCoupling.drawInty.ToString("#.##"),
+            "Q", getCoupling.drawBx.ToString("#.##"), getCoupling.drawBy.ToString("#.##"), getCoupling.drawTox.ToString("#.##"), getCoupling.drawToy.ToString("#.##")
+    };
         StringBuilder curve = new StringBuilder();
-        curve.Append(drawTox.ToString("#.##"));
+        curve.Append(curve2[11]); //drawTox
         curve.Append("|");
-        curve.Append(drawToy.ToString("#.##"));
+        curve.Append(curve2[12]); //drawToy
         curve.Append("|");
-        curve.Append(drawFromx.ToString("#.##"));
+        curve.Append(curve2[1]); //drawFromx
         curve.Append("|");
-        curve.Append(drawFromy.ToString("#.##"));
+        curve.Append(curve2[2]); //drawFromy
         curve.Append("|");
-        curve.Append(drawAx.ToString("#.##"));
+        curve.Append(curve2[4]); //drawAx
         curve.Append("|");
-        curve.Append(drawAy.ToString("#.##"));
+        curve.Append(curve2[5]); //drawAy
         curve.Append("|");
-        curve.Append(drawBx.ToString("#.##"));
+        curve.Append(curve2[9]); //drawBx
         curve.Append("|");
-        curve.Append(drawBy.ToString("#.##"));
+        curve.Append(curve2[10]); //drawBy
         curve.Append("|");
-        curve.Append(drawIntx.ToString("#.##"));
+        curve.Append(curve2[6]); //drawIntx
         curve.Append("|");
-        curve.Append(drawInty.ToString("#.##"));
+        curve.Append(curve2[7]); //drawInty
         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve").InnerText = curve.ToString();
-    }
-    private void reDrawLines2()
-    {
-        //this function gets all the line coordinates
-        //draws two quadratic Bezier curves to connect an Output with another Aspect
-        //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
-        //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
-        foreach (XmlNode aspectS in stateContainer.sAs)
+        if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve2") == null)
         {
-            string[] dictArray = aspectS.InnerText.Split("|");
-            int index = Convert.ToInt32(dictArray[0]);
-            string indexO = dictArray[1];
-            int indexSub = Convert.ToInt32(dictArray[2]);
-            string aspect = dictArray[3];
-            double drawTox = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["x"].Value) + posOx;
-            double drawToy = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + index + "]").Attributes["y"].Value) + posOy;
-            double drawFromx = 0;
-            double drawFromy = 0;
-            double drawAx = 0;
-            double drawAy = 0;
-            double drawBx = 0;
-            double drawBy = 0;
-            double drawIntx = 0;
-            double drawInty = 0;
-            XmlNode indexSubFn = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + indexSub + "]");
-            if (aspect == "I")
-            { //does a fn1 Output connect with a fn2 Input
-                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + 6;
-                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + 50;
-                if (drawFromx > drawTox - 20)
-                {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                    drawAy = drawFromy;
-                    drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                    drawBy = drawToy;
-                }
-                else
-                {
-                    if (Math.Abs(drawToy - drawFromy) > 120)
-                    {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.375;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.625;
-                    }
-                    else
-                    {
-                        drawAx = drawFromx - 20;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    }
-                }
-                drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
-            }
-            else if (aspect == "T")
-            { //does a fn1 output connect with a fn2 Time
-                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posTx;
-                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posTy;
-                if (drawFromx > drawTox - 10)
-                {
-                    if (drawFromy > drawToy)
-                    {
-                        drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
-                    }
-                    else
-                    {
-                        drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawAy = drawFromy;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
-                    }
-                }
-                else
-                {
-                    if (drawFromy > drawToy + 40)
-                    {
-                        if (Math.Abs(drawToy - drawFromy) > 120)
-                        {
-                            drawAx = drawFromx - 20;
-                            drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
-                            drawBx = drawTox + 20;
-                            drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
-                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                        }
-                        else
-                        {
-                            drawAx = drawFromx - 20;
-                            drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
-                            drawBx = drawTox + 20;
-                            drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
-                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                        }
-                    }
-                    else
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy - 20;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy - 20;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy - 20;
-                    }
-                }
-            }
-            else if (aspect == "C")
-            { //does a fn1 output connect with a fn2 Control
-                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posCx;
-                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posCy;
-                if (drawFromx > drawTox - 10)
-                {
-                    if (drawFromy > drawToy + 20)
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
-                    }
-                    else
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy - 20;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy - 20;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy - 20;
-                    }
-                }
-                else
-                {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
-                    drawAy = drawFromy;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                }
-            }
-            else if (aspect == "P")
-            { //does a fn1 output connect with a fn2 Precondition
-                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posPx;
-                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posPy;
-                if (drawFromx > drawTox - 10)
-                {
-                    if (drawFromy > drawToy)
-                    {
-                        drawAx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawAy = drawFromy;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.625;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.5;
-                    }
-                    else
-                    {
-                        drawAx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.75;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
-                    }
-                }
-                else
-                {
-                    if (drawFromy > drawToy - 40)
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy + 20;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + 20;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy + 20;
-                    }
-                    else
-                    {
-                        if (Math.Abs(drawToy - drawFromy) > 120)
-                        {
-                            drawAx = drawFromx - 20;
-                            drawAy = drawFromy + (drawToy - drawFromy) * 0.125;
-                            drawBx = drawTox + 20;
-                            drawBy = drawFromy + (drawToy - drawFromy) * 0.375;
-                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                        }
-                        else
-                        {
-                            drawAx = drawFromx - 20;
-                            drawAy = drawFromy + (drawToy - drawFromy) * 0.25;
-                            drawBx = drawTox + 20;
-                            drawBy = drawFromy + (drawToy - drawFromy) * 0.25;
-                            drawIntx = drawFromx + (drawTox - drawFromx) * 0.5;
-                            drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                        }
-                    }
-                }
-            }
-            else if (aspect == "R")
-            { //does a fn1 output connect with a fn2 Resource
-                drawFromx = Convert.ToDouble(indexSubFn.Attributes["x"].Value) + posRx;
-                drawFromy = Convert.ToDouble(indexSubFn.Attributes["y"].Value) + posRy;
-                if (drawFromx > drawTox - 10)
-                {
-                    if (drawFromy > drawToy - 20)
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy + 20;
-                        drawBx = drawTox + 20;
-                        drawBy = drawFromy + 20;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy + 20;
-                    }
-                    else
-                    {
-                        drawAx = drawFromx;
-                        drawAy = drawFromy + (drawToy - drawFromy) * 0.5;
-                        drawBx = drawFromx + (drawTox - drawFromx) * 0.5;
-                        drawBy = drawToy;
-                        drawIntx = drawFromx + (drawTox - drawFromx) * 0.25;
-                        drawInty = drawFromy + (drawToy - drawFromy) * 0.75;
-                    }
-                }
-                else
-                {
-                    drawAx = drawFromx + (drawTox - drawFromx) * 0.5 + 20;
-                    drawAy = drawFromy;
-                    drawBx = drawTox + 20;
-                    drawBy = drawFromy + (drawToy - drawFromy) * 0.5;
-                    drawIntx = drawFromx + (drawTox - drawFromx) * 0.75 + 20;
-                    drawInty = drawFromy + (drawToy - drawFromy) * 0.25;
-                }
-            }
-            StringBuilder curve = new StringBuilder();
-            curve.Append(drawTox.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawToy.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawFromx.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawFromy.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawAx.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawAy.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawBx.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawBy.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawIntx.ToString("#.##"));
-            curve.Append("|");
-            curve.Append(drawInty.ToString("#.##"));
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + aspectS.InnerText + "\"]/Curve").InnerText = curve.ToString();
+            //XmlNode aspectIcurve2 = stateContainer.projectData_Undo[0].CreateElement("Curve2");
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]").AppendChild(stateContainer.projectData_Undo[0].CreateElement("Curve2"));
         }
+        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve2").InnerText = string.Join(" ", curve2);
     }
     public async void ClearElement(string elementName)
     {
@@ -1987,14 +1523,15 @@
                         //    projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s").RemoveChild(child);
                         //}
                         //aspectsList.RemoveAll(x => x.FunctionIDNr == selectedFn);
+                        stateContainer.couplingList.RemoveAll(x => x.outputFn == stateContainer.selectedFn || x.toFn == stateContainer.selectedFn);
                         XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']");
                         foreach (XmlNode oldChild in oldChildren)
                         {
                             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").RemoveChild(oldChild);
                         }
-                        previousFn = stateContainer.selectedFn;
                         stateContainer.selectedFn = "-1";
                         isDisabled = true;
+                        StateHasChanged();
                     }
                 }
             }
@@ -2030,13 +1567,13 @@
     {
         if (fileLoaded)
         {
-            if (AspectLabelsDisplay == "none")
+            if (stateContainer.AspectLabelsDisplay == "none")
             {
-                AspectLabelsDisplay = "";
+                stateContainer.AspectLabelsDisplay = "";
             }
             else
             {
-                AspectLabelsDisplay = "none";
+                stateContainer.AspectLabelsDisplay = "none";
             }
         }
     }
