@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Specialized;
 using System.Web;
 
-    public static class ExtensionMethods
+public static class ExtensionMethods
     {
         // get entire querystring name/value collection
         public static NameValueCollection QueryString(this NavigationManager navigationManager)

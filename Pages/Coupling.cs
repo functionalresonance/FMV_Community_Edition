@@ -1,7 +1,4 @@
-﻿using BlazorApp4.Shared;
-using Microsoft.AspNetCore.Components;
-
-public class Coupling
+﻿public class Coupling
 {
     private List<string> _displayText;
     private string _label;

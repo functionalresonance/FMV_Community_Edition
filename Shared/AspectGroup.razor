@@ -1,39 +1,20 @@
 ﻿@inject StateContainer stateContainer
+@inject IConfiguration render
 
-<g transform="scale(@stateContainer.tempZoomA)" class="@fnClass">
-    @if (stateContainer.selectedFn == couplingS.outputFn)
-    {// Lines that move with the selected function
-        shape = "drawMoveConnect";
-    }
-    //else if (selectedFn == Number(functionArray[index].name))
-    //{
-    //    shape = drawMoveConnect;
-    //}
-    else if (stateContainer.selectedFn == couplingS.toFn)
+<g transform="scale(@stateContainer.tempZoomA)">
+    @if (stateContainer.selectedLabel == couplingS?.Name) //selected coupling is blue
     {
-        shape = "drawMoveConnect";
+        <path fill="none" stroke-width="5" stroke=@render["fnStyle"+stateContainer.newFnStyle+":Properties:selected-fill"] opacity="0.5" d=@couplingS.UpdateCurve2() />
     }
-    else if (stateContainer.selectedLabel == couplingS.Name)
-    {
-        shape = "drawMoveConnect";
-    }
-    else //if (drawAll)
-    { // static lines
-        shape = "drawConnect";
-    }
-    @if (shape == "drawMoveConnect")
-    {
-        <path fill="none" stroke-width="5" stroke="#4444DD" opacity="0.5" d=@couplingS.UpdateCurve2() />
-    }
-    else // if(drawAll) {
+    else //remaining couplings are grey
     {
         //update stroke colour if part of FMI
-        <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@couplingS.UpdateCurve2() />
+        <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@couplingS?.UpdateCurve2() />
     }
-    <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay">
-        <rect x=@(couplingS.labelX - couplingS.Twidth / 2) y=@couplingS.labelY width=@couplingS.Twidth height=@(Math.Min(5 + couplingS.displayText.Count * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-        <text transform="translate(0,-2)" x=@couplingS.labelX y=@(couplingS.labelY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
-            @for (int i = 0; i < couplingS.displayText.Count; i++)
+    <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay" class="@aspectClass" @onmousedown="SelectLabel" @onmouseup="MoveLabelStop">
+        <rect x=@(couplingS?.labelX - couplingS?.Twidth / 2) y=@couplingS?.labelY width=@couplingS?.Twidth height=@(Math.Min(5 + (couplingS?.displayText.Count??1) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+        <text transform="translate(0,-2)" x=@couplingS?.labelX y=@(couplingS?.labelY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+            @for (int i = 0; i < couplingS?.displayText.Count; i++)
             {
                 <tspan x=@couplingS.labelX dy="8">@couplingS.displayText[i]</tspan>
             }
@@ -42,30 +23,38 @@
 </g>
 
 @code {
-    //private string key;
-    //private string[] dictArray;
-    //private int index;
-    //private string indexO;
-    //private int indexSub;
-    //private string aspect;
-    //private string[]? curve;
-    //private double tempLabelPosX;
-    //private double tempLabelPosY;
-    //private double labelPosx;
-    //private double labelPosy;
-    [Parameter]
-    public string shape { get; set; } = "drawConnect";
-    private int tempRwidth = 0;
-    private double tempTwidth;
-    private double tempX;
-    //private double tempX2;
-    private double tempY;
-    //private double tempH;
-    //private List<string> displayText = new List<string> { "" };
-    private int lineCount;
-    private string fnClass = "fn-hover";
+    private string shape = "drawConnect";
+    private bool dragAspect = false;
+    private string aspectClass = "fn-hover";
 
     [Parameter]
-    public Coupling couplingS { get; set; }
+    public Coupling? couplingS { get; set; }
+    [Parameter]
+    public EventCallback refreshParent { get; set; }
 
+    private void SelectLabel(MouseEventArgs e)
+    {
+        if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn) != null)
+        {
+            if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+            {
+                stateContainer.defaultFnLabel();
+            }
+        }
+        stateContainer.selectedLabel = couplingS?.Name??"";
+        stateContainer.selectedFn = "-1";
+        stateContainer.isDisabled = true;
+        stateContainer.fnName = "";
+        dragAspect = true;
+        aspectClass = "fn-move";
+        refreshParent.InvokeAsync();
+    }
+    private void MoveLabelStop(MouseEventArgs e)
+    {
+        if (dragAspect)
+        {
+            dragAspect = false;
+            aspectClass = "fn-hover";
+        }
+    }
 }

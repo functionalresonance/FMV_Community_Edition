@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-public class Aspect
+﻿public class Aspect
 {
     private string type;
     private string index;
