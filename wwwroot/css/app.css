@@ -254,6 +254,14 @@ app {
     .main .top-row a, .main .top-row .btn-link {
         margin-left: 0;
     }
+    .sidebar {
+        width: 200px;
+        min-width: 150px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        display: block;
+    }
 }
 
 @media (min-width: 768px) {
@@ -263,9 +271,11 @@ app {
 
     .sidebar {
         width: 250px;
+        min-width: 200px;
         height: 100vh;
         position: sticky;
         top: 0;
+        display: block;
     }
 
     .main .top-row {

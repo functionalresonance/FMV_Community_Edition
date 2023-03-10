@@ -25,13 +25,14 @@
     </div>
     <div class="float-right">
         <button class="btn btn-menu oi oi-tags" @onclick="ShowLabels"></button>
-        <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
         <AuthorizeView>
             <Authorized>
+                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
                 <button class="btn btn-menu oi oi-reload" @onclick="Recover"></button>
                 <button class="btn btn-menu oi oi-account-logout" @onclick="@BeginLogout"></button>
             </Authorized>
             <NotAuthorized>
+                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyleBasic"></button>
                 <button class="btn btn-menu oi oi-account-login" @onclick="@BeginLogin"></button>
             </NotAuthorized>
         </AuthorizeView>
@@ -46,182 +47,189 @@
         </div>
         <div class="d-flex pt-2">
             <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))">I</button>
-            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
             {
                 showA = true;
                 GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr=" + stateContainer.selectedFn + "]");
-                string GetID = "I" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-                string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-                <textarea id="@GetID" class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+                string GetID = "I" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                <textarea id="@GetID" class="@isOrphan" value=@GetNodes?[0]?.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
             }
             else
             {
                 showA = false;
             }
         </div>
-        @if (showA)
+        @if (showA && GetNodes?.Count > 1)
         {
             int ListCount = 0;
             @foreach (XmlNode GetList in GetNodes)
             {
                 if (ListCount > 0)
                 {
-                    string GetID = "I" + GetList.SelectSingleNode("IDNr").InnerText;
-                    string isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    string GetID = "I" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                     <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" />
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Input", GetList.SelectSingleNode("IDNr").InnerText))" />
                     </div>
                 }
                 ListCount++;
             }
         }
-        else
-        {
-        }
-        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
+        <div class="d-flex pt-2">
+            <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
+            {
+                showA = true;
+                GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]");
+                string GetID = "O" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes?[0]?.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            }
+            else
+            {
+                showA = false;
+            }
+        </div>
+        @if (showA && GetNodes!=null)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=" + stateContainer.selectedFn + "]");
-            string GetID = "O" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-            <div class="d-flex pt-2">
-                <button id="Output" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
-                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
-            </div>
             @foreach (XmlNode GetList in GetNodes)
             {
                 if (ListCount > 0)
                 {
-                    GetID = "O" + GetList.SelectSingleNode("IDNr").InnerText;
-                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    string GetID = "O" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                     <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" />
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Output", GetList.SelectSingleNode("IDNr").InnerText))" />
                     </div>
                 }
                 ListCount++;
             }
         }
-        else
-        {
-            <div class="d-flex pt-2">
-                <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))">O</button>
-            </div>
-        }
-        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
-        {
-            int ListCount = 0;
-            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]");
-            string GetID = "P" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-            <div class="d-flex pt-2">
-                <button id="Precondition" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
+        <div class="d-flex pt-2">
+            <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
+            {
+                showA = true;
+                GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr=" + stateContainer.selectedFn + "]");
+                string GetID = "P" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                 <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Precondition", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
-            </div>
-            @foreach (XmlNode GetList in GetNodes)
-            {
-                if (ListCount > 0)
-                {
-                    GetID = "P" + GetList.SelectSingleNode("IDNr").InnerText;
-                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-                    <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" />
-                    </div>
-                }
-                ListCount++;
             }
-        }
-        else
-        {
-            <div class="d-flex pt-2">
-                <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))">P</button>
-            </div>
-        }
-        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
+            else
+            {
+                showA = false;
+            }
+        </div>
+        @if (showA && GetNodes?.Count > 1)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]");
-            string GetID = "R" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-            <div class="d-flex pt-2">
-                <button id="Resource" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
-                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
-            </div>
             @foreach (XmlNode GetList in GetNodes)
             {
                 if (ListCount > 0)
                 {
-                    GetID = "R" + GetList.SelectSingleNode("IDNr").InnerText;
-                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    string GetID = "P" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                     <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" />
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Precondition", GetList.SelectSingleNode("IDNr").InnerText))" />
                     </div>
                 }
                 ListCount++;
             }
         }
-        else
-        {
-            <div class="d-flex pt-2">
-                <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
-            </div>
-        }
-        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
+        <div class="d-flex pt-2">
+            <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))">R</button>
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
+            {
+                showA = true;
+                GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr=" + stateContainer.selectedFn + "]");
+                string GetID = "R" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes?[0]?.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            }
+            else
+            {
+                showA = false;
+            }
+        </div>
+        @if (showA && GetNodes?.Count > 1)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]");
-            string GetID = "C" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-            <div class="d-flex pt-2">
-                <button id="Control" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
-                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
-            </div>
             @foreach (XmlNode GetList in GetNodes)
             {
                 if (ListCount > 0)
                 {
-                    GetID = "C" + GetList.SelectSingleNode("IDNr").InnerText;
-                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    string GetID = "R" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                     <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" />
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Resource", GetList.SelectSingleNode("IDNr").InnerText))" />
                     </div>
                 }
                 ListCount++;
             }
         }
-        else
-        {
-            <div class="d-flex pt-2">
-                <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
-            </div>
-        }
-        @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]").Count != 0)
+        <div class="d-flex pt-2">
+            <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))">C</button>
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
+            {
+                showA = true;
+                GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr=" + stateContainer.selectedFn + "]");
+                string GetID = "C" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes?[0]?.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            }
+            else
+            {
+                showA = false;
+            }
+        </div>
+        @if (showA && GetNodes?.Count > 1)
         {
             int ListCount = 0;
-            XmlNodeList GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]");
-            string GetID = "T" + GetNodes[0].SelectSingleNode("IDNr").InnerText;
-            string isOrphan = GetNodes[0].SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
-            <div class="d-flex pt-2">
-                <button id="Time" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))">T</button>
-                <textarea id=@GetID class="@isOrphan" value=@GetNodes[0].SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
-            </div>
             @foreach (XmlNode GetList in GetNodes)
             {
                 if (ListCount > 0)
                 {
-                    GetID = "T" + GetList.SelectSingleNode("IDNr").InnerText;
-                    isOrphan = GetList.SelectSingleNode("@orphan").Value == "true" ? "aspect-orphan" : "";
+                    string GetID = "C" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
                     <div class="d-flex aspect-list">
-                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName").InnerText @oninput="@((e) => @AspectChange(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" />
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Control", GetList.SelectSingleNode("IDNr").InnerText))" />
                     </div>
                 }
                 ListCount++;
             }
         }
-        else
+        <div class="d-flex pt-2">
+            <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))">T</button>
+            @if (stateContainer.selectedFn != "-1" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]")?.Count != 0)
+            {
+                showA = true;
+                GetNodes = stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr=" + stateContainer.selectedFn + "]");
+                string GetID = "T" + GetNodes?[0]?.SelectSingleNode("IDNr")?.InnerText;
+                string isOrphan = GetNodes?[0]?.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                <textarea id=@GetID class="@isOrphan" value=@GetNodes?[0]?.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetNodes[0].SelectSingleNode("IDNr").InnerText))" />
+            }
+            else
+            {
+                showA = false;
+            }
+        </div>
+        @if (showA && GetNodes?.Count > 1)
         {
-            <div class="d-flex pt-2">
-                <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))">T</button>
-            </div>
+            int ListCount = 0;
+            @foreach (XmlNode GetList in GetNodes)
+            {
+                if (ListCount > 0)
+                {
+                    string GetID = "T" + GetList.SelectSingleNode("IDNr")?.InnerText;
+                    string isOrphan = GetList.SelectSingleNode("@orphan")?.Value == "true" ? "aspect-orphan" : "";
+                    <div class="d-flex aspect-list">
+                        <textarea id=@GetID class="@isOrphan" value=@GetList.SelectSingleNode("IDName")?.InnerText @oninput="@((e) => @AspectChange(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeypress="@((e) => @FocusElementKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" @onkeydown="@((e) => @CheckDeleteKey(e, "Time", GetList.SelectSingleNode("IDNr").InnerText))" />
+                    </div>
+                }
+                ListCount++;
+            }
         }
     </div>
 </div>
@@ -270,7 +278,7 @@
             @if (fileLoaded)
             {
                 <g @onmousedown="UnSelect" @ontouchstart="UnSelectTouch">
-                    <rect fill=@render["fnStyle"+stateContainer.newFnStyle+":Properties:canvas-color"] opacity="1" width="100%" height="100%" />
+                    <rect fill=@render["fnStyle"+stateContainer.newFnStyle+":Properties:canvas-color"] opacity=@render["fnStyle"+stateContainer.newFnStyle+":Properties:canvas-opacity"] width="100%" height="100%" />
                 </g>
                 foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn))
                 {
@@ -576,16 +584,16 @@
             tempId = id;
             tempType = type;
             AspectChangeCommitt();
-                /*
-                bool oldLine;
-                bool newLine;
-                if (type == "Output")
-                {
-                /*
-                If oldName count >0 then it had a line else no line: O=T/F
-                if aspectName count >0 then should have line: A=T/F
-                O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
-                O=T & A=F : remove line
+            /*
+            bool oldLine;
+            bool newLine;
+            if (type == "Output")
+            {
+            /*
+            If oldName count >0 then it had a line else no line: O=T/F
+            if aspectName count >0 then should have line: A=T/F
+            O=T & A=T : no change (or O=F & A=F) in other words, if O=A no change
+        O=T & A=F : remove line
             O=F & A=T : add line
             */
             /*
@@ -644,7 +652,7 @@
                         {
                             XmlNode newAspect = reSetAspect(dictArray);
                             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
-                            reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
+                            //reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
                         }
                         hasOrphan = false;
                         aspect.Orphan = "false";
@@ -739,7 +747,7 @@
                     {
                         XmlNode newAspect = reSetAspect(dictArray);
                         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects").AppendChild(newAspect);
-                        reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
+                        //reDrawLines(newAspect.SelectSingleNode("Name").InnerText);
                     }
                     itemI.SelectSingleNode("@orphan").Value = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan").Value = "false";
@@ -1038,7 +1046,7 @@
                     dictArray[2] = aspect.FunctionIDNr;
                     dictArray[3] = aspect.Type.Substring(0, 1);
                     aspectsA.AppendChild(reSetAspect(dictArray));
-                    reDrawLines(string.Join("|", dictArray));
+                    //reDrawLines(string.Join("|", dictArray));
                     aspect.Orphan = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan").Value = "false";
                     isOutputOrphan = "false";
@@ -1164,267 +1172,16 @@
         aspectIname.InnerText = string.Join("|", dictArray);
         aspectI.AppendChild(aspectIname);
         XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve"); 
-        aspectI.AppendChild(aspectIcurve);
         XmlNode aspectIcurve2 = stateContainer.projectData_Undo[0].CreateElement("Curve2");
+        Coupling addCoupling = new Coupling(string.Join("|", dictArray), 0, 0, "from", "to", "true", dictArray[0], dictArray[1], dictArray[2], dictArray[3],
+            stateContainer.functionList.Find(x => x.IDNr == dictArray[0]).x + posX["O"], stateContainer.functionList.Find(x => x.IDNr == dictArray[0]).y + posY["O"],
+            stateContainer.functionList.Find(x => x.IDNr == dictArray[2]).x + posX[dictArray[3]], stateContainer.functionList.Find(x => x.IDNr == dictArray[2]).y + posY[dictArray[3]]);
+        stateContainer.couplingList.Add(addCoupling);
+        aspectIcurve2.InnerText = addCoupling.reDrawLines("", 0, 0);
+        aspectIcurve.InnerText = addCoupling.curve;
+        aspectI.AppendChild(aspectIcurve);
         aspectI.AppendChild(aspectIcurve2);
-        stateContainer.couplingList.Add(new Coupling(string.Join("|", dictArray), 0, 0, "from", "to", "true", dictArray[0], dictArray[1], dictArray[2],dictArray[3]));
         return aspectI;
-    }
-    private void reDrawLines(string key)
-    {
-        //this function gets all the line coordinates
-        //draws two quadratic Bezier curves to connect an Output with another Aspect
-        //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
-        //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
-        Coupling getCoupling = stateContainer.couplingList.Find(x => x.Name == key); 
-        //getCoupling.drawTox = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.outputFn + "]").Attributes["x"].Value) + posX["O"];
-        //getCoupling.drawToy = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.outputFn + "]").Attributes["y"].Value) + posY["O"];
-        //getCoupling.drawFromx = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.toFn + "]").Attributes["x"].Value) + posX[getCoupling.toType];
-        //getCoupling.drawFromy = double.Parse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + getCoupling.toFn + "]").Attributes["y"].Value) + posY[getCoupling.toType];
-        getCoupling.drawTox = stateContainer.functionList.Find(x => x.IDNr == getCoupling.outputFn).x + posX["O"];
-        getCoupling.drawToy = stateContainer.functionList.Find(x => x.IDNr == getCoupling.outputFn).y + posY["O"];
-        getCoupling.drawFromx = stateContainer.functionList.Find(x => x.IDNr == getCoupling.toFn).x + posX[getCoupling.toType];
-        getCoupling.drawFromy = stateContainer.functionList.Find(x => x.IDNr == getCoupling.toFn).y + posY[getCoupling.toType];
-        if (getCoupling.toType == "I")
-        { //does a fn1 Output connect with a fn2 Input
-            if (getCoupling.drawFromx > getCoupling.drawTox - 20)
-            {
-                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                getCoupling.drawAy = getCoupling.drawFromy;
-                getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
-                getCoupling.drawBy = getCoupling.drawToy;
-            }
-            else
-            {
-                if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx - 20;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.625;
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx - 20;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                }
-            }
-            getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-            getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-        }
-        else if (getCoupling.toType == "T")
-        { //does a fn1 output connect with a fn2 Time
-            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawAy = getCoupling.drawFromy;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                }
-            }
-            else
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy + 40)
-                {
-                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
-                    {
-                        getCoupling.drawAx = getCoupling.drawFromx - 20;
-                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
-                        getCoupling.drawBx = getCoupling.drawTox + 20;
-                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
-                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                    }
-                    else
-                    {
-                        getCoupling.drawAx = getCoupling.drawFromx - 20;
-                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                        getCoupling.drawBx = getCoupling.drawTox + 20;
-                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                    }
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy - 20;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy - 20;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy - 20;
-                }
-            }
-        }
-        else if (getCoupling.toType == "C")
-        { //does a fn1 output connect with a fn2 Control
-            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy + 20)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy - 20;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy - 20;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy - 20;
-                }
-            }
-            else
-            {
-                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
-                getCoupling.drawAy = getCoupling.drawFromy;
-                getCoupling.drawBx = getCoupling.drawTox + 20;
-                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
-                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-            }
-        }
-        else if (getCoupling.toType == "P")
-        { //does a fn1 output connect with a fn2 Precondition
-            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawAy = getCoupling.drawFromy;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.625;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
-                }
-            }
-            else
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy - 40)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy + 20;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy + 20;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy + 20;
-                }
-                else
-                {
-                    if (Math.Abs(getCoupling.drawToy - getCoupling.drawFromy) > 120)
-                    {
-                        getCoupling.drawAx = getCoupling.drawFromx - 20;
-                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.125;
-                        getCoupling.drawBx = getCoupling.drawTox + 20;
-                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.375;
-                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                    }
-                    else
-                    {
-                        getCoupling.drawAx = getCoupling.drawFromx - 20;
-                        getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                        getCoupling.drawBx = getCoupling.drawTox + 20;
-                        getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                        getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                        getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-                    }
-                }
-            }
-        }
-        else if (getCoupling.toType == "R")
-        { //does a fn1 output connect with a fn2 Resource
-            if (getCoupling.drawFromx > getCoupling.drawTox - 10)
-            {
-                if (getCoupling.drawFromy > getCoupling.drawToy - 20)
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy + 20;
-                    getCoupling.drawBx = getCoupling.drawTox + 20;
-                    getCoupling.drawBy = getCoupling.drawFromy + 20;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy + 20;
-                }
-                else
-                {
-                    getCoupling.drawAx = getCoupling.drawFromx;
-                    getCoupling.drawAy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                    getCoupling.drawBx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5;
-                    getCoupling.drawBy = getCoupling.drawToy;
-                    getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.25;
-                    getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.75;
-                }
-            }
-            else
-            {
-                getCoupling.drawAx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.5 + 20;
-                getCoupling.drawAy = getCoupling.drawFromy;
-                getCoupling.drawBx = getCoupling.drawTox + 20;
-                getCoupling.drawBy = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.5;
-                getCoupling.drawIntx = getCoupling.drawFromx + (getCoupling.drawTox - getCoupling.drawFromx) * 0.75 + 20;
-                getCoupling.drawInty = getCoupling.drawFromy + (getCoupling.drawToy - getCoupling.drawFromy) * 0.25;
-            }
-        }
-        string[] curve2 = new string[13] {
-            "M", getCoupling.drawFromx.ToString("#.##"), getCoupling.drawFromy.ToString("#.##"),
-            "Q", getCoupling.drawAx.ToString("#.##"), getCoupling.drawAy.ToString("#.##"), getCoupling.drawIntx.ToString("#.##"), getCoupling.drawInty.ToString("#.##"),
-            "Q", getCoupling.drawBx.ToString("#.##"), getCoupling.drawBy.ToString("#.##"), getCoupling.drawTox.ToString("#.##"), getCoupling.drawToy.ToString("#.##")
-    };
-        StringBuilder curve = new StringBuilder();
-        curve.Append(curve2[11]); //drawTox
-        curve.Append("|");
-        curve.Append(curve2[12]); //drawToy
-        curve.Append("|");
-        curve.Append(curve2[1]); //drawFromx
-        curve.Append("|");
-        curve.Append(curve2[2]); //drawFromy
-        curve.Append("|");
-        curve.Append(curve2[4]); //drawAx
-        curve.Append("|");
-        curve.Append(curve2[5]); //drawAy
-        curve.Append("|");
-        curve.Append(curve2[9]); //drawBx
-        curve.Append("|");
-        curve.Append(curve2[10]); //drawBy
-        curve.Append("|");
-        curve.Append(curve2[6]); //drawIntx
-        curve.Append("|");
-        curve.Append(curve2[7]); //drawInty
-        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve").InnerText = curve.ToString();
-        if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve2") == null)
-        {
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]").AppendChild(stateContainer.projectData_Undo[0].CreateElement("Curve2"));
-        }
-        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + key + "\"]/Curve2").InnerText = string.Join(" ", curve2);
     }
     public async void ClearElement(string elementName)
     {
@@ -1498,6 +1255,22 @@
             else
             {
                 stateContainer.AspectLabelsDisplay = "none";
+            }
+        }
+    }
+    private void ChangeFnStyleBasic()
+    {
+        if (fileLoaded)
+        {
+            stateContainer.newFnStyle += 1;
+            if (stateContainer.newFnStyle >= 3)
+            {
+                stateContainer.newFnStyle = 0;
+            }
+            foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function"))
+            {
+                fn.SelectSingleNode("@fnStyle").Value = stateContainer.newFnStyle.ToString();
+                stateContainer.functionList.Find(x => x.IDNr == fn.SelectSingleNode("IDNr").InnerText).fnStyle = stateContainer.newFnStyle.ToString();
             }
         }
     }

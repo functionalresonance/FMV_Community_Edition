@@ -4,12 +4,12 @@
 <g transform="scale(@stateContainer.tempZoomA)">
     @if (stateContainer.selectedLabel == couplingS?.Name) //selected coupling is blue
     {
-        <path fill="none" stroke-width="5" stroke=@render["fnStyle"+stateContainer.newFnStyle+":Properties:selected-fill"] opacity="0.5" d=@couplingS.UpdateCurve2() />
+        <path fill="none" stroke-width="5" stroke=@render["fnStyle"+stateContainer.newFnStyle+":Properties:selected-fill"] opacity="0.5" d=@couplingS.curve2 />
     }
     else //remaining couplings are grey
     {
         //update stroke colour if part of FMI
-        <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@couplingS?.UpdateCurve2() />
+        <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@couplingS?.curve2 />
     }
     <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay" class="@aspectClass" @onmousedown="SelectLabel" @onmouseup="MoveLabelStop">
         <rect x=@(couplingS?.labelX - couplingS?.Twidth / 2) y=@couplingS?.labelY width=@couplingS?.Twidth height=@(Math.Min(5 + (couplingS?.displayText.Count??1) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
@@ -23,7 +23,7 @@
 </g>
 
 @code {
-    private string shape = "drawConnect";
+    //private string shape = "drawConnect";
     private bool dragAspect = false;
     private string aspectClass = "fn-hover";
 

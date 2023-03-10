@@ -34,7 +34,6 @@
         set
         {
             _x = value;
-            //resetPosition();
         }
     }
     public double y
@@ -43,7 +42,6 @@
         set
         {
             _y = value;
-            //resetPosition();
         }
     }
     public string fnStyle
