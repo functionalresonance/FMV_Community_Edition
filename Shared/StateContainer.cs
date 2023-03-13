@@ -24,33 +24,33 @@ namespace BlazorApp4.Shared
         public bool isDisabled { get; set; } = true;
         public void defaultFnLabel()
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName").InnerText = selectedFn;
-            functionList.Find(x => x.IDNr == selectedFn).label = selectedFn;
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName")!.InnerText = selectedFn;
+            functionList.Find(x => x.IDNr == selectedFn)!.label = selectedFn;
         }
         public void sFnIsInput(string isInput)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@isInput").InnerText = isInput;
-            functionList.Find(x => x.IDNr == selectedFn).isInput = isInput;
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@isInput")!.InnerText = isInput;
+            functionList.Find(x => x.IDNr == selectedFn)!.isInput = isInput;
         }
         public void sFnOrphans(int orphans)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@orphans").InnerText = orphans.ToString();
-            functionList.Find(x => x.IDNr == selectedFn).orphans = orphans;
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@orphans")!.InnerText = orphans.ToString();
+            functionList.Find(x => x.IDNr == selectedFn)!.orphans = orphans;
         }
         public void sFnFunctionType(string FunctionType)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/FunctionType").InnerText = FunctionType;
-            functionList.Find(x => x.IDNr == selectedFn).FunctionType = FunctionType;
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/FunctionType")!.InnerText = FunctionType;
+            functionList.Find(x => x.IDNr == selectedFn)!.FunctionType = FunctionType;
         }
         public void sFnIDName(string IDName)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName").InnerText = IDName;
-            functionList.Find(x => x.IDNr == selectedFn).label = IDName;
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName")!.InnerText = IDName;
+            functionList.Find(x => x.IDNr == selectedFn)!.label = IDName;
         }
         public void updateXY(double x, double y)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@x").InnerText = x.ToString("#.##");
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@y").InnerText = y.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@x")!.InnerText = x.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@y")!.InnerText = y.ToString("#.##");
         }
     }
 }

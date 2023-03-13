@@ -23,7 +23,6 @@
 </g>
 
 @code {
-    //private string shape = "drawConnect";
     private bool dragAspect = false;
     private string aspectClass = "fn-hover";
 
@@ -34,12 +33,9 @@
 
     private void SelectLabel(MouseEventArgs e)
     {
-        if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn) != null)
+        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
         {
-            if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
-            {
-                stateContainer.defaultFnLabel();
-            }
+            stateContainer.defaultFnLabel();
         }
         stateContainer.selectedLabel = couplingS?.Name??"";
         stateContainer.selectedFn = "-1";

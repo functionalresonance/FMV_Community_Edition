@@ -177,58 +177,13 @@
     [Parameter]
     public EventCallback refreshParent { get; set; }
 
-    private List<string> returnTextLines(string text, int length)
-    {
-        var textLines = new List<string>();
-        string[] textWords = text.Split(" ");
-        int tL = 0;
-        textLines.Add("");
-        int lL = length;
-        foreach (string tWord in textWords)
-        {
-            if (tWord.Length <= lL)
-            {
-                if (lL < length)
-                {
-                    textLines[tL] += " ";
-                }
-                textLines[tL] += tWord;
-                lL -= tWord.Length;
-            }
-            else if (tWord.Length > length)
-            {
-                string tempWord = tWord;
-                while (tempWord.Length > 0)
-                {
-                    textLines.Add("");
-                    tL++;
-                    lL = length;
-                    string addWord = tempWord.Substring(0, Math.Min(length + 1, tempWord.Length));
-                    textLines[tL] += addWord;
-                    lL -= addWord.Length;
-                    tempWord = tempWord.Substring(addWord.Length);
-                }
-            }
-            else
-            {
-                textLines.Add("");
-                tL++;
-                textLines[tL] += tWord;
-                lL = length - tWord.Length;
-            }
-        }
-        return textLines;
-    }
     private void SelectFnTouch(TouchEventArgs e)
     {
         if (e.Touches.Length == 1)
         {
-            if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn) != null)
+            if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
             {
-                if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
-                {
-                    stateContainer.defaultFnLabel();
-                }
+                stateContainer.defaultFnLabel();
             }
             stateContainer.selectedLabel = "";
             stateContainer.selectedFn = fn?.IDNr??"-1";
@@ -244,12 +199,9 @@
     }
     private void SelectFn(MouseEventArgs e)
     {
-        if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn) != null)
+        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
         {
-            if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
-            {
-                stateContainer.defaultFnLabel();
-            }
+            stateContainer.defaultFnLabel();
         }
         stateContainer.selectedLabel = "";
         stateContainer.selectedFn = fn?.IDNr??"-1";
@@ -317,8 +269,8 @@
             {
                 foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn == fn.IDNr || x.toFn == fn.IDNr))
                 {
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2").InnerText = couplingS.curve2;
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve").InnerText = couplingS.curve;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2")!.InnerText = couplingS.curve2;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve")!.InnerText = couplingS.curve;
                 }
             }
             dragFn = false;
@@ -336,8 +288,8 @@
             {
                 foreach (Coupling couplingS in stateContainer.couplingList.FindAll(x => x.outputFn == fn.IDNr || x.toFn == fn.IDNr))
                 {
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2").InnerText = couplingS.curve2;
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve").InnerText = couplingS.curve;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve2")!.InnerText = couplingS.curve2;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + couplingS.Name + "\"]/Curve")!.InnerText = couplingS.curve;
                 }
             }
             dragFn = false;

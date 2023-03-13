@@ -2,16 +2,14 @@
 {
     private List<string> _displayText;
     private string _label;
-    private double _x;
-    private double _y;
     private string _fnStyle;
     private string _FunctionType;
 
     public Function(string IDNr, double x, double y, string fnStyle, string FunctionType, string label, int orphans, string isInput, string fnColorStyle, string fnColorValue )
     {
         this.IDNr = IDNr;
-        _x = x;
-        _y = y;
+        this.x = x;
+        this.y = y;
         _fnStyle = fnStyle;
         _FunctionType = FunctionType;
         _label = label;
@@ -28,22 +26,8 @@
     public string isInput { get; set; }
     public string fnColorStyle { get; set; }
     public string fnColorValue { get; set; }
-    public double x
-    {
-        get { return _x; }
-        set
-        {
-            _x = value;
-        }
-    }
-    public double y
-    {
-        get { return _y; }
-        set
-        {
-            _y = value;
-        }
-    }
+    public double x { get; set; }
+    public double y { get; set; }
     public string fnStyle
     {
         get { return _fnStyle; }
@@ -64,7 +48,7 @@
     {
         get { return _label; }
         set { _label = value;
-            _displayText = returnTextLines(_label, 15);
+            _displayText = returnTextLines(_label, 12);
         }
     }
     public List<string> displayText
@@ -81,18 +65,53 @@
         int lL = length;
         foreach (string tWord in textWords)
         {
-            if (tWord.Length <= lL)
+            var doTWord = tWord;
+            if (doTWord.StartsWith(Environment.NewLine))
+            {
+                textLines.Add("");
+                tL++;
+                lL = length;
+                doTWord = tWord.Replace(Environment.NewLine, "");
+            } 
+            if (doTWord.Contains(Environment.NewLine) && !doTWord.EndsWith(Environment.NewLine))
             {
                 if (lL < length)
                 {
                     textLines[tL] += " ";
                 }
-                textLines[tL] += tWord;
-                lL -= tWord.Length;
+                string[] splitLines = doTWord.Split(Environment.NewLine);
+                int sLi = 0;
+                foreach (string splitWord in splitLines)
+                {
+                    doTWord = splitWord;
+                    if (sLi < splitLines.Length-1)
+                    {
+                        textLines[tL] += splitWord;
+                        textLines.Add("");
+                        tL++;
+                        lL = length;
+                    }
+                    sLi ++;
+                }
             }
-            else if (tWord.Length > length)
+            if (doTWord.Length <= lL)
             {
-                string tempWord = tWord;
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += doTWord;
+                lL -= doTWord.Length;
+                if (doTWord.EndsWith(Environment.NewLine))
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                }
+            }
+            else if (doTWord.Length > length)
+            {
+                string tempWord = doTWord;
                 while (tempWord.Length > 0)
                 {
                     textLines.Add("");
@@ -108,8 +127,8 @@
             {
                 textLines.Add("");
                 tL++;
-                textLines[tL] += tWord;
-                lL = length - tWord.Length;
+                textLines[tL] += doTWord;
+                lL = length - doTWord.Length;
             }
         }
         return textLines;

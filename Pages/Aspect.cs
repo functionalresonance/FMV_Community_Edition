@@ -1,10 +1,13 @@
-﻿public class Aspect
+﻿using Microsoft.AspNetCore.Components;
+
+public class Aspect
 {
     private string type;
     private string index;
     private string orphan;
     private string name;
     private string fnIDNr;
+    public ElementReference elementReference;
 
     public Aspect(string type, string index, string orphan, string name, string fnIDNr)
     {

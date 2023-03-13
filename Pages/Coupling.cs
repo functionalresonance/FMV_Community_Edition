@@ -88,18 +88,53 @@ public class Coupling
         int lL = length;
         foreach (string tWord in textWords)
         {
-            if (tWord.Length <= lL)
+            var doTWord = tWord;
+            if (doTWord.StartsWith(Environment.NewLine))
+            {
+                textLines.Add("");
+                tL++;
+                lL = length;
+                doTWord = tWord.Replace(Environment.NewLine, "");
+            }
+            if (doTWord.Contains(Environment.NewLine) && !doTWord.EndsWith(Environment.NewLine))
             {
                 if (lL < length)
                 {
                     textLines[tL] += " ";
                 }
-                textLines[tL] += tWord;
-                lL -= tWord.Length;
+                string[] splitLines = doTWord.Split(Environment.NewLine);
+                int sLi = 0;
+                foreach (string splitWord in splitLines)
+                {
+                    doTWord = splitWord;
+                    if (sLi < splitLines.Length - 1)
+                    {
+                        textLines[tL] += splitWord;
+                        textLines.Add("");
+                        tL++;
+                        lL = length;
+                    }
+                    sLi++;
+                }
             }
-            else if (tWord.Length > length)
+            if (doTWord.Length <= lL)
             {
-                string tempWord = tWord;
+                if (lL < length)
+                {
+                    textLines[tL] += " ";
+                }
+                textLines[tL] += doTWord;
+                lL -= doTWord.Length;
+                if (doTWord.EndsWith(Environment.NewLine))
+                {
+                    textLines.Add("");
+                    tL++;
+                    lL = length;
+                }
+            }
+            else if (doTWord.Length > length)
+            {
+                string tempWord = doTWord;
                 while (tempWord.Length > 0)
                 {
                     textLines.Add("");
@@ -115,8 +150,8 @@ public class Coupling
             {
                 textLines.Add("");
                 tL++;
-                textLines[tL] += tWord;
-                lL = length - tWord.Length;
+                textLines[tL] += doTWord;
+                lL = length - doTWord.Length;
             }
         }
         return textLines;
