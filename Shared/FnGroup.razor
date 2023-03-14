@@ -17,7 +17,7 @@
         </g>
     }
 }
-<g class=@fnClass transform="translate(@fn?.x,@fn?.y)" @onmousedown="SelectFn" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+<g class=@fnClass transform="translate(@fn?.x,@fn?.y)" @onmousedown="SelectFn" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch" >
     @if (fn?.IDNr == stateContainer.selectedFn)
     {
         if (dragFn)
@@ -171,6 +171,7 @@
     private bool isFnColor = false;
     private bool dragFn = false;
     private string fnClass = "fn-hover";
+    private ElementReference elementReference;
 
     [Parameter]
     public Function? fn { get; set; }

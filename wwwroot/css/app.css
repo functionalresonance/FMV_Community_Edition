@@ -140,7 +140,6 @@ app {
 }
 .sidebar {
     background-color: #F1F3F4;
-    height: 100%;
     padding-top: 3rem;
     padding-left: 0.5rem;
 }
@@ -242,58 +241,76 @@ app {
     top: 0.5rem;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 575.98px) {
     .main .top-row:not(.auth) {
         display: none;
     }
-
     .main .top-row.auth {
         justify-content: space-between;
     }
-
     .main .top-row a, .main .top-row .btn-link {
         margin-left: 0;
     }
+    .main {
+        margin-left: 150px;
+    }
     .sidebar {
-        width: 200px;
-        min-width: 150px;
+        width: 150px;
         height: 100vh;
-        position: sticky;
+        position: fixed;
         top: 0;
         display: block;
+        float: left;
     }
 }
-
-@media (min-width: 768px) {
+@media (min-width: 576px) {
     app {
         flex-direction: row;
     }
-
     .sidebar {
-        width: 250px;
-        min-width: 200px;
+        width: 175px;
         height: 100vh;
-        position: sticky;
+        position: fixed;
         top: 0;
         display: block;
+        float: left;
     }
-
-    .main .top-row {
-        position: sticky;
-        top: 0;
+    .main {
+        margin-left: 175px;
     }
-
-    /*   .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
-    }
-*/
+        .main .top-row {
+            position: sticky;
+            top: 0;
+        }
     .navbar-toggler {
         display: none;
     }
-
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
+    }
+}
+@media (min-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    .main {
+        margin-left: 200px;
+    }
+}
+@media (min-width: 992px) {
+    .sidebar {
+        width: 225px;
+    }
+    .main {
+        margin-left: 225px;
+    }
+}
+@media (min-width: 1200px) {
+    .sidebar {
+        width: 250px;
+    }
+    .main {
+        margin-left: 250px;
     }
 }

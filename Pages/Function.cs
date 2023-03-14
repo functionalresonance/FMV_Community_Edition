@@ -4,7 +4,6 @@
     private string _label;
     private string _fnStyle;
     private string _FunctionType;
-
     public Function(string IDNr, double x, double y, string fnStyle, string FunctionType, string label, int orphans, string isInput, string fnColorStyle, string fnColorValue )
     {
         this.IDNr = IDNr;
