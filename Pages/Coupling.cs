@@ -1,11 +1,6 @@
-﻿using BlazorApp4.Shared;
-using Microsoft.AspNetCore.Components;
-
-public class Coupling
+﻿public class Coupling
 {
-    private Dictionary<string, double> posX = new Dictionary<string, double> { { "I", 6 }, { "O", 93.5 }, { "T", 28 }, { "C", 71.5 }, { "P", 28 }, { "R", 71.5 } };
-    private Dictionary<string, double> posY = new Dictionary<string, double> { { "I", 50 }, { "O", 50 }, { "T", 12 }, { "C", 12 }, { "P", 88 }, { "R", 88 } };
-    private List<string> _displayText;
+    private List<string>? _displayText;
     private string _label;
     private double _labelDx;
     private double _labelDy;
@@ -21,7 +16,6 @@ public class Coupling
         this.outputFn = outputFn;
         this.toFn = toFn;
         _label = label;
-        _displayText = returnTextLines(_label, 15);
         this.toType = toType;
         this.drawTox = drawTox;
         this.drawToy = drawToy;
@@ -56,7 +50,6 @@ public class Coupling
     {
         get { return _label; }
         set { _label = value;
-            _displayText = returnTextLines(_label, 15);
             resetLabel();
         }
     }
@@ -74,15 +67,10 @@ public class Coupling
     public double drawBy { get; set; }
     public double drawIntx { get; set; }
     public double drawInty { get; set; }
-    public List<string> displayText
-    {
-        get { return _displayText; }
-        set { _displayText = value; }
-    }
-    private List<string> returnTextLines(string text, int length)
+    public List<string> ReturnTextLines(int length, bool reset)
     {
         var textLines = new List<string>();
-        string[] textWords = text.Split(" ");
+        string[] textWords = _label.Split(" ");
         int tL = 0;
         textLines.Add("");
         int lL = length;
@@ -154,6 +142,8 @@ public class Coupling
                 lL = length - doTWord.Length;
             }
         }
+        _displayText = textLines;
+        if (reset) resetLabel();
         return textLines;
     }
     public string curve
@@ -190,48 +180,45 @@ public class Coupling
     }
     public void resetLabel()
     {
-        double tempRwidth = 0;
-        if (directionX == "from")
+        if (_displayText != null)
         {
-            labelX = (drawIntx + labelDx * (drawFromx - drawIntx));
-            for (int i = 0; i < _displayText.Count; i++)
+            double tempRwidth = 0;
+            if (directionX == "from")
             {
-                tempRwidth = Math.Max(tempRwidth, _displayText[i].Length);
+                labelX = (drawIntx + labelDx * (drawFromx - drawIntx));
+                tempRwidth = _displayText.Max(x => x.Length);
             }
-        }
-        else
-        {
-            labelX = (drawIntx + labelDx * (drawIntx - drawTox));
-            for (int i = 0; i < _displayText.Count; i++)
+            else
             {
-                tempRwidth = Math.Max(tempRwidth, _displayText[i].Length);
+                labelX = (drawIntx + labelDx * (drawIntx - drawTox));
+                tempRwidth = _displayText.Max(x => x.Length);
             }
-        }
-        Twidth = tempRwidth * 4 + 4;
-        if (directionY == "from")
-        {
-            labelY = (drawInty + labelDy * (drawFromy - drawInty) - (2.5 + _displayText.Count * 4));
-        }
-        else
-        {
-            labelY = (drawInty + labelDy * (drawInty - drawToy) - (2.5 + _displayText.Count * 4));
+            Twidth = tempRwidth * 4 + 4;
+            if (directionY == "from")
+            {
+                labelY = (drawInty + labelDy * (drawFromy - drawInty) - (2.5 + _displayText.Count * 4));
+            }
+            else
+            {
+                labelY = (drawInty + labelDy * (drawInty - drawToy) - (2.5 + _displayText.Count * 4));
+            }
         }
     }
-    public string reDrawLines(string IDNr, double fnX, double fnY)
+    public string reDrawLines(double fnX, double fnY, bool isOutput)
     {
         //this function gets all the line coordinates
         //draws two quadratic Bezier curves to connect an Output with another Aspect
         //draws from {drawFrom} to {drawTo} through intermediate point {drawInt}
         //{drawA} and {drawB} are control points to create the curve. For a smooth curve {drawA}, {drawB} and {drawInt} must all be on the same line
-        if (outputFn == IDNr)
+        if (isOutput)
         {
-            drawTox = fnX + posX["O"];
-            drawToy = fnY + posY["O"];
+            drawTox = fnX;
+            drawToy = fnY;
         }
-        else if (IDNr !="")
+        else 
         {
-            drawFromx = fnX + posX[toType];
-            drawFromy = fnY + posY[toType];
+            drawFromx = fnX;
+            drawFromy = fnY;
         }
         double deltaX = (drawTox - drawFromx);
         double deltaY = (drawToy - drawFromy);

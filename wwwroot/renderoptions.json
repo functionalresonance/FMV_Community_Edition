@@ -1,18 +1,21 @@
 {
-  "fnStyle0": {
-    "Properties": {
-      "Name": "Traditional",
-      "canvas-color": "white",
-      "canvas-opacity": "1",
-      "highlight-r": "60",
-      "selected-fill": "#4444DD",
-      "entry-fill": "#2A9B00",
-      "exit-fill": "#FF1100",
-      "background-fill": "#7E9DBC",
-      "group-fill": "#11FF55",
-      "parent-fill": "#00F2FF"
-    },
-    "fnType0": {
+  "0": {
+    "Description": "Function Attribute fnStyle = 0",
+    "Name": "Traditional",
+    "canvas-color": "white",
+    "canvas-opacity": "1",
+    "highlight-r": "60",
+    "selected-fill": "#4444DD",
+    "entry-fill": "#2A9B00",
+    "exit-fill": "#FF1100",
+    "background-fill": "#7E9DBC",
+    "group-fill": "#11FF55",
+    "parent-fill": "#00F2FF",
+    "fn-font-wrap": "11",
+    "aspect-font-wrap": "15",
+    "0": {
+      "Description": "FunctionType = 0",
+      "Name": "Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88",
@@ -29,8 +32,9 @@
       "aspect-font-size": "6",
       "aspect-font-color": "0"
     },
-    "fnType1": {
-      "fn-stroke-width": "1",
+    "1": {
+      "Description": "FunctionType = 1",
+      "Name": "Variable Foreground Function",
       "fn-stroke": "#555555",
       "fn-connector-path": "M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88",
       "fn-fill": "#FFFFFF",
@@ -46,7 +50,9 @@
       "aspect-font-size": "6",
       "aspect-font-color": "0"
     },
-    "fnType2": {
+    "2": {
+      "Description": "FunctionType = 2",
+      "Name": "Background Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88",
@@ -80,20 +86,23 @@
       "R": "88"
     }
   },
-  "fnStyle1": {
-    "Properties": {
-      "Name": "Modern",
-      "canvas-color": "white",
-      "canvas-opacity": "0.5",
-      "highlight-r": "65",
-      "selected-fill": "#4455DD",
-      "entry-fill": "#2A9B00",
-      "exit-fill": "#FF1100",
-      "background-fill": "#7E9DBC",
-      "group-fill": "#11FF55",
-      "parent-fill": "#00F2FF"
-    },
-    "fnType0": {
+  "1": {
+    "Description": "Function Attribute fnStyle = 1",
+    "Name": "Modern",
+    "canvas-color": "white",
+    "canvas-opacity": "0.5",
+    "highlight-r": "65",
+    "selected-fill": "#4455DD",
+    "entry-fill": "#2A9B00",
+    "exit-fill": "#FF1100",
+    "background-fill": "#7E9DBC",
+    "group-fill": "#11FF55",
+    "parent-fill": "#00F2FF",
+    "fn-font-wrap": "12",
+    "aspect-font-wrap": "15",
+    "0": {
+      "Description": "FunctionType = 0",
+      "Name": "Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -110,7 +119,9 @@
       "aspect-font-size": "5",
       "aspect-font-color": "#444444"
     },
-    "fnType1": {
+    "1": {
+      "Description": "FunctionType = 1",
+      "Name": "Variable Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -127,7 +138,9 @@
       "aspect-font-size": "5",
       "aspect-font-color": "#444444"
     },
-    "fnType2": {
+    "2": {
+      "Description": "FunctionType = 2",
+      "Name": "Background Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -167,20 +180,23 @@
       "R": "88"
     }
   },
-  "fnStyle2": {
-    "Properties": {
-      "Name": "Floating",
-      "canvas-color": "white",
-      "canvas-opacity": "0",
-      "highlight-r": "60",
-      "selected-fill": "#4444DD",
-      "entry-fill": "#2A9B00",
-      "exit-fill": "#FF1100",
-      "background-fill": "#7E9DBC",
-      "group-fill": "#11FF55",
-      "parent-fill": "#00F2FF"
-    },
-    "fnType0": {
+  "2": {
+    "Description": "Function Attribute fnStyle = 2",
+    "Name": "Floating",
+    "canvas-color": "white",
+    "canvas-opacity": "0",
+    "highlight-r": "60",
+    "selected-fill": "#4444DD",
+    "entry-fill": "#2A9B00",
+    "exit-fill": "#FF1100",
+    "background-fill": "#7E9DBC",
+    "group-fill": "#11FF55",
+    "parent-fill": "#00F2FF",
+    "fn-font-wrap": "11",
+    "aspect-font-wrap": "15",
+    "0": {
+      "Description": "FunctionType = 0",
+      "Name": "Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -197,7 +213,9 @@
       "aspect-font-size": "4",
       "aspect-font-color": "#555555"
     },
-    "fnType1": {
+    "1": {
+      "Description": "FunctionType = 1",
+      "Name": "Variable Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -214,7 +232,9 @@
       "aspect-font-size": "4",
       "aspect-font-color": "#555555"
     },
-    "fnType2": {
+    "2": {
+      "Description": "FunctionType = 2",
+      "Name": "Background Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "",
@@ -248,20 +268,23 @@
       "R": "88"
     }
   },
-  "fnStyle3": {
-    "Properties": {
-      "Name": "Autonomy",
-      "canvas-color": "#3B4655",
-      "canvas-opacity": "1",
-      "highlight-r": "60",
-      "selected-fill": "#44DDDD",
-      "entry-fill": "#2A9B00",
-      "exit-fill": "#FF1100",
-      "background-fill": "#7E9DBC",
-      "group-fill": "#11FF55",
-      "parent-fill": "#00F2FF"
-    },
-    "fnType0": {
+  "3": {
+    "Description": "Function Attribute fnStyle = 3",
+    "Name": "Autonomy",
+    "canvas-color": "#3B4655",
+    "canvas-opacity": "1",
+    "highlight-r": "60",
+    "selected-fill": "#44DDDD",
+    "entry-fill": "#2A9B00",
+    "exit-fill": "#FF1100",
+    "background-fill": "#7E9DBC",
+    "group-fill": "#11FF55",
+    "parent-fill": "#00F2FF",
+    "fn-font-wrap": "12",
+    "aspect-font-wrap": "15",
+    "0": {
+      "Description": "FunctionType = 0",
+      "Name": "Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#E0E9F5",
       "fn-connector-path": "",
@@ -278,7 +301,9 @@
       "aspect-font-size": "4",
       "aspect-font-color": "#444444"
     },
-    "fnType1": {
+    "1": {
+      "Description": "FunctionType = 1",
+      "Name": "Variable Foreground Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#E0E9F5",
       "fn-connector-path": "",
@@ -295,7 +320,9 @@
       "aspect-font-size": "4",
       "aspect-font-color": "#444444"
     },
-    "fnType2": {
+    "2": {
+      "Description": "FunctionType = 2",
+      "Name": "Background Function",
       "fn-stroke-width": "1",
       "fn-stroke": "#E0E9F5",
       "fn-connector-path": "",

@@ -5,6 +5,7 @@ namespace BlazorApp4.Shared
     public class StateContainer
     {
         public string selectedFn { get; set; } = "-1";
+        public string touchAction { get; set; } = "auto";
         public int newFnStyle { get; set; } = 0;
         public string selectedLabel { get; set; } = "";
         public string AspectLabelsDisplay { get; set; } = "";

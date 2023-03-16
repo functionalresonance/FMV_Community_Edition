@@ -1,6 +1,5 @@
 ﻿public class Function
 {
-    private List<string> _displayText;
     private string _label;
     private string _fnStyle;
     private string _FunctionType;
@@ -12,12 +11,11 @@
         _fnStyle = fnStyle;
         _FunctionType = FunctionType;
         _label = label;
-        _displayText = returnTextLines(_label, 12);
         this.orphans = orphans;
         this.isInput = isInput;
         this.fnColorStyle = fnColorStyle;
         this.fnColorValue = fnColorValue;
-        options = "fnStyle" + fnStyle + ":fnType" + FunctionType + ":";
+        options = fnStyle + ":" + FunctionType + ":";
     }
     public string options { get; set; }
     public string IDNr { get; set; }
@@ -27,12 +25,14 @@
     public string fnColorValue { get; set; }
     public double x { get; set; }
     public double y { get; set; }
+    public bool dragFn { get; set; } = false;
+    public string fnClass { get; set; } = "fn-hover";
     public string fnStyle
     {
         get { return _fnStyle; }
         set { 
             _fnStyle = value;
-            options = "fnStyle" + _fnStyle + ":fnType" + _FunctionType + ":";
+            options = _fnStyle + ":" + _FunctionType + ":";
         }
     }
     public string FunctionType
@@ -40,25 +40,19 @@
         get { return _FunctionType; }
         set { 
             _FunctionType = value;
-            options = "fnStyle" + _fnStyle + ":fnType" + _FunctionType + ":";
+            options = _fnStyle + ":" + _FunctionType + ":";
         }
     }
     public string label
     {
         get { return _label; }
         set { _label = value;
-            _displayText = returnTextLines(_label, 12);
         }
     }
-    public List<string> displayText
-    {
-        get { return _displayText; }
-        set { _displayText = value; }
-    }
-    private List<string> returnTextLines(string text, int length)
+    public List<string> ReturnTextLines(int length)
     {
         var textLines = new List<string>();
-        string[] textWords = text.Split(" ");
+        string[] textWords = _label.Split(" ");
         int tL = 0;
         textLines.Add("");
         int lL = length;
