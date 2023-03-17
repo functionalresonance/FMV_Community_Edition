@@ -211,8 +211,8 @@
             stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label??"";
             stateContainer.isDisabled = false;
             refreshParent.InvokeAsync();
-            stateContainer.startX = e.Touches[0].ClientX / stateContainer.scaleZoom - function.x;
-            stateContainer.startY = e.Touches[0].ClientY / stateContainer.scaleZoom - function.y;
+            function.startX = e.Touches[0].ClientX / stateContainer.scaleZoom - function.x;
+            function.startY = e.Touches[0].ClientY / stateContainer.scaleZoom - function.y;
             function.dragFn = true;
             function.fnClass = "fn-move";
             stateContainer.touchAction = "none";
@@ -231,8 +231,8 @@
             stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
             stateContainer.isDisabled = false;
             refreshParent.InvokeAsync();
-            stateContainer.startX = e.ClientX / stateContainer.scaleZoom - function.x;
-            stateContainer.startY = e.ClientY / stateContainer.scaleZoom - function.y;
+            function.startX = e.ClientX / stateContainer.scaleZoom - function.x;
+            function.startY = e.ClientY / stateContainer.scaleZoom - function.y;
             function.dragFn = true;
             function.fnClass = "fn-move";
         }
@@ -241,8 +241,8 @@
     {
         if (function != null && function.dragFn && e.Touches.Length == 1)
         {
-            function.x = (e.Touches[0].ClientX / stateContainer.scaleZoom - stateContainer.startX);
-            function.y = (e.Touches[0].ClientY / stateContainer.scaleZoom - stateContainer.startY);
+            function.x = (e.Touches[0].ClientX / stateContainer.scaleZoom - function.startX);
+            function.y = (e.Touches[0].ClientY / stateContainer.scaleZoom - function.startY);
             if (function.x > stateContainer.viewWidth - 120)
             {
                 stateContainer.viewWidth += 120;
@@ -256,17 +256,13 @@
                 refreshParent.InvokeAsync();
             }
         }
-        //        else if (dragAspect)
-        //        {
-        //
-        //        }
     }
     private void MoveFn(MouseEventArgs e)
     {
         if (function != null && function.dragFn)
         {
-            function.x = (e.ClientX / stateContainer.scaleZoom - stateContainer.startX);
-            function.y = (e.ClientY / stateContainer.scaleZoom - stateContainer.startY);
+            function.x = (e.ClientX / stateContainer.scaleZoom - function.startX);
+            function.y = (e.ClientY / stateContainer.scaleZoom - function.startY);
             if (function.x > stateContainer.viewWidth - 120)
             {
                 stateContainer.viewWidth += 120;
@@ -280,10 +276,6 @@
                 refreshParent.InvokeAsync();
             }
         }
-        //       else if (dragAspect)
-        //       {
-        //
-        //       }
     }
     private void MoveFnStopTouch(TouchEventArgs e)
     {
@@ -298,9 +290,8 @@
                 }
             }
             function.dragFn = false;
-            //            dragAspect = false;
             function.fnClass = "fn-hover";
-            stateContainer.updateXY(function.x, function.y);
+            stateContainer.updateFnXY(function.x, function.y);
             stateContainer.touchAction = "auto";
         }
     }
@@ -317,9 +308,8 @@
                 }
             }
             function.dragFn = false;
-            //            dragAspect = false;
             function.fnClass = "fn-hover";
-            stateContainer.updateXY(function.x, function.y);
+            stateContainer.updateFnXY(function.x, function.y);
         }
     }
 }

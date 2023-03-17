@@ -25,6 +25,8 @@
     public string fnColorValue { get; set; }
     public double x { get; set; }
     public double y { get; set; }
+    public double startX { get; set; } = 0;
+    public double startY { get; set; } = 0;
     public bool dragFn { get; set; } = false;
     public string fnClass { get; set; } = "fn-hover";
     public string fnStyle

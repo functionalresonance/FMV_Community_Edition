@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using System.Xml.Linq;
 
 namespace BlazorApp4.Shared
 {
@@ -16,8 +17,6 @@ namespace BlazorApp4.Shared
         public double canvasHeight { get; set; }
         public double viewWidth { get; set; } = 0;
         public double viewHeight { get; set; } = 0;
-        public double startX { get; set; } = 0;
-        public double startY { get; set; } = 0;
         public XmlDocument[] projectData_Undo { get; set; } = new XmlDocument[10];
         public List<Coupling> couplingList { get; set; } = new List<Coupling>();
         public List<Function> functionList { get; set; } = new List<Function>();
@@ -48,10 +47,17 @@ namespace BlazorApp4.Shared
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName")!.InnerText = IDName;
             functionList.Find(x => x.IDNr == selectedFn)!.label = IDName;
         }
-        public void updateXY(double x, double y)
+        public void updateFnXY(double x, double y)
         {
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@x")!.InnerText = x.ToString("#.##");
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@y")!.InnerText = y.ToString("#.##");
+        }
+        public void updateAspectXY(double x, double y, string directionX, string directionY)
+        {
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@x")!.InnerText = x.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@y")!.InnerText = y.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionX")!.InnerText = directionX;
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionY")!.InnerText = directionY;
         }
     }
 }

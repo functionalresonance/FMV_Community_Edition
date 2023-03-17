@@ -4,12 +4,13 @@
     private string _label;
     private double _labelDx;
     private double _labelDy;
+    public int displayTextCount;
     public Coupling(string Name, double labelDx, double labelDy, string directionX, string directionY, string notGroup, string outputFn, string label, string toFn, string toType,
         double drawTox, double drawToy, double drawFromx, double drawFromy)
     {
         this.Name = Name;
         _labelDx = labelDx;
-        _labelDx = labelDy;
+        _labelDy = labelDy;
         this.directionX = directionX;
         this.directionY = directionY;
         this.notGroup = notGroup;
@@ -53,8 +54,12 @@
             resetLabel();
         }
     }
+    public bool dragAspect { get; set; } = false;
+    public string aspectClass { get; set; } = "fn-hover";
     public double labelX { get; set; }
     public double labelY { get; set; }
+    public double startLabelX { get; set; } = 0;
+    public double startLabelY { get; set; } = 0;
     public double Twidth { get; set; }
     public string toType { get; set; }
     public double drawTox { get; set; }
@@ -143,6 +148,7 @@
             }
         }
         _displayText = textLines;
+        displayTextCount = _displayText.Count;
         if (reset) resetLabel();
         return textLines;
     }

@@ -268,13 +268,17 @@
                 <g @onmousedown="UnSelect" @ontouchstart="UnSelectTouch">
                     <rect fill=@render[stateContainer.newFnStyle+":canvas-color"] opacity=@render[stateContainer.newFnStyle+":canvas-opacity"] width="100%" height="100%" />
                 </g>
-                foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn))
+                foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn && x.Name != stateContainer.selectedLabel))
                 {
                     <CouplingDisplay coupling=@coupling refreshParent="refreshParent" />
                 }
                 foreach (Function function in stateContainer.functionList.FindAll(x => x.IDNr != stateContainer.selectedFn))
                 {
                     <FunctionDisplay function=@function refreshParent="refreshParent" />
+                }
+                foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.Name == stateContainer.selectedLabel))
+                {
+                    <CouplingDisplay coupling=@coupling refreshParent="refreshParent" />
                 }
                 if (stateContainer.selectedFn != "-1")
                 {
@@ -637,8 +641,7 @@
                         string[] dictArray = new string[4] { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
                         if (tempNewName != "")
                         {
-                            XmlNode newAspect = reSetAspect(dictArray);
-                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.AppendChild(newAspect);
+                            reSetAspect(dictArray);
                         }
                         hasOrphan = false;
                         aspect.Orphan = "false";
@@ -738,8 +741,7 @@
                     string[] dictArray = new string[4] { itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? "", tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
                     if (tempNewName != "")
                     {
-                        XmlNode newAspect = reSetAspect(dictArray);
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.AppendChild(newAspect);
+                        reSetAspect(dictArray);
                     }
                     itemI.SelectSingleNode("@orphan")!.Value = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "false";
@@ -1028,8 +1030,8 @@
         }
         if (aspectsA.SelectSingleNode("@WebEnhanced")?.Value != "updated")
         {
-            while (aspectsA.FirstChild != null)
-                aspectsA.RemoveChild(aspectsA.FirstChild);
+            //while (aspectsA.FirstChild != null)
+            //    aspectsA.RemoveChild(aspectsA.FirstChild);
             string[] dictArray = new string[4] { "", "", "", "" };
             idCount = 0;
             foreach (XmlNode itemO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output")!)
@@ -1046,7 +1048,7 @@
                 {
                     dictArray[2] = aspect.FunctionIDNr;
                     dictArray[3] = aspect.Type.Substring(0, 1);
-                    aspectsA.AppendChild(reSetAspect(dictArray));
+                    reSetAspect(dictArray);
                     aspect.Orphan = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan")!.Value = "false";
                     isOutputOrphan = "false";
@@ -1119,33 +1121,61 @@
         stateContainer.touchAction = "auto";
         StateHasChanged();
     }
-    private XmlNode reSetAspect(string[] dictArray)
+    private void reSetAspect(string[] dictArray)
     {
-        XmlNode aspectI = stateContainer.projectData_Undo[0].CreateElement("Aspect");
-        XmlAttribute aspectIx = stateContainer.projectData_Undo[0].CreateAttribute("x");
-        aspectIx.Value = "0";
-        aspectI.Attributes!.Append(aspectIx);
-        XmlAttribute aspectIy = stateContainer.projectData_Undo[0].CreateAttribute("y");
-        aspectIy.Value = "0";
-        aspectI.Attributes.Append(aspectIy);
-        XmlAttribute aspectIdx = stateContainer.projectData_Undo[0].CreateAttribute("directionX");
-        aspectIdx.Value = "from";
-        aspectI.Attributes.Append(aspectIdx);
-        XmlAttribute aspectIdy = stateContainer.projectData_Undo[0].CreateAttribute("directionY");
-        aspectIdy.Value = "to";
-        aspectI.Attributes.Append(aspectIdy);
-        XmlAttribute aspectIof = stateContainer.projectData_Undo[0].CreateAttribute("outputFn");
-        aspectIof.Value = dictArray[0];
-        aspectI.Attributes.Append(aspectIof);
-        XmlAttribute aspectItf = stateContainer.projectData_Undo[0].CreateAttribute("toFn");
-        aspectItf.Value = dictArray[2];
-        aspectI.Attributes.Append(aspectItf);
-        XmlNode aspectIname = stateContainer.projectData_Undo[0].CreateElement("Name");
-        aspectIname.InnerText = string.Join("|", dictArray);
-        aspectI.AppendChild(aspectIname);
-        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve"); 
+        var aName = string.Join("|", dictArray);
+        bool appendNew = false;
+        double labelDx = 0;
+        double labelDy = 0;
+        string directionX = "from";
+        string directionY = "to";
+        string notGroup = "true";
+        XmlNode? aspectI = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + aName + "\"]");
+        if (aspectI == null)
+        {
+            aspectI = stateContainer.projectData_Undo[0].CreateElement("Aspect");
+            XmlAttribute aspectIx = stateContainer.projectData_Undo[0].CreateAttribute("x");
+            aspectIx.Value = "0";
+            aspectI.Attributes!.Append(aspectIx);
+            XmlAttribute aspectIy = stateContainer.projectData_Undo[0].CreateAttribute("y");
+            aspectIy.Value = "0";
+            aspectI.Attributes.Append(aspectIy);
+            XmlAttribute aspectIdx = stateContainer.projectData_Undo[0].CreateAttribute("directionX");
+            aspectIdx.Value = "from";
+            aspectI.Attributes.Append(aspectIdx);
+            XmlAttribute aspectIdy = stateContainer.projectData_Undo[0].CreateAttribute("directionY");
+            aspectIdy.Value = "to";
+            aspectI.Attributes.Append(aspectIdy);
+            XmlAttribute aspectIof = stateContainer.projectData_Undo[0].CreateAttribute("outputFn");
+            aspectIof.Value = dictArray[0];
+            aspectI.Attributes.Append(aspectIof);
+            XmlAttribute aspectItf = stateContainer.projectData_Undo[0].CreateAttribute("toFn");
+            aspectItf.Value = dictArray[2];
+            aspectI.Attributes.Append(aspectItf);
+            XmlNode aspectIname = stateContainer.projectData_Undo[0].CreateElement("Name");
+            aspectIname.InnerText = aName;
+            aspectI.AppendChild(aspectIname);
+            appendNew = true;
+        }
+        else
+        {
+            labelDx = double.Parse(aspectI.SelectSingleNode("@x")?.InnerText??"0");
+            labelDy = double.Parse(aspectI.SelectSingleNode("@y")?.InnerText??"0");
+            directionX = aspectI.SelectSingleNode("@directionX")?.InnerText??"from";
+            directionY = aspectI.SelectSingleNode("@directionY")?.InnerText ?? "to";
+            aspectI.RemoveChild(aspectI.SelectSingleNode("Curve")!);
+            if (aspectI.SelectSingleNode("Curve2") != null)
+            {
+                aspectI.RemoveChild(aspectI.SelectSingleNode("Curve2")!);
+            }
+            if (aspectI.SelectSingleNode("@notGroup") != null)
+            {
+                notGroup = aspectI.SelectSingleNode("@notGroup")?.InnerText??"true";
+            }
+        }
+        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve");
         XmlNode aspectIcurve2 = stateContainer.projectData_Undo[0].CreateElement("Curve2");
-        Coupling addCoupling = new Coupling(string.Join("|", dictArray), 0, 0, "from", "to", "true", dictArray[0], dictArray[1], dictArray[2], dictArray[3],
+        Coupling addCoupling = new Coupling(aName, labelDx, labelDy, directionX, directionY, notGroup, dictArray[0], dictArray[1], dictArray[2], dictArray[3],
             stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.x + double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.y + double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]), 0, 0);
         stateContainer.couplingList.Add(addCoupling);
         addCoupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]), false);
@@ -1154,7 +1184,7 @@
         aspectIcurve.InnerText = addCoupling.curve;
         aspectI.AppendChild(aspectIcurve);
         aspectI.AppendChild(aspectIcurve2);
-        return aspectI;
+        if (appendNew) stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.AppendChild(aspectI);
     }
     public async void ClearElement(string elementName)
     {
@@ -1387,6 +1417,7 @@
         }
         catch 
         {
+            debugOutput = "Restore attempt failed.";
         }
     }
     public async Task Recover()
