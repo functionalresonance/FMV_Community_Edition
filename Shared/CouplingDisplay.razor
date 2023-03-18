@@ -8,12 +8,12 @@
     <g transform="scale(@stateContainer.tempZoomA)">
         @if (stateContainer.selectedLabel == coupling.Name) //selected coupling is blue
         {
-            <path fill="none" stroke-width="5" stroke=@render[stateContainer.newFnStyle+":selected-fill"] opacity="0.5" d=@coupling.curve2 />
+            <path fill="none" stroke-width="5" stroke=@render[stateContainer.newFnStyle+":selected-fill"] stroke-linecap="round" opacity="0.5" d=@coupling.curve2 />
         }
         else //remaining couplings are grey
         {
             //update stroke colour if part of FMI
-            <path fill="none" stroke-width="2" stroke="#999999" opacity="0.75" d=@coupling.curve2 />
+            <path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d=@coupling.curve2 />
         }
         <AuthorizeView>
             <Authorized>
@@ -93,12 +93,42 @@
     {
         if (coupling != null && coupling.dragAspect)
         {
-            coupling.labelX = (e.ClientX / stateContainer.scaleZoom - coupling.startLabelX);
-            coupling.labelY = (e.ClientY / stateContainer.scaleZoom - coupling.startLabelY);
-
-
-
-
+            var tempPosX = ((e.ClientX / stateContainer.scaleZoom - coupling.startLabelX) - coupling.drawIntx);
+            var tempPosY = ((e.ClientY / stateContainer.scaleZoom - coupling.startLabelY) - coupling.drawInty);
+            if (Math.Abs(coupling.drawFromx - coupling.drawTox) > Math.Abs(coupling.drawFromy - coupling.drawToy))
+            {
+                if (Math.Abs(coupling.drawFromx - coupling.drawIntx) < Math.Abs((coupling.drawFromx - coupling.drawIntx) - tempPosX))
+                {
+                    coupling.labelDx = tempPosX / (coupling.drawIntx - coupling.drawTox);
+                    coupling.directionX = "to";
+                    if (coupling.labelDx < -1) coupling.labelDx = -1;
+                    if (coupling.labelDx > 0) coupling.labelDx = 0;
+                }
+                else
+                {
+                    coupling.labelDx = tempPosX / (coupling.drawFromx - coupling.drawIntx);
+                    coupling.directionX = "from";
+                    if (coupling.labelDx < 0) coupling.labelDx = 0;
+                    if (coupling.labelDx > 1) coupling.labelDx = 1;
+                }
+            } 
+            else
+            {
+                if (Math.Abs(coupling.drawFromy - coupling.drawInty) < Math.Abs((coupling.drawFromy - coupling.drawInty) - tempPosY))
+                {
+                    coupling.labelDx = tempPosY / (coupling.drawInty - coupling.drawToy);
+                    coupling.directionX = "to";
+                    if (coupling.labelDx < -1) coupling.labelDx = -1;
+                    if (coupling.labelDx > 0) coupling.labelDx = 0;
+                }
+                else
+                {
+                    coupling.labelDx = tempPosY / (coupling.drawFromy - coupling.drawInty);
+                    coupling.directionX = "from";
+                    if (coupling.labelDx < 0) coupling.labelDx = 0;
+                    if (coupling.labelDx > 1) coupling.labelDx = 1;
+                }
+            }
             if (coupling.labelX > stateContainer.viewWidth - 20)
             {
                 stateContainer.viewWidth += 120;
@@ -117,22 +147,8 @@
     {
         if (coupling != null && coupling.dragAspect)
         {
-            coupling.dragAspect = false;
-            coupling.aspectClass = "fn-hover";
-
-            var tempPosX = ((coupling.labelX - coupling.drawIntx));
-            var tempPosY = ((coupling.labelY - coupling.drawInty) + (2.5 + coupling.displayTextCount * 4));
-            if (Math.Abs(coupling.drawIntx + tempPosX - coupling.drawTox) < Math.Abs(coupling.drawIntx + tempPosX - coupling.drawFromx))
-            {
-                coupling.labelDx = tempPosX / (coupling.drawIntx - coupling.drawTox);
-                coupling.directionX = "to";
-            }
-            else
-            {
-                coupling.labelDx = tempPosX / (coupling.drawFromx - coupling.drawIntx);
-                coupling.directionX = "from";
-            }
-            if (Math.Abs(coupling.drawInty + tempPosY - coupling.drawToy) < Math.Abs(coupling.drawInty + tempPosY - coupling.drawFromy))
+            var tempPosY = ((e.ClientY / stateContainer.scaleZoom - coupling.startLabelY) - coupling.drawInty);
+            if (Math.Abs(coupling.drawFromy - coupling.drawInty) < Math.Abs((coupling.drawFromy - coupling.drawInty) - tempPosY))
             {
                 coupling.labelDy = tempPosY / (coupling.drawInty - coupling.drawToy);
                 coupling.directionY = "to";
@@ -142,6 +158,8 @@
                 coupling.labelDy = tempPosY / (coupling.drawFromy - coupling.drawInty);
                 coupling.directionY = "from";
             }
+            coupling.dragAspect = false;
+            coupling.aspectClass = "fn-hover";
             stateContainer.updateAspectXY(coupling.labelDx, coupling.labelDy, coupling.directionX, coupling.directionY);
         }
     }

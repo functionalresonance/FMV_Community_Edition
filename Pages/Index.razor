@@ -885,6 +885,7 @@
     private void FileIsLoaded()
     {
         stateContainer.selectedFn = "-1";
+        stateContainer.fnName = "";
         stateContainer.isDisabled = true;
         var getFns = stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function");
         if (getFns != null)

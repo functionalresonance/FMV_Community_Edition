@@ -39,7 +39,6 @@
         set
         {
             _labelDy = value;
-            resetLabel();
         }
     }
     public string directionX { get; set; }
@@ -188,25 +187,19 @@
     {
         if (_displayText != null)
         {
-            double tempRwidth = 0;
             if (directionX == "from")
             {
-                labelX = (drawIntx + labelDx * (drawFromx - drawIntx));
-                tempRwidth = _displayText.Max(x => x.Length);
+                Twidth = _displayText.Max(x => x.Length) * 4 + 4;
+                labelX = (labelDx) * (labelDx) * drawFromx + 2 * (labelDx) * (1 - labelDx) * drawAx + (1 - labelDx) * (1 - labelDx) * drawIntx;
+                labelY = (labelDx) * (labelDx) * drawFromy + 2 * (labelDx) * (1 - labelDx) * drawAy + (1 - labelDx) * (1 - labelDx) * drawInty
+                    - (2.5 + _displayText.Count * 4);
             }
             else
             {
-                labelX = (drawIntx + labelDx * (drawIntx - drawTox));
-                tempRwidth = _displayText.Max(x => x.Length);
-            }
-            Twidth = tempRwidth * 4 + 4;
-            if (directionY == "from")
-            {
-                labelY = (drawInty + labelDy * (drawFromy - drawInty) - (2.5 + _displayText.Count * 4));
-            }
-            else
-            {
-                labelY = (drawInty + labelDy * (drawInty - drawToy) - (2.5 + _displayText.Count * 4));
+                Twidth = _displayText.Max(x => x.Length) * 4 + 4;
+                labelX = ((1 + labelDx) * (1 + labelDx) * drawIntx + 2 * (1 + labelDx) * (-labelDx) * drawBx + (-labelDx) * (-labelDx) * drawTox);
+                labelY = ((1 + labelDx) * (1 + labelDx) * drawInty + 2 * (1 + labelDx) * (-labelDx) * drawBy + (-labelDx) * (-labelDx) * drawToy)
+                    -(2.5 + _displayText.Count * 4);
             }
         }
     }
