@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Linq;
 
-namespace BlazorApp4.Shared
+namespace FMV_Standard.Shared
 {
     public class StateContainer
     {

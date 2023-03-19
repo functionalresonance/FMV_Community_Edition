@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "BlazorApp4": {
+    "FMV_Standard": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

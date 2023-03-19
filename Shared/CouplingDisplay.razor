@@ -101,7 +101,7 @@
                 {
                     coupling.labelDx = tempPosX / (coupling.drawIntx - coupling.drawTox);
                     coupling.directionX = "to";
-                    if (coupling.labelDx < -1) coupling.labelDx = -1;
+                    if (coupling.labelDx < -0.85) coupling.labelDx = -0.85;
                     if (coupling.labelDx > 0) coupling.labelDx = 0;
                 }
                 else
@@ -109,7 +109,7 @@
                     coupling.labelDx = tempPosX / (coupling.drawFromx - coupling.drawIntx);
                     coupling.directionX = "from";
                     if (coupling.labelDx < 0) coupling.labelDx = 0;
-                    if (coupling.labelDx > 1) coupling.labelDx = 1;
+                    if (coupling.labelDx > 0.85) coupling.labelDx = 0.85;
                 }
             } 
             else
@@ -118,7 +118,7 @@
                 {
                     coupling.labelDx = tempPosY / (coupling.drawInty - coupling.drawToy);
                     coupling.directionX = "to";
-                    if (coupling.labelDx < -1) coupling.labelDx = -1;
+                    if (coupling.labelDx < -0.85) coupling.labelDx = -0.85;
                     if (coupling.labelDx > 0) coupling.labelDx = 0;
                 }
                 else
@@ -126,7 +126,7 @@
                     coupling.labelDx = tempPosY / (coupling.drawFromy - coupling.drawInty);
                     coupling.directionX = "from";
                     if (coupling.labelDx < 0) coupling.labelDx = 0;
-                    if (coupling.labelDx > 1) coupling.labelDx = 1;
+                    if (coupling.labelDx > 0.85) coupling.labelDx = 0.85;
                 }
             }
             if (coupling.labelX > stateContainer.viewWidth - 20)

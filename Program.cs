@@ -1,5 +1,5 @@
-using BlazorApp4;
-using BlazorApp4.Shared;
+using FMV_Standard;
+using FMV_Standard.Shared;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
