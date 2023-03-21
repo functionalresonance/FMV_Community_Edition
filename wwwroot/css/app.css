@@ -11,6 +11,13 @@ a, .btn-link {
 .modal-dialog {
     overflow-y: initial !important
 }
+.modal-color {
+    max-width: 341px;
+    margin-top: 1.75rem;
+    margin-right: auto;
+    margin-bottom: 1.75rem;
+    margin-left: 3.5rem;
+}
 .bg-light {
     background-color: #F1F3F4 !important;
 }

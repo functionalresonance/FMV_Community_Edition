@@ -103,17 +103,33 @@
                     case "yellow": styleColor = "#BAB727"; break;
                     case "purple": styleColor = "#9070C0"; break;
                     case "white": styleColor = "#FFFFFF"; break;
-                    case "custom": styleColor = "#" + "000000".Substring(Convert.ToUInt32(function.fnColorValue).ToString("X").Length) + Convert.ToUInt32(function.fnColorValue).ToString("X"); break;
+                    case "custom": {
+                        if (function.fnColorValue.StartsWith("#"))
+                        {
+                            styleColor = function.fnColorValue;
+                        } else
+                        {
+                            styleColor = "#" + "000000".Substring(Convert.ToUInt32(function.fnColorValue).ToString("X").Length) + Convert.ToUInt32(function.fnColorValue).ToString("X");
+                        }
+                        break;
+                    }
                     default: styleColor = render[function.options + "aspect-stroke"]; styleStroke = render[function.options + "aspect-stroke-width"]; break;
                 }
-                <g>
-                    <g stroke-width=@styleStroke stroke=@styleColor>
-                        <path fill="none" d=@render[function.options+"fn-color-path"] />
+                if (styleColor != "#FFFFFF")
+                {
+                    <g>
+                        <g stroke-width=@styleStroke stroke=@styleColor>
+                            <path fill="none" d=@render[function.options+"fn-color-path"] />
+                        </g>
+                        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
+                            <path fill="none" d=@render[function.options+"fn-path"] />
+                        </g>
                     </g>
-                    <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
-                        <path fill="none" d=@render[function.options+"fn-path"] />
-                    </g>
-                </g>
+                }
+                else
+                {
+                    isFnColor = false;
+                }
             }
             else
             {

@@ -59,5 +59,22 @@ namespace FMV_Standard.Shared
             projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionX")!.InnerText = directionX;
             projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionY")!.InnerText = directionY;
         }
+        public void updateColor(string selectedColor)
+        {
+            if (projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style") == null)
+            {
+                XmlAttribute fnColorStyle = projectData_Undo[0].CreateAttribute("style");
+                projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]")!.Attributes!.Append(fnColorStyle);
+            }
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style")!.InnerText = "custom";
+            functionList.Find(x => x.IDNr == selectedFn)!.fnColorStyle = "custom";
+            if (projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@color") == null)
+            {
+                XmlAttribute fnColorValue = projectData_Undo[0].CreateAttribute("color");
+                projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]")!.Attributes!.Append(fnColorValue);
+            }
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@color")!.InnerText = selectedColor;
+            functionList.Find(x => x.IDNr == selectedFn)!.fnColorValue = selectedColor;
+        }
     }
 }

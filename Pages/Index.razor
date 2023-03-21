@@ -12,6 +12,10 @@
 {
     <About OnClick="ModalClose"></About>
 }
+@if (showColorPicker)
+{
+    <ColorSelect OnClose="ModalClose" ColorSelected="colorSelected"></ColorSelect>
+}
 <div class="navbar fixed-top bg-light p-2">
     <div>
         <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload">
@@ -42,17 +46,17 @@
 <div class="sidebar">
     <div class="v-panel pr-2">
         <div class="d-flex pt-2">
-            <button id="newFnButton" class="btn btn-menu btn-textp" @onclick=NewFunction @onfocusin=@(() => @stateContainer.isDisabled = false) @onkeydown=NextFn>+</button>
-            <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress="@((e) => @FocusElementKey(e, "newFnButton"))" @onkeydown="@((e) => @CheckDeleteKey(e, "newFnButton", "Fn"))" />
+            <button id="newFnButton" class="btn btn-menu btn-textp" @onclick=NewFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn>+</button>
+            <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress="@((e) => FocusElementKey(e, "newFnButton"))" @onkeydown="@((e) => CheckDeleteKey(e, "newFnButton", "Fn"))" />
         </div>
         <div class="d-flex pt-2">
-            <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
+            <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesI = aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesI.Count > 0)
                 {
-                    <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => @AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newIButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Input", GetNodesI[0].IDNr)) />
+                    <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetNodesI[0].IDNr)) />
                 }
             }
             else
@@ -68,20 +72,20 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => @AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newIButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Input", GetListI.IDNr)) />
+                        <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetListI.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
+            <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesO = outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesO.Count > 0)
                 {
-                    <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => @AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newOButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Output", GetNodesO[0].IDNr)) />
+                    <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetNodesO[0].IDNr)) />
                 }
             }
             else
@@ -97,20 +101,20 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => @AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newOButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Output", GetListO.IDNr)) />
+                        <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetListO.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
+            <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesP = aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesP.Count > 0)
                 {
-                    <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => @AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newPButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Precondition", GetNodesP[0].IDNr)) />
+                    <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetNodesP[0].IDNr)) />
                 }
             }
             else
@@ -126,20 +130,20 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => @AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newPButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Precondition", GetListP.IDNr)) />
+                        <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetListP.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
+            <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesR = aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesR.Count > 0)
                 {
-                    <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => @AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newRButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Resource", GetNodesR[0].IDNr)) />
+                    <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetNodesR[0].IDNr)) />
                 }
             }
             else
@@ -155,20 +159,20 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => @AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newRButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Resource", GetListR.IDNr)) />
+                        <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetListR.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
+            <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesC = aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesC.Count > 0)
                 {
-                    <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => @AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newCButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Control", GetNodesC[0].IDNr)) />
+                    <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetNodesC[0].IDNr)) />
                 }
             }
             else
@@ -184,20 +188,20 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => @AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newCButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Control", GetListC.IDNr)) />
+                        <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetListC.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => @NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
+            <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesT = aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesT.Count > 0)
                 {
-                    <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => @AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newTButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Time", GetNodesT[0].IDNr)) />
+                    <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetNodesT[0].IDNr)) />
                 }
             }
             else
@@ -213,12 +217,15 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => @AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => @FocusElementKey(e, "newTButton")) @onkeydown=@((e) => @CheckDeleteKey(e, "Time", GetListT.IDNr)) />
+                        <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetListT.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
+        <div class="d-flex pt-2">
+            <button class="btn btn-menu oi oi-brush" @onclick="ModalColor"></button>
+        </div>
     </div>
 </div>
 <div id="mainWindow" class="main" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
@@ -314,6 +321,7 @@
     public double newFnY = 0;
     public bool isNewModel = true;
     private bool showModal = false;
+    private bool showColorPicker = false;
     private string inputDropStatus = "file-input-zone-drop";
 
     private void refreshParent()
@@ -321,9 +329,23 @@
         StateHasChanged();
     }
     private void ModalShow() => showModal = true;
-    void ModalClose(bool state)
+    private void ModalClose(bool state)
     {
         showModal = state;
+        showColorPicker = state;
+    }
+    private void ModalColor() 
+    {
+        if (stateContainer.selectedFn != "-1") {
+            showColorPicker = true;
+        }
+    }
+    private void colorSelected(string color)
+    {
+        if (stateContainer.selectedFn != "-1")
+        {
+            stateContainer.updateColor(color);
+        }
     }
     private async Task BeginLogout(MouseEventArgs args)
     {
