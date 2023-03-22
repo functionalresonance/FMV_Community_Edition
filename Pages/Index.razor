@@ -223,9 +223,13 @@
                 ListCount++;
             }
         }
-        <div class="d-flex pt-2">
-            <button class="btn btn-menu oi oi-brush" @onclick="ModalColor"></button>
-        </div>
+        <AuthorizeView>
+            <Authorized>
+                <div class="d-flex pt-2">
+                    <button class="btn btn-menu oi oi-brush" @onclick="ModalColor"></button>
+                </div>
+            </Authorized>
+        </AuthorizeView>
     </div>
 </div>
 <div id="mainWindow" class="main" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
