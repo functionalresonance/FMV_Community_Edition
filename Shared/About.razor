@@ -59,9 +59,18 @@
                     GNU Affero General Public License for more details <a href="https://www.gnu.org/licenses/" target="_blank">https://www.gnu.org/licenses/</a>.
                 </p>
             </div>
-            <footer class="modal-footer">
-                <a href="https://zerprize.co.nz/Home/Privacy" target="_blank">Privacy Policy</a>
-                <button type="button" class="btn btn-modal" @onclick="@(() => OnClick.InvokeAsync(false))">Close</button>
+            <footer class="modal-footer d-block float-left">
+                <div class="float-left pt-2">
+                    <AuthorizeView>
+                        <Authorized>
+                            <a class="pr-3" href="https://github.com/Zerprize-Limited/FMV_Community_Edition" target="_blank">Source Code</a>
+                        </Authorized>
+                    </AuthorizeView>
+                    <a class="pr-3" href="https://zerprize.co.nz/Home/Privacy" target="_blank">Privacy Policy</a>
+                </div>
+                <div class="float-right">
+                    <button type="button" class="btn btn-modal" @onclick="@(() => OnClick.InvokeAsync(false))">Close</button>
+                </div>
             </footer>
         </div>
     </div>
