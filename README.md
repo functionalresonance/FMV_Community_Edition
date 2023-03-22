@@ -9,18 +9,18 @@ Projects forked from this base will explore extended functionality for qualitati
 
 The application was developed as a Blazor WebAssembly App using Microsoft Visual Studio Community 2022, and published as a .NET 6.0 self-contained browser-wasm. If the repository was cloned to Visual Studio and published to a folder structure, the resulting web.config and wwwroot folder could be placed on a web server to run the application. This is exactly the case for the public version on https://fmv.zerprize.co.nz.
 
-FMV - FRAM Model Visualiser
-Copyright © 2021 ZERPRIZE LIMITED
+    FMV - FRAM Model Visualiser
+    Copyright © 2021 ZERPRIZE LIMITED
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
