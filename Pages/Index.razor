@@ -770,6 +770,10 @@
                         reSetAspect(dictArray);
                     }
                     itemI.SelectSingleNode("@orphan")!.Value = "false";
+                    foreach (var itemIget in outputsList.FindAll(x => x.IDName == tempNewName))
+                    {
+                        itemIget.Orphan = "false";
+                    }
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "false";
                     if (getAspect != null)
                     {
