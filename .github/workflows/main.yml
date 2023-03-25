@@ -17,7 +17,7 @@ jobs:
          dotnet-version: '6.0.x'
      # publishes Blazor project to the release-folder
      - name: Publish .NET Core Project
-       run: dotnet publish FMV_Community_Edition.csproj -c Release -o release --nologo
+       run: dotnet publish FMV_Standard.csproj -c Release -o release --nologo
      # Publish static files
      - name: Commit wwwroot to GitHub Pages
        uses: JamesIves/github-pages-deploy-action@3.7.1
