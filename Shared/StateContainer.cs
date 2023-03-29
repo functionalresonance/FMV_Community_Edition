@@ -1,4 +1,4 @@
-﻿using FMV_Standard.Pages;
+﻿using FMV_Standard.Shared;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -10,7 +10,7 @@ namespace FMV_Standard.Shared
         public string touchAction { get; set; } = "auto";
         public int newFnStyle { get; set; } = 0;
         public string selectedLabel { get; set; } = "";
-        public string AspectLabelsDisplay { get; set; } = "";
+        public string aspectLabelsDisplay { get; set; } = "";
         public double tempZoomF { get; set; } = 1;
         public double tempZoomA { get; set; } = 1;
         public double scaleZoom { get; set; } = 1.5;

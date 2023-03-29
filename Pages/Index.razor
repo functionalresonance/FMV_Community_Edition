@@ -47,7 +47,14 @@
     <div class="v-panel pr-2">
         <div class="d-flex pt-2">
             <button id="newFnButton" class="btn btn-menu btn-textp" @onclick=NewFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn>+</button>
-            <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress="@((e) => FocusElementKey(e, "newFnButton"))" @onkeydown="@((e) => CheckDeleteKey(e, "newFnButton", "Fn"))" />
+            <AuthorizeView>
+                <Authorized>
+                    <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress=@((e) => FocusElementKey(e, "newFnButton")) @onkeydown=@((e) => CheckDeleteKey(e, "newFnButton", "Fn")) @onmousewheel="zoomFText" />
+                </Authorized>
+                <NotAuthorized>
+                    <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress=@((e) => FocusElementKey(e, "newFnButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "newFnButton", "Fn")) />
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
         <div class="d-flex pt-2">
             <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
@@ -55,8 +62,15 @@
             {
                 GetNodesI = aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesI.Count > 0)
-                {
-                    <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetNodesI[0].IDNr)) />
+                {            
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetNodesI[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Input", GetNodesI[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -72,7 +86,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetListI.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetListI.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Input", GetListI.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -85,7 +106,14 @@
                 GetNodesO = outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesO.Count > 0)
                 {
-                    <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetNodesO[0].IDNr)) />
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetNodesO[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Output", GetNodesO[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -101,7 +129,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetListO.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetListO.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Output", GetListO.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -114,7 +149,14 @@
                 GetNodesP = aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesP.Count > 0)
                 {
-                    <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetNodesP[0].IDNr)) />
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetNodesP[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Precondition", GetNodesP[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -130,7 +172,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetListP.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetListP.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Precondition", GetListP.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -143,7 +192,14 @@
                 GetNodesR = aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesR.Count > 0)
                 {
-                    <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetNodesR[0].IDNr)) />
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetNodesR[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Resource", GetNodesR[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -159,7 +215,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetListR.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetListR.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Resource", GetListR.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -172,7 +235,14 @@
                 GetNodesC = aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesC.Count > 0)
                 {
-                    <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetNodesC[0].IDNr)) />
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetNodesC[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Control", GetNodesC[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -188,7 +258,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetListC.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetListC.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Control", GetListC.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -201,7 +278,14 @@
                 GetNodesT = aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesT.Count > 0)
                 {
-                    <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetNodesT[0].IDNr)) />
+                    <AuthorizeView>
+                        <Authorized>
+                            <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetNodesT[0].IDNr)) @onmousewheel="zoomAText" />
+                        </Authorized>
+                        <NotAuthorized>
+                            <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Time", GetNodesT[0].IDNr)) />
+                        </NotAuthorized>
+                    </AuthorizeView>
                 }
             }
             else
@@ -217,7 +301,14 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetListT.IDNr)) />
+                        <AuthorizeView>
+                            <Authorized>
+                                <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetListT.IDNr)) @onmousewheel="zoomAText" />
+                            </Authorized>
+                            <NotAuthorized>
+                                <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKeyBasic(e, "Time", GetListT.IDNr)) />
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 }
                 ListCount++;
@@ -371,7 +462,6 @@
     }
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("Initialize");
         stateContainer.selectedFn = "-1";
         await Restore();
     }
@@ -1289,18 +1379,201 @@
                 checkForBackground();
             }
         }
+        else if ((e.Key == "ArrowUp" || e.Key == "ArrowDown") && e.CtrlKey)
+        {
+            if (elementName == "newFnButton")
+            {
+                if (e.Key == "ArrowUp")
+                {
+                    if (stateContainer.tempZoomF < 5)
+                    {
+                        stateContainer.tempZoomF += 0.1;
+                    }
+                    else
+                    {
+                        stateContainer.tempZoomF = 5;
+                    }
+                }
+                else
+                {
+                    if (stateContainer.tempZoomF >= 0.1)
+                    {
+                        stateContainer.tempZoomF -= 0.1;
+                    }
+                    else
+                    {
+                        stateContainer.tempZoomF = 0;
+                    }
+                }
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value = stateContainer.tempZoomF.ToString("#.#");
+            } 
+            else
+            {
+                if (e.Key == "ArrowUp")
+                {
+                    if (stateContainer.tempZoomA < 5)
+                    {
+                        stateContainer.tempZoomA += 0.1;
+                    }
+                    else
+                    {
+                        stateContainer.tempZoomA = 5;
+                    }
+                }
+                else
+                {
+                    if (stateContainer.tempZoomA >= 0.1)
+                    {
+                        stateContainer.tempZoomA -= 0.1;
+                    }
+                    else
+                    {
+                        stateContainer.tempZoomA = 0;
+                    }
+                }
+                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value = stateContainer.tempZoomA.ToString("#.#");
+            }
+        } 
+        else if (e.Key == "Escape")
+        {
+            if (elementName == "newFnButton")
+            {
+                stateContainer.tempZoomF = 1;
+            }
+            else
+            {
+                stateContainer.tempZoomA = 1;
+            }
+        }
+    }
+    private void CheckDeleteKeyBasic(KeyboardEventArgs e, string elementName, string IDNr)
+    {
+        if (e.Key == "Backspace" || e.Key == "Delete")
+        {
+            if (elementName == "newFnButton" && stateContainer.selectedFn != "-1") //a Function
+            {
+                if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+                {
+                    if (aspectsList.FindAll(x => x.FunctionIDNr == stateContainer.selectedFn).Count == 0 && stateContainer.projectData_Undo[0].SelectNodes("//FM//Outputs/Output[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
+                    {
+                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions")!.RemoveChild(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]")!);
+                        stateContainer.functionList.RemoveAll(x => x.IDNr == stateContainer.selectedFn);
+                        stateContainer.couplingList.RemoveAll(x => x.outputFn == stateContainer.selectedFn || x.toFn == stateContainer.selectedFn);
+                        XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']")!;
+                        foreach (XmlNode oldChild in oldChildren)
+                        {
+                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.RemoveChild(oldChild);
+                        }
+                        stateContainer.selectedFn = "-1";
+                        stateContainer.isDisabled = true;
+                        StateHasChanged();
+                    }
+                }
+            }
+            else //an Aspect
+            {
+                if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]/IDName")?.InnerText == "")
+                {
+                    if (elementName != "Output")
+                    {
+                        if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName) != null)
+                        {
+                            if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName)?.IDName == "")
+                            {
+                                aspectsList.RemoveAll(x => x.IDNr == IDNr && x.Type == elementName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (outputsList.Find(x => x.IDNr == IDNr && x.Type == elementName) != null)
+                        {
+                            if (outputsList.Find(x => x.IDNr == IDNr && x.Type == elementName)?.IDName == "")
+                            {
+                                outputsList.RemoveAll(x => x.IDNr == IDNr && x.Type == elementName);
+                            }
+                        }
+                    }
+                    var child = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]")!;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s")!.RemoveChild(child);
+                    if (elementName == "Input")
+                    {
+                        if (stateContainer.projectData_Undo[0].SelectNodes("//FM//Inputs/Input[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
+                        {
+                            stateContainer.sFnIsInput("false");
+                        }
+                    }
+                }
+                checkForBackground();
+            }
+        }
+    }
+    private void zoomFText(WheelEventArgs e)
+    {
+        //if (authenticaton.User.Identity?.IsAuthenticated == true)
+        {
+            if (e.DeltaY < 0)
+            {
+                if (stateContainer.tempZoomF < 5)
+                {
+                    stateContainer.tempZoomF -= e.DeltaY / 1000;
+                }
+                else
+                {
+                    stateContainer.tempZoomF = 5;
+                }
+            }
+            else if (e.DeltaY > 0)
+            {
+                if (stateContainer.tempZoomF >= 0.1)
+                {
+                    stateContainer.tempZoomF -= e.DeltaY / 1000;
+                }
+                else
+                {
+                    stateContainer.tempZoomF = 0;
+                }
+            }
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value = stateContainer.tempZoomF.ToString("#.#");
+        }
+    }
+    private void zoomAText(WheelEventArgs e)
+    {
+        if (e.DeltaY < 0)
+        {
+            if (stateContainer.tempZoomA < 5)
+            {
+                stateContainer.tempZoomA -= e.DeltaY / 1000;
+            }
+            else
+            {
+                stateContainer.tempZoomA = 5;
+            }
+        }
+        else if (e.DeltaY > 0)
+        {
+            if (stateContainer.tempZoomA >= 0.1)
+            {
+                stateContainer.tempZoomA -= e.DeltaY / 1000;
+            }
+            else
+            {
+                stateContainer.tempZoomA = 0;
+            }
+        }
+        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value = stateContainer.tempZoomA.ToString("#.#");
     }
     private void ShowLabels()
     {
         if (fileLoaded)
         {
-            if (stateContainer.AspectLabelsDisplay == "none")
+            if (stateContainer.aspectLabelsDisplay == "none")
             {
-                stateContainer.AspectLabelsDisplay = "";
+                stateContainer.aspectLabelsDisplay = "";
             }
             else
             {
-                stateContainer.AspectLabelsDisplay = "none";
+                stateContainer.aspectLabelsDisplay = "none";
             }
         }
     }

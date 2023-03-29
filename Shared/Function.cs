@@ -1,4 +1,6 @@
-﻿    public class Function
+﻿namespace FMV_Standard.Shared
+{
+    public class Function
     {
         private string _label;
         private string _fnStyle;
@@ -133,3 +135,4 @@
             return textLines;
         }
     }
+}
