@@ -3,7 +3,7 @@
 
 @if (coupling != null) 
 {
-    var displayAspectText = coupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]), false);
+    var displayAspectText = coupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
     var aspectTextCount = displayAspectText.Count;
     <g transform="scale(@stateContainer.tempZoomA)">
         @if (stateContainer.selectedLabel == coupling.Name) //selected coupling is blue

@@ -4,7 +4,7 @@
 @inject BrowserService Service
 @inject IJSRuntime JSRuntime
 @inject SignOutSessionStateManager SignOutManager
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ILocalStorageService localStorage
 @inject StateContainer stateContainer
 @inject IConfiguration render
 
@@ -226,7 +226,7 @@
         <AuthorizeView>
             <Authorized>
                 <div class="d-flex pt-2">
-                    <button class="btn btn-menu oi oi-brush" @onclick="ModalColor"></button>
+                    <button class="btn btn-menu oi oi-brush" @onclick="ModalColor" @onkeydown="ModalKey"></button>
                 </div>
             </Authorized>
         </AuthorizeView>
@@ -342,6 +342,13 @@
     {
         if (stateContainer.selectedFn != "-1") {
             showColorPicker = true;
+        }
+    }
+    private void ModalKey(KeyboardEventArgs e)
+    {
+        if (e.Key == "Escape")
+        {
+            showColorPicker = false;
         }
     }
     private void colorSelected(string color)
@@ -1209,7 +1216,7 @@
         Coupling addCoupling = new Coupling(aName, labelDx, labelDy, directionX, directionY, notGroup, dictArray[0], dictArray[1], dictArray[2], dictArray[3],
             stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.x + double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.y + double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]), 0, 0);
         stateContainer.couplingList.Add(addCoupling);
-        addCoupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]), false);
+        addCoupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
         aspectIcurve2.InnerText = addCoupling.reDrawLines(stateContainer.functionList.Find(x => x.IDNr == dictArray[2])!.x + double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), 
             stateContainer.functionList.Find(x => x.IDNr == dictArray[2])!.y + double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]), false);
         aspectIcurve.InnerText = addCoupling.curve;

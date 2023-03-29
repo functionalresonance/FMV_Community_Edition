@@ -35,6 +35,7 @@
     "1": {
       "Description": "FunctionType = 1",
       "Name": "Variable Foreground Function",
+      "fn-stroke-width": "1",
       "fn-stroke": "#555555",
       "fn-connector-path": "M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88",
       "fn-fill": "#FFFFFF",

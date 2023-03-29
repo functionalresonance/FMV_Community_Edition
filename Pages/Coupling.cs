@@ -71,7 +71,7 @@
     public double drawBy { get; set; }
     public double drawIntx { get; set; }
     public double drawInty { get; set; }
-    public List<string> ReturnTextLines(int length, bool reset)
+    public List<string> ReturnTextLines(int length)
     {
         var textLines = new List<string>();
         string[] textWords = _label.Split(" ");
@@ -148,7 +148,6 @@
         }
         _displayText = textLines;
         displayTextCount = _displayText.Count;
-        if (reset) resetLabel();
         return textLines;
     }
     public string curve

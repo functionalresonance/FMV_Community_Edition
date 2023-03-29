@@ -11,7 +11,7 @@
         {
             @if (coupling != null && function != null)
             {
-                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[function.fnStyle + ":aspect-font-wrap"]), false);
+                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[function.fnStyle + ":aspect-font-wrap"]));
                 var aspectTextCount = displayAspectText.Count;
                 var fnX = function.x;
                 var fnY = function.y;
@@ -84,9 +84,23 @@
             }
         }
         <!-- This is the Function main outline -->
-        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
-            <path d=@render[function.options+"fn-connector-path"] />
-            <path fill=@render[function.options+"fn-fill"] fill-opacity=@render[function.options+"fn-opacity"] d=@render[function.options+"fn-path"] />
+        <defs>
+            <radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
+                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
+                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+                <stop offset="100%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+            </radialGradient>
+        </defs>
+            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
+            @if (render[function.options + "fn-connector-path"] != "" && render[function.options + "fn-connector-path"] is not null)
+            {
+                <path d=@render[function.options+"fn-connector-path"] />
+            }
+            @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+            {
+                <path fill=@render[function.options+"fn-fill"] fill-opacity=@render[function.options+"fn-opacity"] d=@render[function.options+"fn-path"] />
+            }
         </g>
         @if (function.fnColorStyle != null)
         {
@@ -113,17 +127,23 @@
                         }
                         break;
                     }
-                    default: styleColor = render[function.options + "aspect-stroke"]; styleStroke = render[function.options + "aspect-stroke-width"]; break;
+                    default: styleColor = render[function.options + "aspect-stroke"] ?? "#FFFFFF"; styleStroke = render[function.options + "aspect-stroke-width"] ?? "0"; break;
                 }
                 if (styleColor != "#FFFFFF")
                 {
                     <g>
-                        <g stroke-width=@styleStroke stroke=@styleColor>
-                            <path fill="none" d=@render[function.options+"fn-color-path"] />
-                        </g>
-                        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
-                            <path fill="none" d=@render[function.options+"fn-path"] />
-                        </g>
+                        @if (render[function.options + "fn-color-path"] != "" && render[function.options + "fn-color-path"] is not null)
+                        {
+                            <g stroke-width=@styleStroke stroke=@styleColor>
+                                <path fill="none" d=@render[function.options+"fn-color-path"] />
+                            </g>
+                        }
+                        @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+                        {
+                            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
+                                <path fill="none" d=@render[function.options+"fn-path"] />
+                            </g>
+                        }
                     </g>
                 }
                 else
@@ -140,20 +160,18 @@
         {
             isFnColor = false;
         }
-        <g stroke-width=@render[function.options+"aspect-stroke-width"] stroke=@render[function.options+"aspect-stroke"]>
-            <circle cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-        </g>
-
-        @if (function.FunctionType == "1") //variable foreground
+        @if (render[function.options + "aspect-stroke"] != "" && render[function.options + "aspect-stroke"] is not null)
         {
-            <g stroke="#BBBBBB"><path fill="none" d="M 30 50 Q 35 30 40 30 Q 45 30 50 50 Q 55 70 60 70 Q 65 70 70 50" /></g>
+            <g stroke-width=@render[function.options+"aspect-stroke-width"] stroke=@render[function.options+"aspect-stroke"]>
+                <circle cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+            </g>
         }
-        @if (@render[function.options + "fn-path"] == "") //modern background
+        @if (render[function.options + "fn-path"] == "" || render[function.options + "fn-path"] is null) //modern background
         {
             if (!isFnColor)
             {
