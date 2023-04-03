@@ -6,22 +6,22 @@
     <div class="v-panel pr-2">
         <div class="d-flex pt-2">
             <div class="d-flex flex-column">
-                <button id="newFnButton" class="btn btn-menu oi oi-plus" tabindex="3" @onclick=newFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn></button>
+                <button id="newFnButton" class="btn btn-menu oi oi-plus" title="New Function" tabindex="3" @onclick=newFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn></button>
                 <AuthorizeView>
                     <Authorized>
                         <div class="d-flex">
-                            <button class="btn btn-half btn-half-s" tabindex="1" @onclick=zoomFs @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
-                            <button class="btn btn-half btn-half-l" tabindex="2" @onclick=zoomFl @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
+                            <button class="btn btn-half btn-half-s" title="Decrease Function text" tabindex="1" @onclick=zoomFs @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
+                            <button class="btn btn-half btn-half-l" title="Increase Function text" tabindex="2" @onclick=zoomFl @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
                         </div>
                     </Authorized>
                 </AuthorizeView>
             </div>
             <div class="d-flex">
-                <textarea class="fn-text" id="fnNameText" tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
+                <textarea class="fn-text" id="fnNameText" title="Function Name" tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
             </div>
         </div>
         <div class="d-flex pt-2">
-            <button id="newIButton" class="btn btn-menu btn-textp" tabindex="5" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
+            <button id="newIButton" class="btn btn-menu btn-textp" title="Input" tabindex="5" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesI = stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -50,7 +50,7 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newOButton" class="btn btn-menu btn-textp" tabindex="8" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
+            <button id="newOButton" class="btn btn-menu btn-textp" title="Output" tabindex="8" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesO = stateContainer.outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -79,7 +79,7 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newPButton" class="btn btn-menu btn-textp" tabindex="11" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
+            <button id="newPButton" class="btn btn-menu btn-textp" title="Precondition" tabindex="11" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesP = stateContainer.aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -108,7 +108,7 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newRButton" class="btn btn-menu btn-textp" tabindex="14" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
+            <button id="newRButton" class="btn btn-menu btn-textp" title="Resource" tabindex="14" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesR = stateContainer.aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -137,7 +137,7 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newCButton" class="btn btn-menu btn-textp" tabindex="17" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
+            <button id="newCButton" class="btn btn-menu btn-textp" title="Control" tabindex="17" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesC = stateContainer.aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -166,7 +166,7 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newTButton" class="btn btn-menu btn-textp" tabindex="20" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
+            <button id="newTButton" class="btn btn-menu btn-textp" title="Time" tabindex="20" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesT = stateContainer.aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -197,9 +197,9 @@
         <AuthorizeView>
             <Authorized>
                 <div class="d-flex pt-2">
-                    <button class="btn btn-half btn-half-s" tabindex="23" @onclick=zoomAs @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
-                    <button class="btn btn-half btn-half-l" tabindex="24" @onclick=zoomAl @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
-                    <button class="btn btn-menu oi oi-brush ml-1" tabindex="25" @onclick="ModalColor" @onkeydown="ModalKey"></button>
+                    <button class="btn btn-half btn-half-s" title="Decrease Aspect text" tabindex="23" @onclick=zoomAs @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
+                    <button class="btn btn-half btn-half-l" title="Increase Aspect text" tabindex="24" @onclick=zoomAl @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
+                    <button class="btn btn-menu oi oi-brush ml-1" title="Function Colour" tabindex="25" @onclick="ModalColor" @onkeydown="ModalKey"></button>
                 </div>
             </Authorized>
         </AuthorizeView>
@@ -713,14 +713,17 @@
     }
     private void zoomFin()
     {
-        focusCheck = "zoomF";
-        oldZoomText = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")?.Value ?? "1.0";
+        if (stateContainer.projectData_Undo[0] is not null)
+        {
+            focusCheck = "zoomF";
+            oldZoomText = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")?.Value ?? "1.0";
+        }
     }
     private void zoomFout()
     {
         focusCheck = "";
         var newZoomText = stateContainer.tempZoomF.ToString("#.#");
-        if (newZoomText != oldZoomText)
+        if (newZoomText != oldZoomText && stateContainer.projectData_Undo[0] is not null)
         {
             stateContainer.updateUndo();
             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value = newZoomText;
@@ -752,14 +755,17 @@
     }
     private void zoomAin()
     {
-        focusCheck = "zoomA";
-        oldZoomText = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")?.Value ?? "1.0";
+        if (stateContainer.projectData_Undo[0] is not null)
+        {
+            focusCheck = "zoomA";
+            oldZoomText = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")?.Value ?? "1.0";
+        }
     }
     private void zoomAout()
     {
         focusCheck = "";
         var newZoomText = stateContainer.tempZoomA.ToString("#.#");
-        if (newZoomText != oldZoomText)
+        if (newZoomText != oldZoomText && stateContainer.projectData_Undo[0] is not null)
         {
             stateContainer.updateUndo();
             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value = newZoomText;

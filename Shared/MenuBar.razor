@@ -8,35 +8,35 @@
 
 <div class="navbar fixed-top bg-light p-2">
     <div>
-        <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload">
+        <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload" title="Open (upload)">
             <InputFile OnChange="onInputFileChange" single />
         </div>
-        <button class="btn btn-menu oi oi-data-transfer-download" @onclick=OnFileSave></button>
-        <button class="btn btn-menu oi oi-image" @onclick=OnImageSave></button>
-        <button class="btn btn-menu oi oi-zoom-out" @onclick=zoomMinus @onfocusin=@(() => stateContainer.updateUndo()) ></button>
-        <button class="btn btn-menu oi oi-fullscreen-enter" @onclick=zoomFill @onfocusin=@(() => stateContainer.updateUndo())></button>
-        <button class="btn btn-menu oi oi-zoom-in" @onclick=zoomPlus @onfocusin=@(() => stateContainer.updateUndo())></button>
+        <button class="btn btn-menu oi oi-data-transfer-download" title="Save (download)" @onclick=OnFileSave></button>
+        <button class="btn btn-menu oi oi-image" title="Save image" @onclick=OnImageSave></button>
+        <button class="btn btn-menu oi oi-zoom-out" title="Zoom out" @onclick=zoomMinus @onfocusin=@(() => stateContainer.updateUndo()) ></button>
+        <button class="btn btn-menu oi oi-fullscreen-enter" title="Zoom fullscreen" @onclick=zoomFill @onfocusin=@(() => stateContainer.updateUndo())></button>
+        <button class="btn btn-menu oi oi-zoom-in" title="Zoom in" @onclick=zoomPlus @onfocusin=@(() => stateContainer.updateUndo())></button>
         <AuthorizeView>
             <Authorized>
-                <button class="btn btn-menu oi oi-action-undo" @onclick=actionUndo></button>
-                <button class="btn btn-menu oi oi-action-redo" @onclick=actionRedo></button>
+                <button class="btn btn-menu oi oi-action-undo" title="Undo" @onclick=actionUndo></button>
+                <button class="btn btn-menu oi oi-action-redo" title="Redo" @onclick=actionRedo></button>
             </Authorized>
         </AuthorizeView>
     </div>
     <div class="float-right">
-        <button class="btn btn-menu oi oi-tags" @onclick=ShowLabels></button>
+        <button class="btn btn-menu oi oi-tags" title="Show Aspect labels" @onclick=ShowLabels></button>
         <AuthorizeView>
             <Authorized>
-                <button class="btn btn-menu oi oi-eye" @onclick=ChangeFnStyle @onfocusin=@(() => stateContainer.updateUndo()) ></button>
-                <button class="btn btn-menu oi oi-reload" @onclick=Recover></button>
-                <button class="btn btn-menu oi oi-account-logout" @onclick=@BeginLogout></button>
+                <button class="btn btn-menu oi oi-eye" title="Model rendering" @onclick=ChangeFnStyle @onfocusin=@(() => stateContainer.updateUndo()) ></button>
+                <button class="btn btn-menu oi oi-reload" title="Reload" @onclick=Recover></button>
+                <button class="btn btn-menu oi oi-account-logout" title="Logout" @onclick=@BeginLogout></button>
             </Authorized>
             <NotAuthorized>
-                <button class="btn btn-menu oi oi-eye" @onclick=ChangeFnStyleBasic @onfocusin=@(() => stateContainer.updateUndo())></button>
-                <button class="btn btn-menu oi oi-account-login" @onclick=BeginLogin></button>
+                <button class="btn btn-menu oi oi-eye" title="Model rendering" @onclick=ChangeFnStyleBasic @onfocusin=@(() => stateContainer.updateUndo())></button>
+                <button class="btn btn-menu oi oi-account-login" title="Login" @onclick=BeginLogin></button>
             </NotAuthorized>
         </AuthorizeView>
-        <button class="btn btn-menu oi oi-info" @onclick=ShowInfo></button>
+        <button class="btn btn-menu oi oi-info" title="Info" @onclick=ShowInfo></button>
     </div>
 </div>
 

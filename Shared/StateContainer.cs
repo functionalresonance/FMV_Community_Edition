@@ -111,17 +111,20 @@ namespace FMV_Standard.Shared
         }
         public void updateUndo()
         {
-            if (undoIndex > undoLength - 5)
+            if (projectData_Undo[0] is not null)
             {
-                Array.Copy(projectData_Undo, moveBack + 1, projectData_Undo, 1, undoIndex - moveBack);
-                Array.Copy(selectedFn_Undo, moveBack + 1, selectedFn_Undo, 1, undoIndex - moveBack);
-                undoIndex -= moveBack;
+                if (undoIndex > undoLength - 5)
+                {
+                    Array.Copy(projectData_Undo, moveBack + 1, projectData_Undo, 1, undoIndex - moveBack);
+                    Array.Copy(selectedFn_Undo, moveBack + 1, selectedFn_Undo, 1, undoIndex - moveBack);
+                    undoIndex -= moveBack;
+                }
+                undoIndex += 1;
+                projectData_Undo[undoIndex] = (XmlDocument)projectData_Undo[0].Clone();
+                selectedFn_Undo[undoIndex] = selectedFn;
+                projectData_Undo[undoIndex + 1] = new XmlDocument();
+                projectData_Undo[undoIndex + 2] = new XmlDocument();
             }
-            undoIndex += 1;
-            projectData_Undo[undoIndex] = (XmlDocument)projectData_Undo[0].Clone();
-            selectedFn_Undo[undoIndex] = selectedFn;
-            projectData_Undo[undoIndex + 1] = new XmlDocument();
-            projectData_Undo[undoIndex + 2] = new XmlDocument();
         }
         public void reSetAspect(string[] dictArray, double xO, double yO, double aX, double aY, int aFW)
         {

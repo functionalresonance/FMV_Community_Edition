@@ -121,10 +121,13 @@ a, .btn-link {
 .btn-half-l {
     font-size: large;
     font-weight: 400;
+    border-left-color: dimgrey;
+    border-radius: 0;
 }
 .btn-half-s {
     font-size: small;
     font-weight: 400;
+    border-radius: 0;
 }
 input {
     height: 2rem;
