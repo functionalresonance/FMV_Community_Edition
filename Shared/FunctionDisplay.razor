@@ -39,7 +39,7 @@
             }
         }
     }
-    <g class=@function.fnClass transform="translate(@function.x,@function.y)" @onmousedown="SelectFn" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+    <g class=@function.fnClass transform="translate(@function.x,@function.y)" @onclick="SelectFn" @onmousedown="MoveFnStart" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
         @if (function.IDNr == stateContainer.selectedFn)
         {
             if (function.dragFn)
@@ -254,21 +254,33 @@
     }
     private void SelectFn(MouseEventArgs e)
     {
+        if (function != null)
+        {
+            if (function.IDNr != stateContainer.selectedFn)
+            {
+                stateContainer.selectedLabel = "";
+                stateContainer.selectedFn = function.IDNr;
+                stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
+                stateContainer.isDisabled = false;
+                refreshParent.InvokeAsync();
+            }
+        }
+    }
+    private void MoveFnStart(MouseEventArgs e)
+    {
         if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
         {
             stateContainer.defaultFnLabel();
         }
         if (function != null)
         {
-            stateContainer.selectedLabel = "";
-            stateContainer.selectedFn = function.IDNr;
-            stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
-            stateContainer.isDisabled = false;
-            refreshParent.InvokeAsync();
-            function.startX = e.ClientX / stateContainer.scaleZoom - function.x;
-            function.startY = e.ClientY / stateContainer.scaleZoom - function.y;
-            function.dragFn = true;
-            function.fnClass = "fn-move";
+            if (function.IDNr == stateContainer.selectedFn)
+            {
+                function.startX = e.ClientX / stateContainer.scaleZoom - function.x;
+                function.startY = e.ClientY / stateContainer.scaleZoom - function.y;
+                function.dragFn = true;
+                function.fnClass = "fn-move";
+            }
         }
     }
     private void MoveFnTouch(TouchEventArgs e)
@@ -315,6 +327,7 @@
     {
         if (function != null && function.dragFn)
         {
+            stateContainer.updateUndo();
             if (stateContainer.couplingList.Count > 0)
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))
@@ -333,6 +346,7 @@
     {
         if (function != null && function.dragFn)
         {
+            stateContainer.updateUndo();
             if (stateContainer.couplingList.Count > 0)
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))

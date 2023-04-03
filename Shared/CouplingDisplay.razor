@@ -17,7 +17,7 @@
         }
         <AuthorizeView>
             <Authorized>
-                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onmousedown="SelectLabel" @onmousemove="MoveLabel" @onmouseup="MoveLabelStop">
+                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabel @onmousedown=MoveLabelStart @onmousemove=MoveLabel @onmouseup=MoveLabelStop>
                     @if (coupling.dragAspect)
                     {
                         <circle cx="50" cy="50" fill="white" opacity="0" r="100%" />
@@ -33,7 +33,7 @@
                 </g>
             </Authorized>
             <NotAuthorized>
-                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onmousedown="SelectLabelBasic">
+                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabelBasic>
                     <rect x=@(coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) width=@coupling.Twidth height=@(Math.Min(5 + (aspectTextCount) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
                     <text x=@(coupling.labelX/stateContainer.tempZoomA) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
                         @for (int i = 0; i < aspectTextCount; i++)
@@ -70,21 +70,33 @@
     }
     private void SelectLabel(MouseEventArgs e)
     {
+        if (coupling != null)
+        {
+            if (coupling.Name != stateContainer.selectedLabel)
+            {
+                stateContainer.selectedLabel = coupling.Name;
+                stateContainer.selectedFn = "-1";
+                stateContainer.fnName = "";
+                stateContainer.isDisabled = true;
+                refreshParent.InvokeAsync();
+            }
+        }
+    }
+    private void MoveLabelStart(MouseEventArgs e)
+    {
         if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
         {
             stateContainer.defaultFnLabel();
         }
         if (coupling != null)
         {
-            stateContainer.selectedLabel = coupling.Name;
-            stateContainer.selectedFn = "-1";
-            stateContainer.isDisabled = true;
-            stateContainer.fnName = "";
-            coupling.dragAspect = true;
-            coupling.startLabelX = e.ClientX / stateContainer.scaleZoom - coupling.labelX;
-            coupling.startLabelY = e.ClientY / stateContainer.scaleZoom - coupling.labelY;
-            coupling.aspectClass = "fn-move";
-            refreshParent.InvokeAsync();
+            if (coupling.Name == stateContainer.selectedLabel)
+            {
+                coupling.startLabelX = e.ClientX / stateContainer.scaleZoom - coupling.labelX;
+                coupling.startLabelY = e.ClientY / stateContainer.scaleZoom - coupling.labelY;
+                coupling.dragAspect = true;
+                coupling.aspectClass = "fn-move";
+            }
         }
     }
     private void MoveLabel(MouseEventArgs e)
@@ -145,6 +157,7 @@
     {
         if (coupling != null && coupling.dragAspect)
         {
+            stateContainer.updateUndo();
             var tempPosY = ((e.ClientY / stateContainer.scaleZoom - coupling.startLabelY) - coupling.drawInty);
             if (Math.Abs(coupling.drawFromy - coupling.drawInty) < Math.Abs((coupling.drawFromy - coupling.drawInty) - tempPosY))
             {
