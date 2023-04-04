@@ -27,7 +27,7 @@
                 GetNodesI = stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesI.Count > 0)
                 {
-                    <textarea @ref=GetNodesI[0].elementReference tabindex="6" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) />
+                    <textarea @ref=GetNodesI[0].elementReference tabindex="6" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onblur=@(() => AspectBlank("Input", GetNodesI[0].IDNr)) />
                 }
             }
             else
@@ -43,7 +43,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListI.elementReference tabindex="7" class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @onchange=@((e) => AspectChange(e, "Input", GetListI.IDNr)) />
+                        <textarea @ref=GetListI.elementReference tabindex="7" class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @onchange=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onblur=@(() => AspectBlank("Input", GetListI.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -56,7 +56,7 @@
                 GetNodesO = stateContainer.outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesO.Count > 0)
                 {
-                    <textarea @ref=GetNodesO[0].elementReference tabindex="9" class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @onchange=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) />
+                    <textarea @ref=GetNodesO[0].elementReference tabindex="9" class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @onchange=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onblur=@(() => AspectBlank("Output", GetNodesO[0].IDNr)) />
                 }
             }
             else
@@ -72,7 +72,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListO.elementReference tabindex="10" class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @onchange=@((e) => AspectChange(e, "Output", GetListO.IDNr)) />
+                        <textarea @ref=GetListO.elementReference tabindex="10" class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @onchange=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onblur=@(() => AspectBlank("Output", GetListO.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -85,7 +85,7 @@
                 GetNodesP = stateContainer.aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesP.Count > 0)
                 {
-                    <textarea @ref=GetNodesP[0].elementReference tabindex="12" class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @onchange=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) />
+                    <textarea @ref=GetNodesP[0].elementReference tabindex="12" class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @onchange=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onblur=@(() => AspectBlank("Precondition", GetNodesP[0].IDNr)) />
                 }
             }
             else
@@ -101,7 +101,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListP.elementReference tabindex="13" class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @onchange=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) />
+                        <textarea @ref=GetListP.elementReference tabindex="13" class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @onchange=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onblur=@(() => AspectBlank("Precondition", GetListP.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -114,7 +114,7 @@
                 GetNodesR = stateContainer.aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesR.Count > 0)
                 {
-                    <textarea @ref=GetNodesR[0].elementReference tabindex="15" class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @onchange=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) />
+                    <textarea @ref=GetNodesR[0].elementReference tabindex="15" class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @onchange=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onblur=@(() => AspectBlank("Resource", GetNodesR[0].IDNr)) />
                 }
             }
             else
@@ -130,7 +130,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListR.elementReference tabindex="16" class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @onchange=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) />
+                        <textarea @ref=GetListR.elementReference tabindex="16" class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @onchange=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onblur=@(() => AspectBlank("Resource", GetListR.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -143,7 +143,7 @@
                 GetNodesC = stateContainer.aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesC.Count > 0)
                 {
-                    <textarea @ref=GetNodesC[0].elementReference tabindex="18" class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @onchange=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) />
+                    <textarea @ref=GetNodesC[0].elementReference tabindex="18" class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @onchange=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onblur=@(() => AspectBlank("Control", GetNodesC[0].IDNr)) />
                 }
             }
             else
@@ -159,7 +159,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListC.elementReference tabindex="19" class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @onchange=@((e) => AspectChange(e, "Control", GetListC.IDNr)) />
+                        <textarea @ref=GetListC.elementReference tabindex="19" class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @onchange=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onblur=@(() => AspectBlank("Control", GetListC.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -172,7 +172,7 @@
                 GetNodesT = stateContainer.aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesT.Count > 0)
                 {
-                    <textarea @ref=GetNodesT[0].elementReference tabindex="21" class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @onchange=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) />
+                    <textarea @ref=GetNodesT[0].elementReference tabindex="21" class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @onchange=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onblur=@(() => AspectBlank("Time", GetNodesT[0].IDNr)) />
                 }
             }
             else
@@ -188,7 +188,7 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListT.elementReference tabindex="22" class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @onchange=@((e) => AspectChange(e, "Time", GetListT.IDNr)) />
+                        <textarea @ref=GetListT.elementReference tabindex="22" class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @onchange=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onblur=@(() => AspectBlank("Time", GetListT.IDNr)) />
                     </div>
                 }
                 ListCount++;
@@ -398,7 +398,7 @@
             stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s")!.AppendChild(itemA);
             if (type != "Output")
             {
-                stateContainer.aspectsList.Add(new Aspect(type, id.ToString(), "true", "", stateContainer.selectedFn));
+                stateContainer.aspectsList.Add(new Aspect(type, id.ToString(), "", "", stateContainer.selectedFn));
                 if (type == "Input")
                 {
                     stateContainer.sFnIsInput("true");
@@ -436,8 +436,23 @@
             }
         }
     }
+    private void AspectBlank(string tempType, string tempId)
+    {
+        Console.WriteLine("AspectBlank");
+        if (stateContainer.selectedFn != "-1")
+        {
+            string oldName = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName")?.InnerText ?? "NULL";
+            if (oldName == "")
+            {
+                DeleteAspect(tempType, tempId);
+                checkForBackground();
+                refreshParent.InvokeAsync();
+            }
+        }
+    }
     private void AspectChange(ChangeEventArgs e, string tempType, string tempId)
     {
+        Console.WriteLine("AspectChange");
         if (stateContainer.selectedFn != "-1")
         {
             stateContainer.updateUndo();
@@ -469,6 +484,7 @@
             var getOutput = stateContainer.outputsList.Find(x => x.IDNr == tempId && x.Type == tempType);
             if (getOutput != null)
             {
+                getOutput.Orphan = "true";
                 getOutput.IDName = tempNewName;
             }
             XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + stateContainer.selectedFn + "|" + oldName + "|\")]")!;
