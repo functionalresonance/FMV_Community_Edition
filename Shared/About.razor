@@ -12,16 +12,18 @@
                     for modelling non-trivial socio-technical systems, please visit the website <a href="https://functionalresonance.com/" target="_blank">functionalresonance.com</a>
                 </p>
                 <p>
-                    <a class="oi oi-data-transfer-upload" /> Upload an existing FMV data file<br />
-                    <a class="oi oi-data-transfer-download" /> Download the model as an FMV data file<br />
+                    <a class="oi oi-data-transfer-upload" /> Upload an existing FMV data file&emsp; <a class="oi oi-data-transfer-download" /> Download the model as an FMV data file<br />
                     <a class="oi oi-image" /> Download the model as an SVG image file<br />
-                    <a class="oi oi-zoom-out" /> <a class="oi oi-fullscreen-enter" /> <a class="oi oi-zoom-in" /> Zoom the model; out, fill and in<br />
-                    <a class="oi oi-tags" /> Hide/Show Aspect labels<br />
-                    <a class="oi oi-eye" /> Change the Function style rendering<br />
+                    <a class="oi oi-zoom-out" /> Zoom out&emsp; <a class="oi oi-fullscreen-enter" /> Zoom fullscreen&emsp; <a class="oi oi-zoom-in" /> Zoom in&emsp; <br />
                     <AuthorizeView>
                         <Authorized>
-                            <a class="oi oi-reload" /> Restore Latest Model<br />
-                            <a class="oi oi-account-logout" /> Log Out of Account<br />
+                            <a class="oi oi-action-undo" /> Undo&emsp; <a class="oi oi-action-redo" /> Redo<br />
+                        </Authorized>
+                    </AuthorizeView>
+                    <a class="oi oi-tags" /> Hide/Show Aspect labels&emsp; <a class="oi oi-eye" /> Change the Function style rendering<br />
+                    <AuthorizeView>
+                        <Authorized>
+                            <a class="oi oi-reload" /> Restore Latest Model&emsp; <a class="oi oi-account-logout" /> Log Out of Account<br />
                         </Authorized>
                         <NotAuthorized>
                             <a class="oi oi-account-login" /> Log In to Account<br />
@@ -29,20 +31,28 @@
                     </AuthorizeView>
                 </p>
                 <p>
-                    <a class="btn-textp">+</a> Add a new Function and enter a Name<br />To delete a Function, delete all Name text and then Delete/Backspace again<br />
+                    <a class="oi oi-plus" /> Add a new Function and enter a Name<br />
+                    To delete a Function, delete all Aspects and then delete the Name text of the Function<br />
                 </p>
                 <p>
                     <a class="btn-text">I</a>nput <a class="btn-text">O</a>utput <a class="btn-text">P</a>recondition <a class="btn-text">R</a>esource <a class="btn-text">C</a>ontrol <a class="btn-text">T</a>ime<br />
-                    Add an Aspect to the selected Function<br />Select a Function by clicking/tapping, it will show a blue highlight<br />
-                    To delete an Aspct, delete all text and then Delete/Backspace again
+                    Add an Aspect to the selected Function. 
+                    Select a Function by clicking/tapping, it will show a blue highlight. 
+                    To delete an Aspect, delete all text
                 </p>
+                <AuthorizeView>
+                    <Authorized>
+                        <p>
+                            <a style="font-size:smaller; font-weight:600">A</a>|<a style="font-size:large">A</a> Decrease/Increase font size on Functions and Aspects. Esc for default size<br />
+                            <a class="oi oi-brush" /> Add colour to a Function
+                        </p>
+                    </Authorized>
+                </AuthorizeView>
                 <p>
                     When an <a class="btn-text">O</a>utput Aspect has the same name as an <a class="btn-text">I P R C T</a> aspect on another Function, a Potential Coupling line will appear to connect the Functions
                 </p>
                 <p>
-                    Drag a Function to arrange the model. On iPad use long-press on the Function to lock the scrolling
-                </p>
-                <p>
+                    Drag a Function to arrange the model. On iPad use long-press on the Function to lock the scrolling<br />
                     Use F11 for full-screen mode, or install the app to your desktop or home page for offline use
                 </p>
                 <strong>Copyright © 2021 ZERPRIZE LIMITED</strong>

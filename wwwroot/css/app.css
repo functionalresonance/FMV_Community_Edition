@@ -96,12 +96,48 @@ a, .btn-link {
         color: #fff;
         background-color: dimgrey;
     }
+.btn-half {
+    font-family: 'PT Sans Caption', sans-serif;
+    line-height: 20px;
+    padding: 0;
+    color: dimgrey;
+    background-color: #F1F3F4;
+    border-color: #F1F3F4;
+    min-width: 1.5rem;
+    max-width: 1.5rem;
+    min-height: 2rem;
+    max-height: 2rem;
+}
+    .btn-half:hover {
+        color: dimgrey;
+        background-color: #F1F3F4;
+        border-color: dimgrey;
+    }
+
+    .btn-half:active {
+        color: #fff;
+        background-color: dimgrey;
+    }
+.btn-half-l {
+    font-size: large;
+    font-weight: 400;
+    border-left-color: dimgrey;
+    border-radius: 0;
+}
+.btn-half-s {
+    font-size: small;
+    font-weight: 400;
+    border-radius: 0;
+}
 input {
     height: 2rem;
 }
 textarea {
     height: 3.5rem;
     width: 100%;
+}
+.fn-text {
+    height: 4rem
 }
 .aspect-orphan {
     background-color: #FF7777;
@@ -148,6 +184,7 @@ app {
 .sidebar {
     background-color: #F1F3F4;
     padding-top: 5rem;
+    padding-bottom: 1.5rem;
     padding-left: 0.5rem;
 }
 .sidebar .v-panel {

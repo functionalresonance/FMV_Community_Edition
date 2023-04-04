@@ -11,7 +11,7 @@
         {
             @if (coupling != null && function != null)
             {
-                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[function.fnStyle + ":aspect-font-wrap"]), false);
+                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[function.fnStyle + ":aspect-font-wrap"]));
                 var aspectTextCount = displayAspectText.Count;
                 var fnX = function.x;
                 var fnY = function.y;
@@ -27,19 +27,19 @@
                     fnY += double.Parse(render[function.fnStyle + ":aspectY:" + coupling.toType]);
                 }
                 <path fill="none" stroke-width="5" stroke=@render[function.fnStyle+":selected-fill"] stroke-linecap="round" opacity="0.5" d=@coupling.reDrawLines(fnX,fnY,isOutput) />
-                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.AspectLabelsDisplay">
-                    <rect x=@(coupling.labelX - coupling.Twidth / 2) y=@coupling.labelY width=@coupling.Twidth height=@(Math.Min(5 + aspectTextCount * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-                    <text transform="translate(0,-2)" x=@coupling.labelX y=@(coupling.labelY + 3) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay">
+                    <rect x=@(coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) width=@coupling.Twidth height=@(Math.Min(5 + aspectTextCount * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+                    <text x=@(coupling.labelX/stateContainer.tempZoomA) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
                         @for (int i = 0; i < aspectTextCount; i++)
                         {
-                            <tspan x=@coupling.labelX dy="8">@displayAspectText[i]</tspan>
+                            <tspan x=@(coupling.labelX/stateContainer.tempZoomA) dy="8">@displayAspectText[i]</tspan>
                         }
                     </text>
                 </g>
             }
         }
     }
-    <g class=@function.fnClass transform="translate(@function.x,@function.y)" @onmousedown="SelectFn" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
+    <g class=@function.fnClass transform="translate(@function.x,@function.y)" @onclick="SelectFn" @onmousedown="MoveFnStart" @ontouchstart="SelectFnTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
         @if (function.IDNr == stateContainer.selectedFn)
         {
             if (function.dragFn)
@@ -84,9 +84,23 @@
             }
         }
         <!-- This is the Function main outline -->
-        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
-            <path d=@render[function.options+"fn-connector-path"] />
-            <path fill=@render[function.options+"fn-fill"] fill-opacity=@render[function.options+"fn-opacity"] d=@render[function.options+"fn-path"] />
+        <defs>
+            <radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
+                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
+                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+                <stop offset="100%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+            </radialGradient>
+        </defs>
+            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
+            @if (render[function.options + "fn-connector-path"] != "" && render[function.options + "fn-connector-path"] is not null)
+            {
+                <path d=@render[function.options+"fn-connector-path"] />
+            }
+            @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+            {
+                <path fill=@render[function.options+"fn-fill"] fill-opacity=@render[function.options+"fn-opacity"] d=@render[function.options+"fn-path"] />
+            }
         </g>
         @if (function.fnColorStyle != null)
         {
@@ -113,17 +127,23 @@
                         }
                         break;
                     }
-                    default: styleColor = render[function.options + "aspect-stroke"]; styleStroke = render[function.options + "aspect-stroke-width"]; break;
+                    default: styleColor = render[function.options + "aspect-stroke"] ?? "#FFFFFF"; styleStroke = render[function.options + "aspect-stroke-width"] ?? "0"; break;
                 }
                 if (styleColor != "#FFFFFF")
                 {
                     <g>
-                        <g stroke-width=@styleStroke stroke=@styleColor>
-                            <path fill="none" d=@render[function.options+"fn-color-path"] />
-                        </g>
-                        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
-                            <path fill="none" d=@render[function.options+"fn-path"] />
-                        </g>
+                        @if (render[function.options + "fn-color-path"] != "" && render[function.options + "fn-color-path"] is not null)
+                        {
+                            <g stroke-width=@styleStroke stroke=@styleColor>
+                                <path fill="none" d=@render[function.options+"fn-color-path"] />
+                            </g>
+                        }
+                        @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+                        {
+                            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
+                                <path fill="none" d=@render[function.options+"fn-path"] />
+                            </g>
+                        }
                     </g>
                 }
                 else
@@ -140,20 +160,18 @@
         {
             isFnColor = false;
         }
-        <g stroke-width=@render[function.options+"aspect-stroke-width"] stroke=@render[function.options+"aspect-stroke"]>
-            <circle cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-            <circle cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-        </g>
-
-        @if (function.FunctionType == "1") //variable foreground
+        @if (render[function.options + "aspect-stroke"] != "" && render[function.options + "aspect-stroke"] is not null)
         {
-            <g stroke="#BBBBBB"><path fill="none" d="M 30 50 Q 35 30 40 30 Q 45 30 50 50 Q 55 70 60 70 Q 65 70 70 50" /></g>
+            <g stroke-width=@render[function.options+"aspect-stroke-width"] stroke=@render[function.options+"aspect-stroke"]>
+                <circle cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+                <circle cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+            </g>
         }
-        @if (@render[function.options + "fn-path"] == "") //modern background
+        @if (render[function.options + "fn-path"] == "" || render[function.options + "fn-path"] is null) //modern background
         {
             if (!isFnColor)
             {
@@ -194,7 +212,7 @@
                 <text x=@(double.Parse(render[function.fnStyle+":aspectX:R"])-2.7+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:R"])+2.8-fontAdjust)>R</text>
             </g>
         }
-        <text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 5 - 3)"
+        <text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 6 - 1)"
               font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"fn-font-color"]>
             @for (int i = 0; i < fnTextCount; i++)
             {
@@ -236,21 +254,33 @@
     }
     private void SelectFn(MouseEventArgs e)
     {
+        if (function != null)
+        {
+            if (function.IDNr != stateContainer.selectedFn)
+            {
+                stateContainer.selectedLabel = "";
+                stateContainer.selectedFn = function.IDNr;
+                stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
+                stateContainer.isDisabled = false;
+                refreshParent.InvokeAsync();
+            }
+        }
+    }
+    private void MoveFnStart(MouseEventArgs e)
+    {
         if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
         {
             stateContainer.defaultFnLabel();
         }
         if (function != null)
         {
-            stateContainer.selectedLabel = "";
-            stateContainer.selectedFn = function.IDNr;
-            stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
-            stateContainer.isDisabled = false;
-            refreshParent.InvokeAsync();
-            function.startX = e.ClientX / stateContainer.scaleZoom - function.x;
-            function.startY = e.ClientY / stateContainer.scaleZoom - function.y;
-            function.dragFn = true;
-            function.fnClass = "fn-move";
+            if (function.IDNr == stateContainer.selectedFn)
+            {
+                function.startX = e.ClientX / stateContainer.scaleZoom - function.x;
+                function.startY = e.ClientY / stateContainer.scaleZoom - function.y;
+                function.dragFn = true;
+                function.fnClass = "fn-move";
+            }
         }
     }
     private void MoveFnTouch(TouchEventArgs e)
@@ -297,6 +327,7 @@
     {
         if (function != null && function.dragFn)
         {
+            stateContainer.updateUndo();
             if (stateContainer.couplingList.Count > 0)
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))
@@ -315,6 +346,7 @@
     {
         if (function != null && function.dragFn)
         {
+            stateContainer.updateUndo();
             if (stateContainer.couplingList.Count > 0)
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))

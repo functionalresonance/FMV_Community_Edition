@@ -1,6 +1,8 @@
 ﻿using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
+namespace FMV_Standard.Shared
+{
     public class BrowserService
     {
         private readonly IJSRuntime _js;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
             _js = js;
         }
 
-        public async Task<BrowserDimension> GetDimensions()
+        public async Task<BrowserDimension> getDimensions()
         {
             return await _js.InvokeAsync<BrowserDimension>("getDimensions");
         }
@@ -19,6 +21,7 @@ using System.Threading.Tasks;
 
     public class BrowserDimension
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int width { get; set; }
+        public int height { get; set; }
     }
+}

@@ -1,242 +1,25 @@
 ﻿@page "/"
 @inherits LayoutComponentBase
-@inject NavigationManager NavManager
-@inject BrowserService Service
 @inject IJSRuntime JSRuntime
-@inject SignOutSessionStateManager SignOutManager
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject ILocalStorageService localStorage
 @inject StateContainer stateContainer
 @inject IConfiguration render
 
-@if (showModal)
+@if (stateContainer.showModal)
 {
     <About OnClick="ModalClose"></About>
 }
-@if (showColorPicker)
+@if (stateContainer.showColorPicker)
 {
     <ColorSelect OnClose="ModalClose" ColorSelected="colorSelected"></ColorSelect>
 }
-<div class="navbar fixed-top bg-light p-2">
-    <div>
-        <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload">
-            <InputFile OnChange="OnInputFileChange" single />
-        </div>
-        <button class="btn btn-menu oi oi-data-transfer-download" @onclick="OnFileSave"></button>
-        <button class="btn btn-menu oi oi-image" @onclick="OnImageSave"></button>
-        <button class="btn btn-menu oi oi-zoom-out" @onclick="zoomMinus"></button>
-        <button class="btn btn-menu oi oi-fullscreen-enter" @onclick="zoomFill"></button>
-        <button class="btn btn-menu oi oi-zoom-in" @onclick="zoomPlus"></button>
-    </div>
-    <div class="float-right">
-        <button class="btn btn-menu oi oi-tags" @onclick="ShowLabels"></button>
-        <AuthorizeView>
-            <Authorized>
-                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyle"></button>
-                <button class="btn btn-menu oi oi-reload" @onclick="Recover"></button>
-                <button class="btn btn-menu oi oi-account-logout" @onclick="@BeginLogout"></button>
-            </Authorized>
-            <NotAuthorized>
-                <button class="btn btn-menu oi oi-eye" @onclick="ChangeFnStyleBasic"></button>
-                <button class="btn btn-menu oi oi-account-login" @onclick="@BeginLogin"></button>
-            </NotAuthorized>
-        </AuthorizeView>
-        <button class="btn btn-menu oi oi-info" @onclick="@ModalShow"></button>
-    </div>
-</div>
-<div class="sidebar">
-    <div class="v-panel pr-2">
-        <div class="d-flex pt-2">
-            <button id="newFnButton" class="btn btn-menu btn-textp" @onclick=NewFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn>+</button>
-            <textarea id="fnNameText" disabled=@stateContainer.isDisabled @oninput="FnNameChange" value=@stateContainer.fnName @onkeypress="@((e) => FocusElementKey(e, "newFnButton"))" @onkeydown="@((e) => CheckDeleteKey(e, "newFnButton", "Fn"))" />
-        </div>
-        <div class="d-flex pt-2">
-            <button id="newIButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesI = aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesI.Count > 0)
-                {
-                    <textarea @ref=GetNodesI[0].elementReference class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @oninput=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetNodesI[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesI = null;
-            }
-        </div>
-        @if (GetNodesI != null && GetNodesI.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListI in GetNodesI)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListI.elementReference class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @oninput=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newIButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Input", GetListI.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newOButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesO = outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesO.Count > 0)
-                {
-                    <textarea @ref=GetNodesO[0].elementReference class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @oninput=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetNodesO[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesO = null;
-            }
-        </div>
-        @if (GetNodesO != null && GetNodesO.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListO in GetNodesO)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListO.elementReference class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @oninput=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newOButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Output", GetListO.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newPButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesP = aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesP.Count > 0)
-                {
-                    <textarea @ref=GetNodesP[0].elementReference class=@(GetNodesP[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesP[0].IDName @oninput=@((e) => AspectChange(e, "Precondition", GetNodesP[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetNodesP[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesP = null;
-            }
-        </div>
-        @if (GetNodesP != null && GetNodesP.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListP in GetNodesP)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListP.elementReference class=@(GetListP.Orphan=="true"?"aspect-orphan":"") value=@GetListP.IDName @oninput=@((e) => AspectChange(e, "Precondition", GetListP.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newPButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Precondition", GetListP.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newRButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesR = aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesR.Count > 0)
-                {
-                    <textarea @ref=GetNodesR[0].elementReference class=@(GetNodesR[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesR[0].IDName @oninput=@((e) => AspectChange(e, "Resource", GetNodesR[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetNodesR[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesR = null;
-            }
-        </div>
-        @if (GetNodesR != null && GetNodesR.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListR in GetNodesR)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListR.elementReference class=@(GetListR.Orphan=="true"?"aspect-orphan":"") value=@GetListR.IDName @oninput=@((e) => AspectChange(e, "Resource", GetListR.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newRButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Resource", GetListR.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newCButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesC = aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesC.Count > 0)
-                {
-                    <textarea @ref=GetNodesC[0].elementReference class=@(GetNodesC[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesC[0].IDName @oninput=@((e) => AspectChange(e, "Control", GetNodesC[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetNodesC[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesC = null;
-            }
-        </div>
-        @if (GetNodesC != null && GetNodesC.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListC in GetNodesC)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListC.elementReference class=@(GetListC.Orphan=="true"?"aspect-orphan":"") value=@GetListC.IDName @oninput=@((e) => AspectChange(e, "Control", GetListC.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newCButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Control", GetListC.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newTButton" class="btn btn-menu btn-text" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesT = aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesT.Count > 0)
-                {
-                    <textarea @ref=GetNodesT[0].elementReference class=@(GetNodesT[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesT[0].IDName @oninput=@((e) => AspectChange(e, "Time", GetNodesT[0].IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetNodesT[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesT = null;
-            }
-        </div>
-        @if (GetNodesT != null && GetNodesT.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListT in GetNodesT)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListT.elementReference class=@(GetListT.Orphan=="true"?"aspect-orphan":"") value=@GetListT.IDName @oninput=@((e) => AspectChange(e, "Time", GetListT.IDNr)) @onkeypress=@((e) => FocusElementKey(e, "newTButton")) @onkeydown=@((e) => CheckDeleteKey(e, "Time", GetListT.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <AuthorizeView>
-            <Authorized>
-                <div class="d-flex pt-2">
-                    <button class="btn btn-menu oi oi-brush" @onclick="ModalColor"></button>
-                </div>
-            </Authorized>
-        </AuthorizeView>
-    </div>
-</div>
+<MenuBar refreshParent="refreshParent" onInputFileChange="OnInputFileChange" fileIsLoaded="FileIsLoaded" />
+<SideBar refreshParent="refreshParent" newFunction="NewFunction" />
 <div id="mainWindow" class="main" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
     <div>
-        @if (inputDropStatus == "file-input-zone-drop")
+        @if (stateContainer.inputDropStatus == "file-input-zone-drop")
         {
-            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single /></div>
+            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" /></div>
         }
         <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -274,9 +57,9 @@
                     <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0" />
                 </radialGradient>
             </defs>
-            @if (fileLoaded)
+            @if (stateContainer.fileLoaded)
             {
-                <g @onmousedown="UnSelect" @ontouchstart="UnSelectTouch">
+                <g @onclick="UnSelect" @ontouchstart="UnSelectTouch">
                     <rect fill=@render[stateContainer.newFnStyle+":canvas-color"] opacity=@render[stateContainer.newFnStyle+":canvas-opacity"] width="100%" height="100%" />
                 </g>
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn && x.Name != stateContainer.selectedLabel))
@@ -298,51 +81,25 @@
             }
         </svg>
         <p>
-            @debugOutput
+            @stateContainer.debugOutput
         </p>
     </div>
 </div>
 
 @code {
-    private List<Aspect>? GetNodesI;
-    private List<Aspect>? GetNodesO;
-    private List<Aspect>? GetNodesT;
-    private List<Aspect>? GetNodesC;
-    private List<Aspect>? GetNodesP;
-    private List<Aspect>? GetNodesR;
-    private string setFocus = "";
-    private string debugOutput = "";
-    private bool fileLoaded = false;
-    private bool isBackup = false;
-    private string fileName = "FMV_new.xfmv";
-    private List<Aspect> aspectsList = new List<Aspect>();
-    private List<Aspect> outputsList = new List<Aspect>();
-    private string tempNewName = "";
-    private string tempId = "";
-    private string tempType = "";
     public int maxFn = -1;
     public double newFnX = -40;
     public double newFnY = 0;
     public bool isNewModel = true;
-    private bool showModal = false;
-    private bool showColorPicker = false;
-    private string inputDropStatus = "file-input-zone-drop";
 
     private void refreshParent()
     {
         StateHasChanged();
     }
-    private void ModalShow() => showModal = true;
     private void ModalClose(bool state)
     {
-        showModal = state;
-        showColorPicker = state;
-    }
-    private void ModalColor() 
-    {
-        if (stateContainer.selectedFn != "-1") {
-            showColorPicker = true;
-        }
+        stateContainer.showModal = state;
+        stateContainer.showColorPicker = state;
     }
     private void colorSelected(string color)
     {
@@ -350,23 +107,6 @@
         {
             stateContainer.updateColor(color);
         }
-    }
-    private async Task BeginLogout(MouseEventArgs args)
-    {
-        await Backup();
-        await SignOutManager.SetSignOutState();
-        NavManager.NavigateTo("/authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
-    }
-    private async Task BeginLogin(MouseEventArgs args)
-    {
-        await Backup();
-        NavManager.NavigateTo("/authentication/login");
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        Console.WriteLine("Initialize");
-        stateContainer.selectedFn = "-1";
-        await Restore();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -380,98 +120,7 @@
             {
 
             }
-            if (setFocus != "")
-            {
-                try
-                {
-                    if (setFocus != "Output")
-                    {
-                        await aspectsList.FindLast(x => x.Type == setFocus && x.FunctionIDNr == stateContainer.selectedFn)!.elementReference.FocusAsync();
-                    }
-                    else
-                    {
-                        await outputsList.FindLast(x => x.Type == setFocus && x.FunctionIDNr == stateContainer.selectedFn)!.elementReference.FocusAsync();
-                    }
-                }
-                catch
-                {
-
-                }
-                setFocus = "";
-            }
         }
-    }
-    private void zoomPlus()
-    {
-        if (fileLoaded)
-        {
-            stateContainer.scaleZoom += 0.25;
-            if (stateContainer.scaleZoom > 4)
-            {
-                stateContainer.scaleZoom = 4;
-            }
-            stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
-            stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
-        }
-    }
-    private void zoomMinus()
-    {
-        if (fileLoaded)
-        {
-            stateContainer.scaleZoom -= 0.25;
-            if (stateContainer.scaleZoom < 0.25)
-            {
-                stateContainer.scaleZoom = 0.25;
-            }
-            stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
-            stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
-        }
-    }
-    public async void zoomFill()
-    {
-        if (fileLoaded)
-        {
-            var dimensions = await Service.GetDimensions();
-            if (stateContainer.canvasWidth / stateContainer.canvasHeight > Convert.ToDouble(dimensions.Width - 250) / Convert.ToDouble(dimensions.Height - 70))
-            {
-                stateContainer.canvasWidth = dimensions.Width - 250;
-                stateContainer.scaleZoom = stateContainer.canvasWidth / stateContainer.viewWidth;
-                stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            }
-            else
-            {
-                stateContainer.canvasHeight = dimensions.Height - 70;
-                stateContainer.scaleZoom = stateContainer.canvasHeight / stateContainer.viewHeight;
-                stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
-            }
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
-            StateHasChanged();
-        }
-    }
-    public async void OnFileSave()
-    {
-        if (fileLoaded)
-        {
-            var saveXfmv = stateContainer.projectData_Undo[0].OuterXml;
-            //var textBytes = Encoding.UTF8.GetBytes(saveXfmv);
-            //string saveBase = Convert.ToBase64String(textBytes);
-            await JSRuntime.InvokeAsync<object>(
-                "FileSaveAs",
-                fileName,
-                saveXfmv
-            );
-        }
-    }
-    public async void OnImageSave()
-    {
-        string imageName = fileName.Substring(0, fileName.LastIndexOf(".")) + ".svg";
-        await JSRuntime.InvokeAsync<object>(
-        "FileSaveAs",
-        imageName,
-        await JSRuntime.InvokeAsync<string>("getHTML", "canvas_1")
-        );
     }
     private void NewFunction()
     {
@@ -479,38 +128,31 @@
         {
             stateContainer.defaultFnLabel();
         }
-        //projectData_Undo.unshift(projectData_Undo[0].copy());
-        //selectedFn_Undo.unshift(selectedFn);
-        //undoB.enabled = true;
         if (stateContainer.projectData_Undo[0] == null)
         {
-            fileLoaded = false;
+            stateContainer.fileLoaded = false;
             stateContainer.tempZoomA = 1;
             stateContainer.tempZoomF = 1;
             stateContainer.scaleZoom = 1.5;
             stateContainer.projectData_Undo[0] = new XmlDocument();
             stateContainer.projectData_Undo[0].LoadXml("<FM><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
-            inputDropStatus = "file-input-zone-hide";
-            fileLoaded = true;
+            stateContainer.inputDropStatus = "file-input-zone-hide";
+            stateContainer.fileLoaded = true;
+        }
+        else
+        {
+            stateContainer.updateUndo();
         }
         maxFn++;
         if (isNewModel)
         {
-            fileLoaded = false;
-            inputDropStatus = "file-input-zone-hide";
-            fileLoaded = true;
+            stateContainer.fileLoaded = false;
+            stateContainer.inputDropStatus = "file-input-zone-hide";
+            stateContainer.fileLoaded = true;
             if (maxFn % 2 == 0)
             {
-                if (maxFn % 8 == 0 && maxFn != 0)
-                {
-                    newFnX = 50;
-                    newFnY += 240;
-                }
-                else
-                {
-                    newFnX += 90;
-                    newFnY += 110;
-                }
+                if (maxFn % 8 == 0 && maxFn != 0) { newFnX = 50; newFnY += 240; }
+                else { newFnX += 90; newFnY += 110; }
             }
             else
             {
@@ -527,8 +169,8 @@
             }
             else
             {
-                newFnX = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.x + 90??90;
-                newFnY = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.y + 110??110;
+                newFnX = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.x + 90??20;
+                newFnY = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.y + 110??20;
             }
         }
         stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, newFnX + 120);
@@ -559,353 +201,32 @@
         stateContainer.selectedFn = maxFn.ToString();
         stateContainer.isDisabled = false;
         stateContainer.selectedLabel = "";
-        //checkDirty=true;
-        //initiateFn(itemF, false); Check for Orphans?
-        //performance! if (!enableGroup1) reDraw();
         XmlAttribute fnX = stateContainer.projectData_Undo[0].CreateAttribute("x");
         XmlAttribute fnY = stateContainer.projectData_Undo[0].CreateAttribute("y");
         fnX.Value = newFnX.ToString();
         fnY.Value = newFnY.ToString();
         itemF.Attributes.Append(fnX);
         itemF.Attributes.Append(fnY);
-        //functionArray[selectedFn].drawSelected(0x4444DD);
-        //reDrawAspects(false);
-        //fnList();
-        //fnScroll(selectedFn);
-        //fnName.setFocus();
         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions")!.AppendChild(itemF);
         stateContainer.functionList.Add(new Function(maxFn.ToString(), newFnX, newFnY, stateContainer.newFnStyle.ToString(), "2", "", 0, "false", "", ""));
         stateContainer.fnName = "";
         FocusElement("fnNameText");
         ClearElement("fnNameText");
     }
-    private void NewAspect(MouseEventArgs e, string type)
-    {
-        if (stateContainer.projectData_Undo[0] != null && stateContainer.selectedFn != "-1")
-        {
-            setFocus = type;
-            if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s") == null)
-            {
-                stateContainer.projectData_Undo[0].SelectSingleNode("//FM")!.AppendChild(stateContainer.projectData_Undo[0].CreateElement(type + "s"));
-            }
-            int id;
-            if (stateContainer.projectData_Undo[0].SelectNodes("//FM/" + type + "s/" + type)?.Count == 0)
-            {
-                id = 0;
-            }
-            else
-            {
-                id = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s/" + type + "[not(../" + type + "/IDNr > IDNr)]/IDNr")?.InnerText??"0") + 1;
-            }
-            XmlNode itemA = stateContainer.projectData_Undo[0].CreateElement(type);
-            itemA.InnerXml = "<IDNr>" + id.ToString() + "</IDNr><IDName></IDName><FunctionIDNr>" + stateContainer.selectedFn + "</FunctionIDNr><Description/>";
-            XmlAttribute newOrphan = stateContainer.projectData_Undo[0].CreateAttribute("orphan");
-            newOrphan.Value = "false";
-            itemA.Attributes!.Append(newOrphan);
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + type + "s")!.AppendChild(itemA);
-            if (type != "Output")
-            {
-                aspectsList.Add(new Aspect(type, id.ToString(), "true", "", stateContainer.selectedFn));
-                if (type == "Input")
-                {
-                    stateContainer.sFnIsInput("true");
-                }
-            }
-            else 
-            {
-                outputsList.Add(new Aspect(type, id.ToString(), "", "", stateContainer.selectedFn));
-            }
-        }
-    }
-    private void AspectChange(ChangeEventArgs e, string type, string id)
-    {
-        if (stateContainer.selectedFn != "-1")
-        {
-            tempNewName = e.Value?.ToString()??"";
-            tempId = id;
-            tempType = type;
-            AspectChangeCommitt();
-        }
-    }
-    private void AspectChangeCommitt()
-    {
-        if (stateContainer.selectedFn != "-1")
-        {
-            string oldName = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName")?.InnerText ?? "";
-            int orphans;
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName")!.InnerText = tempNewName;
-            if (tempNewName == "")
-            {
-                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "false";
-            }
-            else
-            {
-                stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "true";
-            }
-            if (tempType == "Output")
-            {
-                var getOutput = outputsList.Find(x => x.IDNr == tempId && x.Type == tempType);
-                if (getOutput != null)
-                {
-                    getOutput.IDName = tempNewName;
-                }
-                XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[starts-with(Name,\"" + stateContainer.selectedFn + "|" + oldName + "|\")]")!;
-                bool oldOrphans = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]")?.Count == 0; // if 0 then all oldChildren are orphans
-                bool hasOrphan;
-                if (tempNewName == "")
-                {
-                    hasOrphan = false;
-                }
-                else
-                {
-                    hasOrphan = true;
-                }
-                foreach (var aspect in aspectsList.FindAll(x => x.FunctionIDNr != stateContainer.selectedFn))
-                {
-                    if (aspect.IDName == tempNewName)
-                    {
-                        string[] dictArray = new string[4] { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
-                        if (tempNewName != "")
-                        {
-                            reSetAspect(dictArray);
-                        }
-                        hasOrphan = false;
-                        aspect.Orphan = "false";
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan")!.Value = "false";
-                        if (getOutput != null)
-                        {
-                            getOutput.Orphan = "false";
-                        }
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Outputs/Output[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "false";
-                        bool subNotOrphan = true;
-                        foreach (XmlNode checkO in stateContainer.projectData_Undo[0].SelectNodes("//FM/" + aspect.Type + "s/" + aspect.Type + "[FunctionIDNr=\"" + aspect.FunctionIDNr + "\"]")!)
-                        {
-                            if (stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + checkO.SelectSingleNode("IDName")?.InnerText + "\"]")?.Count == 0)
-                            {
-                                subNotOrphan = false;
-                            }
-                        }
-                        if (subNotOrphan)
-                        {
-                            orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans")?.Value);
-                            switch (aspect.Type)
-                            { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                                case "Input": orphans &= ~(1 << 0); break;
-                                case "Precondition": orphans &= ~(1 << 2); break;
-                                case "Resource": orphans &= ~(1 << 3); break;
-                                case "Control": orphans &= ~(1 << 4); break;
-                                case "Time": orphans &= ~(1 << 5); break;
-                            }
-                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans")!.Value = orphans.ToString();
-                            stateContainer.functionList.Find(x => x.IDNr == aspect.FunctionIDNr)!.orphans = orphans;
-                        }
-                    }
-                    else if (aspect.IDName == oldName)
-                    {
-                        if (oldOrphans)
-                        {
-                            aspect.Orphan = "true";
-                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan")!.Value = "true";
-                        }
-                    }
-                }
-                foreach (XmlNode oldChild in oldChildren)
-                {
-                    if (oldOrphans)
-                    {
-                        string toFnID = oldChild.SelectSingleNode("@toFn")?.Value??"";
-                        orphans = stateContainer.functionList.Find(x => x.IDNr == toFnID)!.orphans;
-                        switch (oldChild.SelectSingleNode("Name")!.InnerText.Substring(oldChild.SelectSingleNode("Name")!.InnerText.Length - 1, 1))
-                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                            case "I": orphans |= 1 << 0; break;
-                            case "P": orphans |= 1 << 2; break;
-                            case "R": orphans |= 1 << 3; break;
-                            case "C": orphans |= 1 << 4; break;
-                            case "T": orphans |= 1 << 5; break;
-                        }
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + toFnID + "\"]/@orphans")!.Value = orphans.ToString();
-                        stateContainer.functionList.Find(x => x.IDNr == toFnID)!.orphans = orphans;
-                    }
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.RemoveChild(oldChild);
-                    stateContainer.couplingList.RemoveAll(x => x.Name == oldChild.SelectSingleNode("Name")?.InnerText);
-                }
-                orphans = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)!.orphans;
-                if (hasOrphan)
-                {
-                    stateContainer.sFnOrphans(orphans |= 1 << 1);
-                }
-                else
-                {
-                    foreach (XmlNode itemO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + stateContainer.selectedFn + "\" and IDNr!=\"" + tempId + "\"]")!)
-                    {
-                        if (aspectsList.FindAll(x => x.IDName == itemO.SelectSingleNode("IDName")?.InnerText).Count == 0)
-                        {
-                            hasOrphan = true;
-                        }
-                    }
-                    if (hasOrphan)
-                    {
-                        stateContainer.sFnOrphans(orphans |= 1 << 1);
-                    }
-                    else
-                    {
-                        stateContainer.sFnOrphans(orphans &= ~(1 << 1));
-                    }
-                }
-            }
-            else
-            {
-                var getAspect = aspectsList.Find(x => x.IDNr == tempId && x.Type == tempType);
-                if (getAspect !=null)
-                {
-                    getAspect.Orphan = "true";
-                    getAspect.IDName = tempNewName;
-                }
-                XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[contains(Name,\"|" + oldName + "|" + stateContainer.selectedFn + "|" + tempType.Substring(0, 1) + "\")]")!;
-                foreach (XmlNode itemI in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]")!)
-                {
-                    string[] dictArray = new string[4] { itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? "", tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
-                    if (tempNewName != "")
-                    {
-                        reSetAspect(dictArray);
-                    }
-                    itemI.SelectSingleNode("@orphan")!.Value = "false";
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/@orphan")!.Value = "false";
-                    if (getAspect != null)
-                    {
-                        getAspect.Orphan = "false";
-                    }
-                    bool subNotOrphan = true;
-                    foreach (XmlNode checkO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr=\"" + itemI.SelectSingleNode("FunctionIDNr")?.InnerText + "\"]")!)
-                    {
-                        if (aspectsList.FindAll(x => x.IDName == checkO.SelectSingleNode("IDName")?.InnerText).Count == 0)
-                        {
-                            subNotOrphan = false;
-                        }
-                    }
-                    if (subNotOrphan)
-                    {
-                        orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr")?.InnerText + "\"]/@orphans")?.Value);
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + itemI.SelectSingleNode("FunctionIDNr")?.InnerText + "\"]/@orphans")!.Value = (orphans &= ~(1 << 1)).ToString();
-                        stateContainer.functionList.Find(x => x.IDNr == itemI.SelectSingleNode("FunctionIDNr")?.InnerText)!.orphans = orphans &= ~(1 << 1);
-                    }
-                }
-                bool oldOrphans = aspectsList.FindAll(x => x.IDName == oldName).Count == 0;
-                foreach (XmlNode oldChild in oldChildren)
-                {
-                    if (oldOrphans)
-                    {
-                        string fromFnID = oldChild.SelectSingleNode("@outputFn")?.Value??"";
-                        orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans")!.Value);
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + fromFnID + "\"]/@orphans")!.Value = (orphans |= 1 << 1).ToString();
-                        stateContainer.functionList.Find(x => x.IDNr == fromFnID)!.orphans = orphans |= 1 << 1;
-                    }
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.RemoveChild(oldChild);
-                    stateContainer.couplingList.RemoveAll(x => x.Name == oldChild.SelectSingleNode("Name")?.InnerText);
-                }
-                if (oldOrphans)
-                {
-                    foreach (XmlNode oldO in stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + oldName + "\"]")!)
-                    {
-                        oldO.SelectSingleNode("@orphan")!.Value = "true";
-                    }
-                    foreach (var oldOget in outputsList.FindAll(x => x.IDName == oldName))
-                    {
-                        oldOget.Orphan = "true";
-                    }
-                }
-                orphans = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)!.orphans;
-                if (tempNewName != "" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
-                {
-                    switch (tempType)
-                    { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                        case "Input": orphans |= 1 << 0; break;
-                        case "Precondition": orphans |= 1 << 2; break;
-                        case "Resource": orphans |= 1 << 3; break;
-                        case "Control": orphans |= 1 << 4; break;
-                        case "Time": orphans |= 1 << 5; break;
-                    }
-                    stateContainer.sFnOrphans(orphans);
-                }
-                else
-                {
-                    bool hasOrphan = false;
-                    foreach (XmlNode itemA in stateContainer.projectData_Undo[0].SelectNodes("//FM/" + tempType + "s/" + tempType + "[FunctionIDNr=\"" + stateContainer.selectedFn + "\" and IDNr!=\"" + tempId + "\"]")!)
-                    {
-                        if (stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + itemA.SelectSingleNode("IDName")?.InnerText + "\"]")?.Count == 0)
-                        {
-                            hasOrphan = true;
-                        }
-                    }
-                    if (hasOrphan)
-                    {
-                        switch (tempType)
-                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                            case "Input": orphans |= 1 << 0; break;
-                            case "Precondition": orphans |= 1 << 2; break;
-                            case "Resource": orphans |= 1 << 3; break;
-                            case "Control": orphans |= 1 << 4; break;
-                            case "Time": orphans |= 1 << 5; break;
-                        }
-                        stateContainer.sFnOrphans(orphans);
-                    }
-                    else
-                    {
-                        switch (tempType)
-                        { //orphans |= 1 << 0; //orphans &= ~(1 << 0); //if (1 >> 0) & 1 == 1;
-                            case "Input": orphans &= ~(1 << 0); break;
-                            case "Precondition": orphans &= ~(1 << 2); break;
-                            case "Resource": orphans &= ~(1 << 3); break;
-                            case "Control": orphans &= ~(1 << 4); break;
-                            case "Time": orphans &= ~(1 << 5); break;
-                        }
-                        stateContainer.sFnOrphans(orphans);
-                    }
-                }
-            }
-            checkForBackground();
-        }
-    }
-    private void checkForBackground()
-    {
-        var check1 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Preconditions/Precondition[FunctionIDNr='" + stateContainer.selectedFn + "']")?.Count;
-        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Resources/Resource[FunctionIDNr='" + stateContainer.selectedFn + "']")?.Count;
-        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Controls/Control[FunctionIDNr='" + stateContainer.selectedFn + "']")?.Count;
-        check1 += stateContainer.projectData_Undo[0].SelectNodes("//FM/Times/Time[FunctionIDNr='" + stateContainer.selectedFn + "']")?.Count;
-        var check2 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[FunctionIDNr='" + stateContainer.selectedFn + "']")?.Count;
-        var check3 = stateContainer.projectData_Undo[0].SelectNodes("//FM/Inputs/Input[FunctionIDNr= '" + stateContainer.selectedFn + "']")?.Count;
-        if (check1 == 0 && (check2 == 0 || check3 == 0))
-        { //has only inputs or only outputs
-            stateContainer.sFnFunctionType("2"); //background
-        }
-        else
-        {
-            stateContainer.sFnFunctionType("0"); //foreground
-        }
-    }
-    private void FnNameChange(ChangeEventArgs e)
-    {
-        if (stateContainer.selectedFn != "-1")
-        {
-            stateContainer.sFnIDName(e.Value?.ToString()??"");
-        }
-    }
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
-        debugOutput = "File loading ...";
-        fileLoaded = false;
+        stateContainer.debugOutput = "File loading ...";
+        stateContainer.fileLoaded = false;
         stateContainer.viewWidth = 0;
         stateContainer.viewHeight = 0;
-        aspectsList = new List<Aspect>();
-        outputsList = new List<Aspect>();
-        stateContainer.couplingList = new List<Coupling>();
-        stateContainer.functionList = new List<Function>();
         var buffer = new byte[e.File.Size];
         await e.File.OpenReadStream(1050000).ReadAsync(buffer);
+        stateContainer.undoIndex = 0;
+        stateContainer.projectData_Undo = new XmlDocument[700];
         stateContainer.projectData_Undo[0] = new XmlDocument();
         stateContainer.projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
-        fileName = e.File.Name;
-        inputDropStatus = "file-input-zone-hide";
+        stateContainer.fileName = e.File.Name;
+        stateContainer.inputDropStatus = "file-input-zone-hide";
         FileIsLoaded();
     }
     private void FileIsLoaded()
@@ -913,6 +234,11 @@
         stateContainer.selectedFn = "-1";
         stateContainer.fnName = "";
         stateContainer.isDisabled = true;
+        stateContainer.aspectsList = new List<Aspect>();
+        stateContainer.outputsList = new List<Aspect>();
+        stateContainer.couplingList = new List<Coupling>();
+        stateContainer.functionList = new List<Function>();
+        maxFn = -1;
         var getFns = stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function");
         if (getFns != null)
         {
@@ -992,7 +318,7 @@
                 itemI.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan")!.Value = "true";
-            aspectsList.Add(new Aspect("Input", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+            stateContainer.aspectsList.Add(new Aspect("Input", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
             idCount++;
         }
         idCount = 0;
@@ -1007,7 +333,7 @@
                 itemI.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan")!.Value = "true";
-            aspectsList.Add(new Aspect("Precondition", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+            stateContainer.aspectsList.Add(new Aspect("Precondition", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
             idCount++;
         }
         idCount = 0;
@@ -1022,7 +348,7 @@
                 itemI.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan")!.Value = "true";
-            aspectsList.Add(new Aspect("Resource", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+            stateContainer.aspectsList.Add(new Aspect("Resource", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
             idCount++;
         }
         idCount = 0;
@@ -1037,7 +363,7 @@
                 itemI.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan")!.Value = "true";
-            aspectsList.Add(new Aspect("Control", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+            stateContainer.aspectsList.Add(new Aspect("Control", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
             idCount++;
         }
         idCount = 0;
@@ -1052,7 +378,7 @@
                 itemI.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("orphan"));
             }
             itemI.SelectSingleNode("@orphan")!.Value = "true";
-            aspectsList.Add(new Aspect("Time", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+            stateContainer.aspectsList.Add(new Aspect("Time", idCount.ToString(), "true", itemI.SelectSingleNode("IDName")?.InnerText ?? "", itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
             idCount++;
         }
         if (aspectsA.SelectSingleNode("@WebEnhanced")?.Value != "updated")
@@ -1070,12 +396,14 @@
                 string isOutputOrphan = "true";
                 dictArray[0] = itemO.SelectSingleNode("FunctionIDNr")?.InnerText ?? "";
                 dictArray[1] = itemO.SelectSingleNode("IDName")?.InnerText ?? "";
-                int iTo = aspectsList.Count;
-                foreach (var aspect in aspectsList.FindAll(x => x.IDName == dictArray[1]))
+                int iTo = stateContainer.aspectsList.Count;
+                foreach (var aspect in stateContainer.aspectsList.FindAll(x => x.IDName == dictArray[1]))
                 {
                     dictArray[2] = aspect.FunctionIDNr;
                     dictArray[3] = aspect.Type.Substring(0, 1);
-                    reSetAspect(dictArray);
+                    stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]),
+                        double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]),
+                        int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
                     aspect.Orphan = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan")!.Value = "false";
                     isOutputOrphan = "false";
@@ -1092,10 +420,10 @@
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + dictArray[0] + "\"]/@orphans")!.Value = orphans.ToString();
                     stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.orphans = orphans;
                 }
-                outputsList.Add(new Aspect("Output", idCount.ToString(), isOutputOrphan, itemO.SelectSingleNode("IDName")?.InnerText ?? "", itemO.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
+                stateContainer.outputsList.Add(new Aspect("Output", idCount.ToString(), isOutputOrphan, itemO.SelectSingleNode("IDName")?.InnerText ?? "", itemO.SelectSingleNode("FunctionIDNr")?.InnerText ?? ""));
                 idCount++;
             }
-            foreach (var aspect in aspectsList.FindAll(x => x.Orphan == "true"))
+            foreach (var aspect in stateContainer.aspectsList.FindAll(x => x.Orphan == "true"))
             {
                 int orphans = Convert.ToInt32(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=\"" + aspect.FunctionIDNr + "\"]/@orphans")?.Value);
                 switch (aspect.Type)
@@ -1119,8 +447,8 @@
         newFnX = 20;
         newFnY = 20;
         isNewModel = false;
-        fileLoaded = true;
-        debugOutput = "";
+        stateContainer.fileLoaded = true;
+        stateContainer.debugOutput = "";
     }
     private void UnSelectTouch(TouchEventArgs e)
     {
@@ -1148,201 +476,18 @@
         stateContainer.touchAction = "auto";
         StateHasChanged();
     }
-    private void reSetAspect(string[] dictArray)
-    {
-        var aName = string.Join("|", dictArray);
-        bool appendNew = false;
-        double labelDx = 0;
-        double labelDy = 0;
-        string directionX = "from";
-        string directionY = "to";
-        string notGroup = "true";
-        XmlNode? aspectI = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + aName + "\"]");
-        if (aspectI == null)
-        {
-            aspectI = stateContainer.projectData_Undo[0].CreateElement("Aspect");
-            XmlAttribute aspectIx = stateContainer.projectData_Undo[0].CreateAttribute("x");
-            aspectIx.Value = "0";
-            aspectI.Attributes!.Append(aspectIx);
-            XmlAttribute aspectIy = stateContainer.projectData_Undo[0].CreateAttribute("y");
-            aspectIy.Value = "0";
-            aspectI.Attributes.Append(aspectIy);
-            XmlAttribute aspectIdx = stateContainer.projectData_Undo[0].CreateAttribute("directionX");
-            aspectIdx.Value = "from";
-            aspectI.Attributes.Append(aspectIdx);
-            XmlAttribute aspectIdy = stateContainer.projectData_Undo[0].CreateAttribute("directionY");
-            aspectIdy.Value = "to";
-            aspectI.Attributes.Append(aspectIdy);
-            XmlAttribute aspectIof = stateContainer.projectData_Undo[0].CreateAttribute("outputFn");
-            aspectIof.Value = dictArray[0];
-            aspectI.Attributes.Append(aspectIof);
-            XmlAttribute aspectItf = stateContainer.projectData_Undo[0].CreateAttribute("toFn");
-            aspectItf.Value = dictArray[2];
-            aspectI.Attributes.Append(aspectItf);
-            XmlNode aspectIname = stateContainer.projectData_Undo[0].CreateElement("Name");
-            aspectIname.InnerText = aName;
-            aspectI.AppendChild(aspectIname);
-            appendNew = true;
-        }
-        else
-        {
-            labelDx = double.Parse(aspectI.SelectSingleNode("@x")?.InnerText??"0");
-            labelDy = double.Parse(aspectI.SelectSingleNode("@y")?.InnerText??"0");
-            directionX = aspectI.SelectSingleNode("@directionX")?.InnerText??"from";
-            directionY = aspectI.SelectSingleNode("@directionY")?.InnerText ?? "to";
-            aspectI.RemoveChild(aspectI.SelectSingleNode("Curve")!);
-            if (aspectI.SelectSingleNode("Curve2") != null)
-            {
-                aspectI.RemoveChild(aspectI.SelectSingleNode("Curve2")!);
-            }
-            if (aspectI.SelectSingleNode("@notGroup") != null)
-            {
-                notGroup = aspectI.SelectSingleNode("@notGroup")?.InnerText??"true";
-            }
-        }
-        XmlNode aspectIcurve = stateContainer.projectData_Undo[0].CreateElement("Curve");
-        XmlNode aspectIcurve2 = stateContainer.projectData_Undo[0].CreateElement("Curve2");
-        Coupling addCoupling = new Coupling(aName, labelDx, labelDy, directionX, directionY, notGroup, dictArray[0], dictArray[1], dictArray[2], dictArray[3],
-            stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.x + double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), stateContainer.functionList.Find(x => x.IDNr == dictArray[0])!.y + double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]), 0, 0);
-        stateContainer.couplingList.Add(addCoupling);
-        addCoupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]), false);
-        aspectIcurve2.InnerText = addCoupling.reDrawLines(stateContainer.functionList.Find(x => x.IDNr == dictArray[2])!.x + double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), 
-            stateContainer.functionList.Find(x => x.IDNr == dictArray[2])!.y + double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]), false);
-        aspectIcurve.InnerText = addCoupling.curve;
-        aspectI.AppendChild(aspectIcurve);
-        aspectI.AppendChild(aspectIcurve2);
-        if (appendNew) stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.AppendChild(aspectI);
-    }
     public async void ClearElement(string elementName)
     {
         await JSRuntime.InvokeVoidAsync("clearInput", elementName);
-    }
-    private void CheckDeleteKey(KeyboardEventArgs e, string elementName, string IDNr)
-    {
-        if (e.Key == "Backspace" || e.Key == "Delete")
-        {
-            if (elementName == "newFnButton" && stateContainer.selectedFn != "-1") //a Function
-            {
-                if (stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
-                {
-                    if (aspectsList.FindAll(x => x.FunctionIDNr == stateContainer.selectedFn).Count == 0 && stateContainer.projectData_Undo[0].SelectNodes("//FM//Outputs/Output[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
-                    {
-                        stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions")!.RemoveChild(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]")!);
-                        stateContainer.functionList.RemoveAll(x => x.IDNr == stateContainer.selectedFn);
-                        stateContainer.couplingList.RemoveAll(x => x.outputFn == stateContainer.selectedFn || x.toFn == stateContainer.selectedFn);
-                        XmlNodeList oldChildren = stateContainer.projectData_Undo[0].SelectNodes("//FM/Aspects/Aspect[@outputFn='" + stateContainer.selectedFn + "' or @toFn='" + stateContainer.selectedFn + "']")!;
-                        foreach (XmlNode oldChild in oldChildren)
-                        {
-                            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.RemoveChild(oldChild);
-                        }
-                        stateContainer.selectedFn = "-1";
-                        stateContainer.isDisabled = true;
-                        StateHasChanged();
-                    }
-                }
-            }
-            else //an Aspect
-            {
-                if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]/IDName")?.InnerText == "")
-                {
-                    if (elementName != "Output")
-                    {
-                        if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName) != null)
-                        {
-                            if (aspectsList.Find(x => x.IDNr == IDNr && x.Type == elementName)?.IDName == "")
-                            {
-                                aspectsList.RemoveAll(x => x.IDNr == IDNr && x.Type == elementName);
-                            }
-                        }
-                    } 
-                    else
-                    {
-                        if (outputsList.Find(x => x.IDNr == IDNr && x.Type == elementName) != null)
-                        {
-                            if (outputsList.Find(x => x.IDNr == IDNr && x.Type == elementName)?.IDName == "")
-                            {
-                                outputsList.RemoveAll(x => x.IDNr == IDNr && x.Type == elementName);
-                            }
-                        }
-                    }
-                    var child = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s/" + elementName + "[IDNr=\"" + IDNr + "\"]")!;
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + elementName + "s")!.RemoveChild(child);
-                    if (elementName == "Input")
-                    {
-                        if (stateContainer.projectData_Undo[0].SelectNodes("//FM//Inputs/Input[FunctionIDNr=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
-                        {
-                            stateContainer.sFnIsInput("false");
-                        }
-                    }
-                }
-                checkForBackground();
-            }
-        }
-    }
-    private void ShowLabels()
-    {
-        if (fileLoaded)
-        {
-            if (stateContainer.AspectLabelsDisplay == "none")
-            {
-                stateContainer.AspectLabelsDisplay = "";
-            }
-            else
-            {
-                stateContainer.AspectLabelsDisplay = "none";
-            }
-        }
-    }
-    private void ChangeFnStyleBasic()
-    {
-        if (fileLoaded)
-        {
-            stateContainer.newFnStyle += 1;
-            if (stateContainer.newFnStyle >= 3)
-            {
-                stateContainer.newFnStyle = 0;
-            }
-            foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function")!)
-            {
-                fn.SelectSingleNode("@fnStyle")!.Value = stateContainer.newFnStyle.ToString();
-                stateContainer.functionList.Find(x => x.IDNr == fn.SelectSingleNode("IDNr")?.InnerText)!.fnStyle = stateContainer.newFnStyle.ToString();
-            }
-        }
-    }
-    private void ChangeFnStyle()
-    {
-        if (fileLoaded)
-        {
-            stateContainer.newFnStyle += 1;
-            if (render[stateContainer.newFnStyle + ":Name"] == null)
-            {
-                stateContainer.newFnStyle = 0;
-            }
-            foreach (XmlNode fn in stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function")!)
-            {
-                fn.SelectSingleNode("@fnStyle")!.Value = stateContainer.newFnStyle.ToString();
-                stateContainer.functionList.Find(x => x.IDNr == fn.SelectSingleNode("IDNr")?.InnerText)!.fnStyle = stateContainer.newFnStyle.ToString();
-            }
-        }
-    }
-    public async void FocusElementKey(KeyboardEventArgs e, string elementName)
-    {
-        if (e.Key == "Enter" && !e.ShiftKey)
-        {
-            await JSRuntime.InvokeVoidAsync("focusInput", elementName);
-        }
     }
     public async void FocusElement(string elementName)
     {
         await JSRuntime.InvokeVoidAsync("focusInput", elementName);
     }
-    public async void FocusNext(string elementName)
-    {
-        await JSRuntime.InvokeVoidAsync("focusNext", elementName);
-    }
     private void NextFn(KeyboardEventArgs e)
     {
         var findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
+        var findCoupling = stateContainer.couplingList.Find(x => x.Name == stateContainer.selectedLabel);
         if (stateContainer.selectedFn != "-1" && findFn?.label == "")
         {
             stateContainer.defaultFnLabel();
@@ -1350,6 +495,11 @@
         if (findFn != null)
         {
             findFn.dragFn = false;
+        }
+        if (findCoupling != null)
+        {
+            findCoupling.dragAspect = false;
+            stateContainer.selectedLabel = "";
         }
         if (e.Key == "ArrowRight")
         {
@@ -1373,6 +523,7 @@
                 stateContainer.selectedFn = findFn.IDNr;
             }
             stateContainer.fnName = findFn.label;
+            stateContainer.isDisabled = false;
             FocusElement("newFnButton");
         }
         else if (e.Code == "KeyI")
@@ -1405,51 +556,4 @@
         }
     }
     
-   public async Task Backup()
-    {
-        try
-        {
-            await localStorage.SetItemAsync("backupData", stateContainer.projectData_Undo[0].OuterXml);
-            await localStorage.SetItemAsync("backupFileName", fileName);
-            await localStorage.SetItemAsync("isBackup", true);
-        }
-        catch
-        {
-            
-        }
-    }
-    public async Task Restore()
-    {
-        try
-        {
-            isBackup = await localStorage.GetItemAsync<bool>("isBackup");
-            if (isBackup)
-            {
-                debugOutput = "File loading ...";
-                fileLoaded = false;
-                stateContainer.viewWidth = 0;
-                stateContainer.viewHeight = 0;
-                aspectsList = new List<Aspect>();
-                outputsList = new List<Aspect>();
-                stateContainer.couplingList = new List<Coupling>();
-                stateContainer.functionList = new List<Function>();
-                stateContainer.projectData_Undo[0] = new XmlDocument();
-                stateContainer.projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
-                fileName = await localStorage.GetItemAsync<string>("backupFileName");
-                inputDropStatus = "file-input-zone-hide";
-                isBackup = false;
-                FileIsLoaded();
-                await localStorage.SetItemAsync("isBackup", false);
-            }
-        }
-        catch 
-        {
-            debugOutput = "Restore attempt failed.";
-        }
-    }
-    public async Task Recover()
-    {
-        await localStorage.SetItemAsync("isBackup", true);
-        await Restore();
-    }
 }
