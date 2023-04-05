@@ -60,39 +60,39 @@
         {
             if (((function.orphans >> 0) & 1) == 1) //Input
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="6" cy="50" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r="7" />
             }
             if (((function.orphans >> 1) & 1) == 1) //Output
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="93.5" cy="50" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r="7" />
             }
             if (((function.orphans >> 2) & 1) == 1) //Precondition
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="28" cy="88" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r="7" />
             }
             if (((function.orphans >> 3) & 1) == 1) //Resource
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="71.5" cy="88" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r="7" />
             }
             if (((function.orphans >> 4) & 1) == 1) //Control
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="71.5" cy="12" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r="7" />
             }
             if (((function.orphans >> 5) & 1) == 1) //Time
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="28" cy="12" r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r="7" />
             }
         }
         <!-- This is the Function main outline -->
         <defs>
             <radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
-                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.4" />
-                <stop offset="75%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+                <stop offset="0%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.25" />
+                <stop offset="80%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.25" />
+                <stop offset="80%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
                 <stop offset="100%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
             </radialGradient>
         </defs>
-            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
+        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
             @if (render[function.options + "fn-connector-path"] != "" && render[function.options + "fn-connector-path"] is not null)
             {
                 <path d=@render[function.options+"fn-connector-path"] />
@@ -140,7 +140,7 @@
                         }
                         @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
                         {
-                            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke=@render[function.options+"fn-stroke"]>
+                            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
                                 <path fill="none" d=@render[function.options+"fn-path"] />
                             </g>
                         }
@@ -197,8 +197,8 @@
             <g font-size="@(render[function.options+"aspect-font-size"]+"pt")" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"aspect-font-color"]>
                 <text x=@(double.Parse(render[function.fnStyle+":aspectX:"+isIO])+fontAdjustX) y=@(double.Parse(render[function.fnStyle+":aspectY:"+isIO])+fontAdjustY)>@isIO</text>
             </g>
-            <rect transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF - 36)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 5 - 5)"
-                  rx=@render[function.options+"fn-alt-r"] ry=@render[function.options+"fn-alt-r"] width=@render[function.options+"fn-alt-width"] height="@(9 + fnTextCount * 10)" fill=@render[function.options+"fn-alt-fill"] style="stroke:none;opacity:1" />
+            <rect x="@(50 - double.Parse(render[function.options+"fn-alt-width"])/2)" y="@(50 - fnTextCount * 5*stateContainer.tempZoomF - 5)"
+                  rx=@render[function.options+"fn-alt-r"] ry=@render[function.options+"fn-alt-r"] width=@render[function.options+"fn-alt-width"] height="@(9 + fnTextCount * 10*stateContainer.tempZoomF)" fill=@render[function.options+"fn-alt-fill"] style="stroke:none;opacity:1" />
         }
         else 
         {
@@ -212,7 +212,7 @@
                 <text x=@(double.Parse(render[function.fnStyle+":aspectX:R"])-2.7+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:R"])+2.8-fontAdjust)>R</text>
             </g>
         }
-        <text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 6 - 1)"
+        <text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 5 - 2)"
               font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"fn-font-color"]>
             @for (int i = 0; i < fnTextCount; i++)
             {

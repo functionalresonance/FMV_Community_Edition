@@ -190,7 +190,7 @@
                 fn.SelectSingleNode("@fnStyle")!.Value = stateContainer.newFnStyle.ToString();
                 stateContainer.functionList.Find(x => x.IDNr == fn.SelectSingleNode("IDNr")?.InnerText)!.fnStyle = stateContainer.newFnStyle.ToString();
             }
-            refreshParent.InvokeAsync();
+            fileIsLoaded.InvokeAsync();
         }
     }
     private void ChangeFnStyle()
@@ -207,7 +207,7 @@
                 fn.SelectSingleNode("@fnStyle")!.Value = stateContainer.newFnStyle.ToString();
                 stateContainer.functionList.Find(x => x.IDNr == fn.SelectSingleNode("IDNr")?.InnerText)!.fnStyle = stateContainer.newFnStyle.ToString();
             }
-            refreshParent.InvokeAsync();
+            fileIsLoaded.InvokeAsync();
         }
     }
     private async Task BeginLogout(MouseEventArgs args)

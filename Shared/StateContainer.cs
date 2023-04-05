@@ -1,4 +1,5 @@
 ﻿using FMV_Standard.Shared;
+using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -94,18 +95,27 @@ namespace FMV_Standard.Shared
         public void updateColor(string selectedColor)
         {
             updateUndo();
+            var setStyle = "custom";
             if (projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style") == null)
             {
                 XmlAttribute fnColorStyle = projectData_Undo[0].CreateAttribute("style");
                 projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]")!.Attributes!.Append(fnColorStyle);
             }
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style")!.InnerText = "custom";
-            functionList.Find(x => x.IDNr == selectedFn)!.fnColorStyle = "custom";
             if (projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@color") == null)
             {
                 XmlAttribute fnColorValue = projectData_Undo[0].CreateAttribute("color");
                 projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]")!.Attributes!.Append(fnColorValue);
             }
+            if (selectedColor == "")
+            {
+                setStyle = "";
+            }
+            else
+            {
+                selectedColor = uint.Parse(selectedColor.Replace("#", ""), NumberStyles.HexNumber).ToString();
+            }
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style")!.InnerText = setStyle;
+            functionList.Find(x => x.IDNr == selectedFn)!.fnColorStyle = setStyle;
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@color")!.InnerText = selectedColor;
             functionList.Find(x => x.IDNr == selectedFn)!.fnColorValue = selectedColor;
         }

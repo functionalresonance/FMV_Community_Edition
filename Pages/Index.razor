@@ -11,7 +11,7 @@
 }
 @if (stateContainer.showColorPicker)
 {
-    <ColorSelect OnClose="ModalClose" ColorSelected="colorSelected"></ColorSelect>
+    <ColorSelect OnClose="ModalClose"></ColorSelect>
 }
 <MenuBar refreshParent="refreshParent" onInputFileChange="OnInputFileChange" fileIsLoaded="FileIsLoaded" />
 <SideBar refreshParent="refreshParent" newFunction="NewFunction" />
@@ -100,13 +100,6 @@
     {
         stateContainer.showModal = state;
         stateContainer.showColorPicker = state;
-    }
-    private void colorSelected(string color)
-    {
-        if (stateContainer.selectedFn != "-1")
-        {
-            stateContainer.updateColor(color);
-        }
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
