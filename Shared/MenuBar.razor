@@ -214,12 +214,12 @@
     {
         await Backup();
         await SignOutManager.SetSignOutState();
-        NavManager.NavigateTo("/authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
+        NavManager.NavigateTo("./authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
     }
     private async Task BeginLogin(MouseEventArgs args)
     {
         await Backup();
-        NavManager.NavigateTo("/authentication/login");
+        NavManager.NavigateTo("./authentication/login");
     }
     protected override async Task OnInitializedAsync()
     {
