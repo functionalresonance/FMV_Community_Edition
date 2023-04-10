@@ -19,7 +19,7 @@
     <div>
         @if (stateContainer.inputDropStatus == "file-input-zone-drop")
         {
-            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" /></div>
+            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" title="Open (upload)" /></div>
         }
         <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
             <defs>
