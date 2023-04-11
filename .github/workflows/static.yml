@@ -43,6 +43,18 @@ jobs:
      # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         run: dotnet publish FMV_Standard.csproj -c Release -o release --nologo
+
+     # copy files to zerprize website before GitHub Pages
+      - name: Upload ftp
+        uses: sebastianpopp/ftp-action@releases/v2
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          localDir: 'release/wwwroot'
+          remoteDir: 'rpet.zerprize.co.nz'
+          
+     # continue with GitHub Pages prep   
      # changes the base-tag in index.html from '/' to 'FMV_Community_Edition' to match GitHub Pages repository subdirectory
       - name: Change base-tag in index.html from / to FMV_Community_Edition
         run: sed -i 's/<base href="\/" \/>/<base href="\/FMV_Community_Edition\/" \/>/g' release/wwwroot/index.html
@@ -52,7 +64,7 @@ jobs:
      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
       - name: Add .nojekyll file
         run: touch release/wwwroot/.nojekyll
-     # continue template to upload pages
+     # continue to upload pages for GitHub Deploy
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
