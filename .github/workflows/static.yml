@@ -31,8 +31,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
-        
       - name: Setup Pages
         uses: actions/configure-pages@v3
      # sets up .NET Core SDK 6.0
@@ -46,13 +44,13 @@ jobs:
 
      # copy files to zerprize website before GitHub Pages
       - name: Upload ftp
-        uses: sebastianpopp/ftp-action@releases/v2
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          localDir: 'release/wwwroot'
-          remoteDir: 'rpet.zerprize.co.nz'
+          local-dir: 'release/wwwroot/'
+          server-dir: 'rpet.zerprize.co.nz/'
           
      # continue with GitHub Pages prep   
      # changes the base-tag in index.html from '/' to 'FMV_Community_Edition' to match GitHub Pages repository subdirectory
