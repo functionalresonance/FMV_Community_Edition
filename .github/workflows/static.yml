@@ -49,8 +49,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: 'release/wwwroot/'
-          server-dir: 'rpet.zerprize.co.nz/'
+          local-dir: 'release/'
+     #     server-dir: 'rpet.zerprize.co.nz/'
           
      # continue with GitHub Pages prep   
      # changes the base-tag in index.html from '/' to 'FMV_Community_Edition' to match GitHub Pages repository subdirectory
