@@ -1,26 +1,5 @@
-<svg id="canvas_1" viewBox="0 0 129.33 130.67" width="193.995" height="196.005" xmlns="http://www.w3.org/2000/svg"><defs><!--!--><style type="text/css">@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
-                    </style>
-                    <radialGradient id="selected-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#4444DD;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#4444DD;stop-opacity:0.5"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#4444DD;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="exit-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#FF1100;stop-opacity:1"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#FF1100;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#FF1100;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="group-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#11FF55;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#11FF55;stop-opacity:0.5"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#11FF55;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="entry-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#2A9B00;stop-opacity:1"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#2A9B00;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#2A9B00;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="background-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#7E9DBC;stop-opacity:1"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#7E9DBC;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#7E9DBC;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="parent-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#00F2FF;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#00F2FF;stop-opacity:0.5"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#00F2FF;stop-opacity:0"></stop></radialGradient><!--!-->
-                    <radialGradient id="hold-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#BFBF00;stop-opacity:1"></stop><!--!-->
-                        <stop offset="75%" style="stop-color:#BFBF00;stop-opacity:0.75"></stop><!--!-->
-                        <stop offset="100%" style="stop-color:#BFBF00;stop-opacity:0"></stop></radialGradient></defs><g><rect fill="white" opacity="1" width="100%" height="100%"></rect></g><!--!--><g class="fn-point" transform="translate(9.33,10.67)" b-n2cdy093o7=""><circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="93.5" cy="50" r="7" b-n2cdy093o7=""></circle><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+<svg id="canvas_1" viewBox="0 0 110 100" width="165" height="150" xmlns="http://www.w3.org/2000/svg"><defs><!--!--><style type="text/css">@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
+                    </style></defs><g><rect fill="white" opacity="1" width="100%" height="100%"></rect></g><!--!--><g class="fn-point" transform="translate(-0.0033333333333303017,-5.329999999999998)" b-n2cdy093o7=""><circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="93.5" cy="50" r="7" b-n2cdy093o7=""></circle><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
                 <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
                 <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
                 <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
