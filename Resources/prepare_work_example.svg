@@ -1,0 +1,193 @@
+<svg id="canvas_1" viewBox="0 0 622 482" width="933" height="723" xmlns="http://www.w3.org/2000/svg"><defs><!--!--><style type="text/css">@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
+                    </style>
+                    <radialGradient id="selected-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#4444DD;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#4444DD;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#4444DD;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="exit-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#FF1100;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#FF1100;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#FF1100;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="group-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#11FF55;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#11FF55;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#11FF55;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="entry-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#2A9B00;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#2A9B00;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#2A9B00;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="background-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#7E9DBC;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#7E9DBC;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#7E9DBC;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="parent-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#00F2FF;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#00F2FF;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#00F2FF;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="hold-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#BFBF00;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#BFBF00;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#BFBF00;stop-opacity:0"></stop></radialGradient></defs><g><rect fill="white" opacity="1" width="100%" height="100%"></rect></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 336.83 220 Q 336.83 151.67 332.17 117.5 Q 327.5 83.33 318.17 83.33" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="324.16499999999996" y="112.49749999999999" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="332.16499999999996" y="112.49749999999999" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="332.16499999999996" dy="8" b-ljk27flmmz="">lso</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 427.5 111.33 Q 427.5 97.33 400.17 90.33 Q 372.84 83.33 318.17 83.33" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="392.1675" y="85.33" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="400.1675" y="85.33" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="400.1675" dy="8" b-ljk27flmmz="">lso</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 508 166.67 Q 493.38 166.67 478.75 158 Q 464.13 149.33 449.5 149.33" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="468.75" y="153" width="20" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="478.75" y="153" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="478.75" dy="8" b-ljk27flmmz="">mmso</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 293.33 296 Q 236.08 296 221.77 279.34 Q 207.46 262.67 178.83 262.67" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="213.76749999999998" y="274.335" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="221.76749999999998" y="274.335" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="221.76749999999998" dy="8" b-ljk27flmmz="">poo</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 293.33 296 Q 262.21 330.67 231.08 348 Q 199.96 365.33 168.83 365.33" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="223.07999999999998" y="342.9975" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="231.07999999999998" y="342.9975" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="231.07999999999998" dy="8" b-ljk27flmmz="">pso</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 384 187.33 Q 377.71 222.67 371.42 240.33 Q 365.12 258 358.83 258" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="361.41499999999996" y="235.33249999999998" width="20" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="371.41499999999996" y="235.33249999999998" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="371.41499999999996" dy="8" b-ljk27flmmz="">tmso</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 336.83 296 Q 389.83 296 406.33 321 Q 422.83 346 402.83 396" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="398.33" y="316" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="406.33" y="316" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="406.33" dy="8" b-ljk27flmmz="">hro</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 427.5 187.33 Q 427.5 291.67 421.33 343.83 Q 415.17 396 402.83 396" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="413.3325" y="338.8325" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="421.3325" y="338.8325" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="421.3325" dy="8" b-ljk27flmmz="">hro</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 384 187.33 Q 364 213 459.75 213 Q 555.5 213 535.5 290" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="449.75" y="207.9975" width="20" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="459.75" y="207.9975" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="459.75" dy="8" b-ljk27flmmz="">msao</tspan></text></g></g><!--!--><g b-ljk27flmmz=""><path fill="none" stroke-width="2" stroke="#999999" stroke-linecap="round" opacity="0.75" d="M 293.33 296 Q 291.71 354 290.08 383 Q 288.46 412 286.83 412" b-ljk27flmmz=""></path><!--!--><g transform="scale(1)" display="" class="fn-hover" b-ljk27flmmz=""><rect x="280.08000000000004" y="378" width="20" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-ljk27flmmz=""></rect><!--!-->
+                    <text x="290.08000000000004" y="378" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-ljk27flmmz=""><tspan x="290.08000000000004" dy="8" b-ljk27flmmz="">cwao</tspan></text></g></g><!--!--><g class="fn-point" transform="translate(42.67,102)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Supply</tspan><tspan x="50" dy="10" b-n2cdy093o7="">scaffold</tspan></text></g><!--!--><g class="fn-point" transform="translate(224.67,33.33)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Logistic</tspan><tspan x="50" dy="10" b-n2cdy093o7="">support</tspan></text></g><!--!--><g class="fn-point" transform="translate(356,99.33)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#FFFFFF" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Move mobile</tspan><tspan x="50" dy="10" b-n2cdy093o7="">scaffold</tspan></text></g><!--!--><g class="fn-point" transform="translate(502,116.67)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="43" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Resume work</tspan></text></g><!--!--><g class="fn-point" transform="translate(85.33,212.67)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Prepare</tspan><tspan x="50" dy="10" b-n2cdy093o7="">operation</tspan></text></g><!--!--><g class="fn-point" transform="translate(75.33,315.33)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Prepare</tspan><tspan x="50" dy="10" b-n2cdy093o7="">scaffold</tspan></text></g><!--!--><g class="fn-point" transform="translate(265.33,208)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#FFFFFF" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Tilt mobile</tspan><tspan x="50" dy="10" b-n2cdy093o7="">scaffold</tspan></text></g><!--!--><g class="fn-point" transform="translate(309.33,346)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Human</tspan><tspan x="50" dy="10" b-n2cdy093o7="">resources</tspan></text></g><!--!--><g class="fn-point" transform="translate(442,240)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Manage site</tspan><tspan x="50" dy="10" b-n2cdy093o7="">activities</tspan></text></g><!--!--><g class="fn-point" transform="translate(193.33,362)" b-n2cdy093o7=""><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="38" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Check</tspan><tspan x="50" dy="10" b-n2cdy093o7="">working area</tspan></text></g><!--!--><path fill="none" stroke-width="5" stroke="#4444DD" stroke-linecap="round" opacity="0.5" d="M 170.67 184 Q 162.05 184 153.42 168 Q 144.8 152 136.17 152" b-n2cdy093o7=""></path><!--!-->
+                <g transform="scale(1)" display="" b-n2cdy093o7=""><rect x="145.42000000000002" y="163" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-n2cdy093o7=""></rect><!--!-->
+                    <text x="153.42000000000002" y="163" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-n2cdy093o7=""><tspan x="153.42000000000002" dy="8" b-n2cdy093o7="">sso</tspan></text></g><path fill="none" stroke-width="5" stroke="#4444DD" stroke-linecap="round" opacity="0.5" d="M 362 149.33 Q 336.04 149.33 310.09 166.67 Q 284.13 184 258.17 184" b-n2cdy093o7=""></path><!--!-->
+                <g transform="scale(1)" display="" b-n2cdy093o7=""><rect x="302.085" y="161.665" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-n2cdy093o7=""></rect><!--!-->
+                    <text x="310.085" y="161.665" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-n2cdy093o7=""><tspan x="310.085" dy="8" b-n2cdy093o7="">pwo</tspan></text></g><path fill="none" stroke-width="5" stroke="#4444DD" stroke-linecap="round" opacity="0.5" d="M 271.33 258 Q 268.04 258 264.75 221 Q 261.46 184 258.17 184" b-n2cdy093o7=""></path><!--!-->
+                <g transform="scale(1)" display="" b-n2cdy093o7=""><rect x="256.75" y="216" width="16" height="13" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" b-n2cdy093o7=""></rect><!--!-->
+                    <text x="264.75" y="216" font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif" b-n2cdy093o7=""><tspan x="264.75" dy="8" b-n2cdy093o7="">pwo</tspan></text></g><g class="fn-hover" transform="translate(164.67,134)" b-n2cdy093o7=""><circle cx="50" cy="50" r="60" fill="url(#selected-fill)" b-n2cdy093o7=""></circle><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#FFFFFF" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="43" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">Prepare work</tspan></text></g></svg>
