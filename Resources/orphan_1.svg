@@ -1,0 +1,37 @@
+<svg id="canvas_1" viewBox="0 0 129.33 130.67" width="193.995" height="196.005" xmlns="http://www.w3.org/2000/svg"><defs><!--!--><style type="text/css">@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
+                    </style>
+                    <radialGradient id="selected-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#4444DD;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#4444DD;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#4444DD;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="exit-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#FF1100;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#FF1100;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#FF1100;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="group-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#11FF55;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#11FF55;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#11FF55;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="entry-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#2A9B00;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#2A9B00;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#2A9B00;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="background-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#7E9DBC;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#7E9DBC;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#7E9DBC;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="parent-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#00F2FF;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#00F2FF;stop-opacity:0.5"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#00F2FF;stop-opacity:0"></stop></radialGradient><!--!-->
+                    <radialGradient id="hold-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%"><stop offset="0%" style="stop-color:#BFBF00;stop-opacity:1"></stop><!--!-->
+                        <stop offset="75%" style="stop-color:#BFBF00;stop-opacity:0.75"></stop><!--!-->
+                        <stop offset="100%" style="stop-color:#BFBF00;stop-opacity:0"></stop></radialGradient></defs><g><rect fill="white" opacity="1" width="100%" height="100%"></rect></g><!--!--><g class="fn-point" transform="translate(9.33,10.67)" b-n2cdy093o7=""><circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx="93.5" cy="50" r="7" b-n2cdy093o7=""></circle><defs b-n2cdy093o7=""><radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" b-n2cdy093o7=""><stop offset="0%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:0.25" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="80%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop><!--!-->
+                <stop offset="100%" style="stop-color:#555555;stop-opacity:1" b-n2cdy093o7=""></stop></radialGradient></defs><!--!-->
+        <g stroke-width="1" stroke="url(#fnVariable)" b-n2cdy093o7=""><path d="M 6 50 L 93.5 50 M 28 12 L 71.5 88 M 71.5 12 L 28 88" b-n2cdy093o7=""></path><path fill="#EEEEEE" fill-opacity="1" d="M 14 50 L 32 18.8 L 67.5 18.8 L 85.5 50 L 67.5 81.1 L 32 81.1 L 14 50 Z" b-n2cdy093o7=""></path></g><g stroke-width="1" stroke="#555555" b-n2cdy093o7=""><circle cx="6" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="93.5" cy="50" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="12" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="28" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle><!--!-->
+                <circle cx="71.5" cy="88" r="5" fill="white" b-n2cdy093o7=""></circle></g><g font-size="6pt" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><text x="25.4" y="14.8" b-n2cdy093o7="">T</text><!--!-->
+                <text x="68.4" y="14.8" b-n2cdy093o7="">C</text><!--!-->
+                <text x="4.2" y="52.8" b-n2cdy093o7="">I</text><!--!-->
+                <text x="90.4" y="52.8" b-n2cdy093o7="">O</text><!--!-->
+                <text x="25.6" y="90.8" b-n2cdy093o7="">P</text><!--!-->
+                <text x="68.8" y="90.8" b-n2cdy093o7="">R</text></g><text transform="scale(1)" x="50" y="28" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="0" b-n2cdy093o7=""><tspan x="50" dy="10" b-n2cdy093o7="">This</tspan><tspan x="50" dy="10" b-n2cdy093o7="">Function has</tspan><tspan x="50" dy="10" b-n2cdy093o7="">an orphan</tspan><tspan x="50" dy="10" b-n2cdy093o7="">Output</tspan></text></g></svg>
