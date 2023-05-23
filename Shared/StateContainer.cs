@@ -1,4 +1,5 @@
 ﻿using FMV_Standard.Shared;
+using Microsoft.AspNetCore.Components;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
@@ -7,10 +8,59 @@ namespace FMV_Standard.Shared
 {
     public class StateContainer
     {
-        public string selectedFn { get; set; } = "-1";
+        private string _selectedFn = "-1";
+        private string _selectedLabel = "";
+        public Function? selectedFunction;
+        public Coupling? selectedCoupling;
+        public string selectedFn 
+        { 
+            get 
+            {
+                return _selectedFn;
+            } 
+            set 
+            { 
+                _selectedFn = value;
+                if (functionList is not null)
+                {
+                    selectedFunction = functionList.Find(x => x.IDNr == _selectedFn);
+                } 
+                else
+                {
+                    selectedFunction = null;
+                }
+                if (_selectedFn != "-1" && selectedFunction is not null)
+                {
+                    selectedFunction!.fnClass = "fn-hover";
+                }
+            } 
+        }
+        public string selectedLabel
+        {
+            get
+            {
+                return _selectedLabel;
+            }
+            set
+            {
+                _selectedLabel = value;
+                if (couplingList is not null)
+                {
+                    selectedCoupling = couplingList.Find(x => x.Name == _selectedLabel);
+                }
+                else
+                {
+                    selectedCoupling = null;
+                }
+                if (_selectedLabel != "" && selectedCoupling is not null)
+                {
+                    selectedCoupling!.aspectClass = "fn-hover";
+                }
+            }
+        }
         public string touchAction { get; set; } = "auto";
         public int newFnStyle { get; set; } = 0;
-        public string selectedLabel { get; set; } = "";
+        public int spreadsheetVisible { get; set; } = 0;
         public string aspectLabelsDisplay { get; set; } = "";
         public double tempZoomF { get; set; } = 1;
         public double tempZoomA { get; set; } = 1;
@@ -20,7 +70,7 @@ namespace FMV_Standard.Shared
         public double viewWidth { get; set; } = 0;
         public double viewHeight { get; set; } = 0;
         public XmlDocument[] projectData_Undo { get; set; } = new XmlDocument[700];
-        private readonly int undoLength = 700;
+        public readonly int undoLength = 700;
         private readonly int moveBack = 200;
         public string[] selectedFn_Undo { get; set; } = new string[700];
         public int undoIndex { get; set; } = 0;
@@ -32,29 +82,34 @@ namespace FMV_Standard.Shared
         public List<Aspect> outputsList { get; set; } = new List<Aspect>();
         public bool showModal { get; set; } = false;
         public bool showColorPicker { get; set; } = false;
+        public bool showFMIPopup { get; set; } = false;
+        public string fmiMessage { get; set; } = "";
         public string fileName { get; set; } = "FMV_new.xfmv";
         public bool fileLoaded { get; set; } = false;
         public string inputDropStatus { get; set; } = "file-input-zone-drop";
         public string debugOutput { get; set; } = "";
+        public bool isBackup { get; set; } = false;
+        public int cycleDelay { get; set; } = 750;
         public void defaultFnLabel()
         {
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName")!.InnerText = selectedFn;
-            functionList.Find(x => x.IDNr == selectedFn)!.label = selectedFn;
+            selectedFunction!.label = selectedFn;
+            fnName = selectedFn;
         }
         public void sFnIsInput(string isInput)
         {
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@isInput")!.InnerText = isInput;
-            functionList.Find(x => x.IDNr == selectedFn)!.isInput = isInput;
+            selectedFunction!.isInput = isInput;
         }
         public void sFnOrphans(int orphans)
         {
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@orphans")!.InnerText = orphans.ToString();
-            functionList.Find(x => x.IDNr == selectedFn)!.orphans = orphans;
+            selectedFunction!.orphans = orphans;
         }
         public void sFnFunctionType(string FunctionType)
         {
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/FunctionType")!.InnerText = FunctionType;
-            functionList.Find(x => x.IDNr == selectedFn)!.FunctionType = FunctionType;
+            selectedFunction!.FunctionType = FunctionType;
         }
         public void deleteFn()
         {
@@ -78,17 +133,17 @@ namespace FMV_Standard.Shared
         {
             updateUndo();
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/IDName")!.InnerText = IDName;
-            functionList.Find(x => x.IDNr == selectedFn)!.label = IDName;
+            selectedFunction!.label = IDName;
         }
         public void updateFnXY(double x, double y)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@x")!.InnerText = x.ToString("#.##");
-            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@y")!.InnerText = y.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@x")!.InnerText = x.ToString("0.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@y")!.InnerText = y.ToString("0.##");
         }
         public void updateAspectXY(double x, double y, string directionX, string directionY)
         {
-            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@x")!.InnerText = x.ToString("#.##");
-            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@y")!.InnerText = y.ToString("#.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@x")!.InnerText = x.ToString("0.##");
+            projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@y")!.InnerText = y.ToString("0.##");
             projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionX")!.InnerText = directionX;
             projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + selectedLabel + "\"]/@directionY")!.InnerText = directionY;
         }
@@ -115,9 +170,9 @@ namespace FMV_Standard.Shared
                 selectedColor = uint.Parse(selectedColor.Replace("#", ""), NumberStyles.HexNumber).ToString();
             }
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@style")!.InnerText = setStyle;
-            functionList.Find(x => x.IDNr == selectedFn)!.fnColorStyle = setStyle;
+            selectedFunction!.fnColorStyle = setStyle;
             projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + selectedFn + "]/@color")!.InnerText = selectedColor;
-            functionList.Find(x => x.IDNr == selectedFn)!.fnColorValue = selectedColor;
+            selectedFunction!.fnColorValue = selectedColor;
         }
         public void updateUndo()
         {
@@ -174,11 +229,16 @@ namespace FMV_Standard.Shared
             }
             else
             {
-                labelDx = double.Parse(aspectI.SelectSingleNode("@x")?.InnerText ?? "0");
-                labelDy = double.Parse(aspectI.SelectSingleNode("@y")?.InnerText ?? "0");
+                labelDx = 0;
+                labelDy = 0;
+                double.TryParse(aspectI.SelectSingleNode("@x")?.InnerText ?? "0", out labelDx);
+                double.TryParse(aspectI.SelectSingleNode("@y")?.InnerText ?? "0", out labelDy);
                 directionX = aspectI.SelectSingleNode("@directionX")?.InnerText ?? "from";
                 directionY = aspectI.SelectSingleNode("@directionY")?.InnerText ?? "to";
-                aspectI.RemoveChild(aspectI.SelectSingleNode("Curve")!);
+                if (aspectI.SelectSingleNode("Curve") != null)
+                {
+                    aspectI.RemoveChild(aspectI.SelectSingleNode("Curve")!);
+                }
                 if (aspectI.SelectSingleNode("Curve2") != null)
                 {
                     aspectI.RemoveChild(aspectI.SelectSingleNode("Curve2")!);

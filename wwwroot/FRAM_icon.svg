@@ -1,0 +1,30 @@
+<svg id="canvas_1" viewBox="0 0 100 100" width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+	<title>FRAM</title>
+	<defs>
+		<style type="text/css">@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")</style>
+	</defs>
+<g>
+	<g stroke-width="0" stroke="#800000">
+		<path fill="#800000" fill-opacity="1" d="M 11 50 L 30.5 16.5 L 69 16.5 L 88.5 50 L 69 83.7 L 30.5 83.7 L 11 50 Z"></path>
+	</g>
+	<g stroke-width="0" stroke="none">
+		<circle cx="6" cy="50" r="4.5" fill="white"></circle>
+           <circle cx="94" cy="50" r="4.5" fill="white"></circle>
+     		<circle cx="28" cy="11" r="4.5" fill="white"></circle>
+		<circle cx="72" cy="11" r="4.5" fill="white"></circle>
+		<circle cx="28" cy="90" r="4.5" fill="white"></circle>
+		<circle cx="72" cy="90" r="4.5" fill="white"></circle>
+	</g>
+	<g font-size="8pt" font-family="'PT Sans Caption', sans-serif" fill="#800000">
+		<text x="24.4" y="14.8">T</text>
+		<text x="67.9" y="14.8">C</text>		
+		<text x="3.2" y="53.8">I</text>
+		<text x="89.9" y="53.8">O</text>
+		<text x="24.6" y="93.8">P</text>
+		<text x="68.3" y="93.8">R</text>
+	</g>
+	<text transform="scale(3.100000000000002)" x="16.129032258064505" y="9.129032258064505" font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill="#FFFFFF">
+		<tspan x="16.129032258064505" dy="10">FRAM</tspan>
+	</text>
+</g>
+</svg>

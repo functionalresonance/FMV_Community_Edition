@@ -8,6 +8,7 @@
     <base href="/" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
+    <link href="FMV_Standard.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="FRAM_512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="FRAM_192.png" />
@@ -33,6 +34,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
     <script src="SaveFile.js"></script>
+    <script src="OpenFile.js"></script>
     <script type="text/javascript">
         function focusInput(id) {
             document.getElementById(id).focus();
@@ -51,6 +53,11 @@
     <script type="text/javascript">
         function getHTML(id) {
             return document.getElementById(id).outerHTML;
+        }
+    </script>
+    <script type="text/javascript">
+        function getFocusElement() {
+            return document.activeElement.id;
         }
     </script>
 

@@ -3,12 +3,16 @@
 
 @if (coupling != null) 
 {
-    var displayAspectText = coupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
+    var displayAspectText = coupling.ReturnTextLines(int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]!));
     var aspectTextCount = displayAspectText.Count;
     <g>
         @if (stateContainer.selectedLabel == coupling.Name) //selected coupling is blue
         {
             <path fill="none" stroke-width="5" stroke=@render[stateContainer.newFnStyle+":selected-fill"] stroke-linecap="round" opacity="0.5" d=@coupling.curve2 />
+        }
+        else if (coupling.fmiHighlight != "") //check for FMI highlighting
+        {
+            <path id="fmi-highlight" style=@highlightSpeed() fill="none" stroke-width="5" stroke=@render[stateContainer.newFnStyle+":"+coupling.fmiHighlight] stroke-linecap="round" opacity="0.5" d=@coupling.curve2 />
         }
         else //remaining couplings are grey
         {
@@ -53,9 +57,20 @@
     [Parameter]
     public EventCallback refreshParent { get; set; }
 
+    private string highlightSpeed()
+    {
+        if (stateContainer.cycleDelay >= 1000)
+        {
+            return "animation-duration: 1s";
+        }
+        else
+        {
+            return "animation-duration: " + ((double)stateContainer.cycleDelay / 1000).ToString("0.0#s");
+        }
+    }
     private void SelectLabelBasic(MouseEventArgs e)
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
         {
             stateContainer.defaultFnLabel();
         }
@@ -74,6 +89,14 @@
         {
             if (coupling.Name != stateContainer.selectedLabel)
             {
+                if (stateContainer.selectedCoupling is not null)
+                {
+                    stateContainer.selectedCoupling.aspectClass = "fn-point";
+                }
+                if (stateContainer.selectedFunction is not null)
+                {
+                    stateContainer.selectedFunction.fnClass = "fn-point";
+                }
                 stateContainer.selectedLabel = coupling.Name;
                 stateContainer.selectedFn = "-1";
                 stateContainer.fnName = "";
@@ -84,7 +107,7 @@
     }
     private void MoveLabelStart(MouseEventArgs e)
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
         {
             stateContainer.defaultFnLabel();
         }

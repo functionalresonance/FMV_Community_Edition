@@ -1,62 +1,41 @@
 ﻿@inject IJSRuntime JSRuntime
 @inject StateContainer stateContainer
 @inject IConfiguration render
+@inject IStringLocalizer<Localization.SharedResource> Loc
 
 <div class="sidebar">
     <div class="v-panel pr-2">
         <div class="d-flex pt-2">
             <div class="d-flex flex-column">
-                <button id="newFnButton" class="btn btn-menu oi oi-plus" title="New Function" tabindex="3" @onclick=newFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn></button>
+                <button id="newFnButton" class="btn btn-menu oi oi-plus" title=@Loc["NEW_TOOLTIP"] tabindex="3" @onclick=newFunction @onfocusin=@(() => stateContainer.isDisabled = false) @onkeydown=NextFn></button>
                 <AuthorizeView>
                     <Authorized>
                         <div class="d-flex">
-                            <button class="btn btn-half btn-half-s" title="Decrease Function text (Esc=default)" tabindex="1" @onclick=zoomFs @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
-                            <button class="btn btn-half btn-half-l" title="Increase Function text (Esc=default)" tabindex="2" @onclick=zoomFl @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
+                            <button class="btn btn-half btn-half-s" title=@Loc["FN_FONT_DECREASE"] tabindex="1" @onclick=zoomFs @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
+                            <button class="btn btn-half btn-half-l" title=@Loc["FN_FONT_INCREASE"] tabindex="2" @onclick=zoomFl @onfocusin=zoomFin @onfocusout=zoomFout @onkeydown=NextFn>A</button>
                         </div>
                     </Authorized>
                 </AuthorizeView>
             </div>
             <div class="d-flex">
-                <textarea class="fn-text" id="fnNameText" title="Function Name" tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
+                <textarea id="fnNameText" title=@Loc["NAME_FN"] tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
             </div>
         </div>
         <div class="d-flex pt-2">
-            <button id="newIButton" class="btn btn-menu btn-textp" title="Input" tabindex="5" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
-            @if (stateContainer.selectedFn != "-1")
-            {
-                GetNodesI = stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
-                if (GetNodesI.Count > 0)
-                {
-                    <textarea @ref=GetNodesI[0].elementReference tabindex="6" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onblur=@(() => AspectBlank("Input", GetNodesI[0].IDNr)) />
-                }
-            }
-            else
-            {
-                GetNodesI = null;
-            }
-        </div>
-        @if (GetNodesI != null && GetNodesI.Count > 1)
-        {
-            int ListCount = 0;
-            @foreach (var GetListI in GetNodesI)
-            {
-                if (ListCount > 0)
-                {
-                    <div class="d-flex aspect-list">
-                        <textarea @ref=GetListI.elementReference tabindex="7" class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @onchange=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onblur=@(() => AspectBlank("Input", GetListI.IDNr)) />
-                    </div>
-                }
-                ListCount++;
-            }
-        }
-        <div class="d-flex pt-2">
-            <button id="newOButton" class="btn btn-menu btn-textp" title="Output" tabindex="8" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
+            <div class="d-flex flex-column align-items-center">
+                <button id="newOButton" class="btn btn-menu btn-textp" title=@Loc["OUTPUT"] tabindex="5" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <input type="text" class="btn btn-menu btn-menu-s" title=@profileFnTooltip() tabindex="27" value=@showFnProfile() disabled=@disableFnProfile() @onchange="@((e) => changeFnProfile(e, "Fn"))"></input>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesO = stateContainer.outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesO.Count > 0)
                 {
-                    <textarea @ref=GetNodesO[0].elementReference tabindex="9" class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @onchange=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onblur=@(() => AspectBlank("Output", GetNodesO[0].IDNr)) />
+                    <textarea @ref=GetNodesO[0].elementReference tabindex="6" class=@(GetNodesO[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesO[0].IDName @onchange=@((e) => AspectChange(e, "Output", GetNodesO[0].IDNr)) @onblur=@(() => AspectBlank("Output", GetNodesO[0].IDNr)) />
                 }
             }
             else
@@ -72,14 +51,59 @@
                 if (ListCount > 0)
                 {
                     <div class="d-flex aspect-list">
-                        <textarea @ref=GetListO.elementReference tabindex="10" class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @onchange=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onblur=@(() => AspectBlank("Output", GetListO.IDNr)) />
+                        <textarea @ref=GetListO.elementReference tabindex="7" class=@(GetListO.Orphan=="true"?"aspect-orphan":"") value=@GetListO.IDName @onchange=@((e) => AspectChange(e, "Output", GetListO.IDNr)) @onblur=@(() => AspectBlank("Output", GetListO.IDNr)) />
                     </div>
                 }
                 ListCount++;
             }
         }
         <div class="d-flex pt-2">
-            <button id="newPButton" class="btn btn-menu btn-textp" title="Precondition" tabindex="11" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
+            <div class="d-flex flex-column align-items-center">
+                <button id="newIButton" class="btn btn-menu btn-textp" title=@Loc["INPUT"] tabindex="8" @onclick="@((e) => NewAspect(e, "Input"))" @onkeydown=NextFn>I</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-half" title=@profileITooltip() tabindex="28" disabled=@disableAspectProfile() @onclick="@((e) => changeProfile("I"))">@showProfile("I")</button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+            @if (stateContainer.selectedFn != "-1")
+            {
+                GetNodesI = stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
+                if (GetNodesI.Count > 0)
+                {
+                    <div class="d-flex">
+                        <textarea @ref=GetNodesI[0].elementReference tabindex="9" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onblur=@(() => AspectBlank("Input", GetNodesI[0].IDNr)) />
+                    </div>
+                }
+            }
+            else
+            {
+                GetNodesI = null;
+            }
+        </div>
+        @if (GetNodesI != null && GetNodesI.Count > 1)
+        {
+            int ListCount = 0;
+            @foreach (var GetListI in GetNodesI)
+            {
+                if (ListCount > 0)
+                {
+                    <div class="d-flex aspect-list">
+                        <textarea @ref=GetListI.elementReference tabindex="10" class=@(GetListI.Orphan=="true"?"aspect-orphan":"") value=@GetListI.IDName @onchange=@((e) => AspectChange(e, "Input", GetListI.IDNr)) @onblur=@(() => AspectBlank("Input", GetListI.IDNr)) />
+                    </div>
+                }
+                ListCount++;
+            }
+        }
+        <div class="d-flex pt-2">
+            <div class="d-flex flex-column align-items-center">
+                <button id="newPButton" class="btn btn-menu btn-textp" title=@Loc["PRECONDITION"] tabindex="11" @onclick="@((e) => NewAspect(e, "Precondition"))" @onkeydown=NextFn>P</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-half" title=@profileTooltip() tabindex="29" disabled=@disableAspectProfile() @onclick="@((e) => changeProfile("P"))">@showProfile("P")</button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesP = stateContainer.aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -108,7 +132,14 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newRButton" class="btn btn-menu btn-textp" title="Resource" tabindex="14" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
+            <div class="d-flex flex-column align-items-center">
+                <button id="newRButton" class="btn btn-menu btn-textp" title=@Loc["RESOURCE"] tabindex="14" @onclick="@((e) => NewAspect(e, "Resource"))" @onkeydown=NextFn>R</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-half" title=@profileTooltip() tabindex="30" disabled=@disableAspectProfile() @onclick="@((e) => changeProfile("R"))">@showProfile("R")</button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesR = stateContainer.aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -137,7 +168,14 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newCButton" class="btn btn-menu btn-textp" title="Control" tabindex="17" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
+            <div class="d-flex flex-column align-items-center">
+                <button id="newCButton" class="btn btn-menu btn-textp" title=@Loc["CONTROL"] tabindex="17" @onclick="@((e) => NewAspect(e, "Control"))" @onkeydown=NextFn>C</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-half" title=@profileTooltip() tabindex="31" disabled=@disableAspectProfile() @onclick="@((e) => changeProfile("C"))">@showProfile("C")</button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesC = stateContainer.aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -166,7 +204,14 @@
             }
         }
         <div class="d-flex pt-2">
-            <button id="newTButton" class="btn btn-menu btn-textp" title="Time" tabindex="20" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
+            <div class="d-flex flex-column align-items-center">
+                <button id="newTButton" class="btn btn-menu btn-textp" title=@Loc["TIME"] tabindex="20" @onclick="@((e) => NewAspect(e, "Time"))" @onkeydown=NextFn>T</button>
+                <AuthorizeView>
+                    <Authorized>
+                        <button class="btn btn-half" title=@profileTooltip() tabindex="32" disabled=@disableAspectProfile() @onclick="@((e) => changeProfile("T"))">@showProfile("T")</button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
             @if (stateContainer.selectedFn != "-1")
             {
                 GetNodesT = stateContainer.aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == stateContainer.selectedFn);
@@ -197,10 +242,11 @@
         <AuthorizeView>
             <Authorized>
                 <div class="d-flex pt-2">
-                    <button class="btn btn-half btn-half-s" title="Decrease Aspect text (Esc=default)" tabindex="23" @onclick=zoomAs @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
-                    <button class="btn btn-half btn-half-l" title="Increase Aspect text (Esc=default)" tabindex="24" @onclick=zoomAl @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
-                    <button class="btn btn-menu oi oi-brush ml-1" title="Function Colour" tabindex="25" @onclick="ModalColor" @onkeydown="ModalKey"></button>
+                    <button class="btn btn-half btn-half-s" title=@Loc["ASPECT_FONT_DECREASE"] tabindex="23" @onclick=zoomAs @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
+                    <button class="btn btn-half btn-half-l" title=@Loc["ASPECT_FONT_INCREASE"] tabindex="24" @onclick=zoomAl @onfocusin=zoomAin @onfocusout=zoomAout @onkeydown=NextFn>A</button>
+                    <button class="btn btn-menu oi oi-brush ml-1" title=@Loc["FN_COLOUR"] tabindex="25" @onclick="ModalColor" @onkeydown="ModalKey"></button>
                 </div>
+                <FMIControl refreshParent=updateAll />
             </Authorized>
         </AuthorizeView>
     </div>
@@ -211,6 +257,8 @@
     public EventCallback refreshParent { get; set; }
     [Parameter]
     public EventCallback newFunction { get; set; }
+    [Parameter]
+    public EventCallback<KeyboardEventArgs> nextFn { get; set; }
 
     private List<Aspect>? GetNodesI;
     private List<Aspect>? GetNodesO;
@@ -222,6 +270,10 @@
     private string focusCheck = "";
     private string oldZoomText = "";
 
+    protected void updateAll()
+    {
+        refreshParent.InvokeAsync();
+    } 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
@@ -245,6 +297,178 @@
                 }
                 setFocus = "";
             }
+        }
+    }
+    private void changeFnProfile(ChangeEventArgs e, string type)
+    {
+        if (stateContainer.selectedFunction is not null)
+        {
+            stateContainer.updateUndo();
+            var tempFnProfile = e.Value?.ToString() ?? "";
+            stateContainer.selectedFunction.profileFn = tempFnProfile;
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileFn")!.InnerText = tempFnProfile;
+        }
+    }
+    private void changeProfile(string type)
+    {
+        if (stateContainer.selectedFunction is not null)
+        {
+            stateContainer.updateUndo();
+            var getProfile = "";
+            switch (type)
+            {
+                case "Fn":
+                    getProfile = stateContainer.selectedFunction.profileFn; break;
+                case "I":
+                    getProfile = stateContainer.selectedFunction.profileI; break;
+                case "P":
+                    getProfile = stateContainer.selectedFunction.profileP; break;
+                case "R":
+                    getProfile = stateContainer.selectedFunction.profileR; break;
+                case "C":
+                    getProfile = stateContainer.selectedFunction.profileC; break;
+                case "T":
+                    getProfile = stateContainer.selectedFunction.profileT; break;
+                default:
+                    getProfile = ""; break;
+            }
+            switch (getProfile)
+            {
+                case "All":
+                    getProfile = "Any"; break;
+                case "Any":
+                    if (type == "I")
+                    {
+                        getProfile = "";
+                    }
+                    else
+                    {
+                        getProfile = "None";
+                    } 
+                    break;
+                case "None":
+                    getProfile = ""; break;
+                case "":
+                    getProfile = "All"; break;
+                default:
+                    getProfile = ""; break;
+            }
+            switch (type)
+            {
+                case "Fn":
+                    stateContainer.selectedFunction.profileFn = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileFn")!.InnerText = getProfile;
+                    break;
+                case "I":
+                    stateContainer.selectedFunction.profileI = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileI")!.InnerText = getProfile;
+                    break;
+                case "P":
+                    stateContainer.selectedFunction.profileP = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileP")!.InnerText = getProfile; 
+                    break;
+                case "R":
+                    stateContainer.selectedFunction.profileR = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileR")!.InnerText = getProfile; 
+                    break;
+                case "C":
+                    stateContainer.selectedFunction.profileC = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileC")!.InnerText = getProfile;
+                    break;
+                case "T":
+                    stateContainer.selectedFunction.profileT = getProfile;
+                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions/Function[IDNr=" + stateContainer.selectedFn + "]/@profileT")!.InnerText = getProfile; 
+                    break;
+            }
+        }
+    }
+    private string profileTooltip()
+    {
+        return Loc["FMI_PROFILE_SHORT"] + System.Environment.NewLine + Loc["FMI_ALL"] + System.Environment.NewLine + Loc["FMI_ANY"] + System.Environment.NewLine + Loc["FMI_NONE"];
+    }
+    private string profileITooltip()
+    {
+        return Loc["FMI_PROFILE_SHORT"] + System.Environment.NewLine + Loc["FMI_ALL"] + System.Environment.NewLine + Loc["FMI_ANY"];
+    }
+    private string profileFnTooltip()
+    {
+        return Loc["FMI_PROFILE_SHORT"] + System.Environment.NewLine + Loc["FMI_INITIAL_ONLY"] + System.Environment.NewLine + Loc["FMI_EVERY_NTH"] + System.Environment.NewLine + Loc["FMI_RANDOM"];
+    }
+    private bool disableFnProfile()
+    {
+        var returnFnDisabled = true;
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction is not null)
+        {
+            if (stateContainer.selectedFunction.fmiType == "Entry")
+            {
+                returnFnDisabled = false;
+            }
+        }
+        return returnFnDisabled;
+    }
+    private bool disableAspectProfile()
+    {
+        var returnAspectDisabled = true;
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction is not null)
+        {
+            var checkType = stateContainer.selectedFunction.fmiType;
+            if (checkType == "Exit" || checkType == "Passthrough" || checkType == "Foreground")
+            {
+                returnAspectDisabled = false;
+            }
+        }
+        return returnAspectDisabled;
+    }
+    private string showFnProfile()
+    {
+        var returnFnP = "";
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction is not null)
+        {
+            //if (stateContainer.selectedFunction.fmiType == "Entry")
+            if (stateContainer.selectedFunction.profileFn != "")
+            {
+                returnFnP = stateContainer.selectedFunction.profileFn;
+            }
+        }
+        return returnFnP;
+    }
+    RenderFragment showProfile(string type)
+    {
+        if (stateContainer.selectedFunction is not null)
+        {
+            var getProfile = "";
+            switch (type)
+            {
+                case "I":
+                    getProfile = stateContainer.selectedFunction.profileI; break;
+                case "P":
+                    getProfile = stateContainer.selectedFunction.profileP; break;
+                case "R":
+                    getProfile = stateContainer.selectedFunction.profileR; break;
+                case "C":
+                    getProfile = stateContainer.selectedFunction.profileC; break;
+                case "T":
+                    getProfile = stateContainer.selectedFunction.profileT; break;
+                default:
+                    getProfile = ""; break;
+            }
+            switch (getProfile)
+            {
+                case "All":
+                    return @<a>&forall;</a>;
+                case "Any":
+                    return @<a>&exist;</a>;
+                case "None":
+                    return @<a>&empty;</a>;
+                case "":
+                    return @<a></a>;
+                default:
+                    return @<a></a>;
+            }
+        }
+        else
+        {
+            return @<a></a>;
         }
     }
     private void ModalColor()
@@ -282,70 +506,7 @@
     }
     private void NextFn(KeyboardEventArgs e)
     {
-        var findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-        if (stateContainer.selectedFn != "-1" && findFn?.label == "")
-        {
-            stateContainer.defaultFnLabel();
-        }
-        if (findFn != null)
-        {
-            findFn.dragFn = false;
-        }
-        if (e.Key == "ArrowRight")
-        {
-            stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) + 1).ToString();
-            findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-            if (findFn == null)
-            {
-                findFn = stateContainer.functionList.First();
-                stateContainer.selectedFn = findFn.IDNr;
-            }
-            stateContainer.fnName = findFn.label;
-            refreshParent.InvokeAsync();
-            FocusElement("newFnButton");
-        }
-        else if (e.Key == "ArrowLeft")
-        {
-            stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) - 1).ToString();
-            findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-            if (findFn == null)
-            {
-                findFn = stateContainer.functionList.Last();
-                stateContainer.selectedFn = findFn.IDNr;
-            }
-            stateContainer.fnName = findFn.label;
-            refreshParent.InvokeAsync();
-            FocusElement("newFnButton");
-        }
-        else if (e.Code == "KeyI")
-        {
-            FocusElement("newIButton");
-        }
-        else if (e.Code == "KeyO")
-        {
-            FocusElement("newOButton");
-        }
-        else if (e.Code == "KeyP")
-        {
-            FocusElement("newPButton");
-        }
-        else if (e.Code == "KeyR")
-        {
-            FocusElement("newRButton");
-        }
-        else if (e.Code == "KeyT")
-        {
-            FocusElement("newTButton");
-        }
-        else if (e.Code == "KeyC")
-        {
-            FocusElement("newCButton");
-        }
-        else if (e.Key == "+")
-        {
-            FocusElement("newFnButton");
-        }
-        else if (e.Key == "Escape")
+        if (e.Key == "Escape")
         {
             if (focusCheck == "zoomF")
             {
@@ -362,6 +523,10 @@
             {
                 FocusElement("newFnButton");
             }
+        } 
+        else
+        {
+            nextFn.InvokeAsync(e);
         }
     }
     public async void FocusElement(string elementName)
@@ -438,7 +603,6 @@
     }
     private void AspectBlank(string tempType, string tempId)
     {
-        Console.WriteLine("AspectBlank");
         if (stateContainer.selectedFn != "-1")
         {
             string oldName = stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + tempType + "s/" + tempType + "[IDNr=\"" + tempId + "\"]/IDName")?.InnerText ?? "NULL";
@@ -452,7 +616,6 @@
     }
     private void AspectChange(ChangeEventArgs e, string tempType, string tempId)
     {
-        Console.WriteLine("AspectChange");
         if (stateContainer.selectedFn != "-1")
         {
             stateContainer.updateUndo();
@@ -505,9 +668,9 @@
                     string[] dictArray = new string[4] { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
                     if (tempNewName != "")
                     {
-                        stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]), 
-                            double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]),
-                            int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
+                        stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]!), 
+                            double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]!),
+                            int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]!));
                     }
                     hasOrphan = false;
                     aspect.Orphan = "false";
@@ -569,7 +732,7 @@
                 stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects")!.RemoveChild(oldChild);
                 stateContainer.couplingList.RemoveAll(x => x.Name == oldChild.SelectSingleNode("Name")?.InnerText);
             }
-            orphans = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)!.orphans;
+            orphans = stateContainer.selectedFunction!.orphans;
             if (hasOrphan)
             {
                 stateContainer.sFnOrphans(orphans |= 1 << 1);
@@ -607,9 +770,9 @@
                 string[] dictArray = new string[4] { itemI.SelectSingleNode("FunctionIDNr")?.InnerText ?? "", tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
                 if (tempNewName != "")
                 {
-                    stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]),
-                        double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]),
-                        int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
+                    stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]!),
+                        double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]!),
+                        int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]!));
                 }
                 itemI.SelectSingleNode("@orphan")!.Value = "false";
                 foreach (var itemIget in stateContainer.outputsList.FindAll(x => x.IDName == tempNewName))
@@ -660,7 +823,7 @@
                     oldOget.Orphan = "true";
                 }
             }
-            orphans = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)!.orphans;
+            orphans = stateContainer.selectedFunction!.orphans;
             if (tempNewName != "" && stateContainer.projectData_Undo[0].SelectNodes("//FM/Outputs/Output[IDName=\"" + tempNewName + "\" and FunctionIDNr!=\"" + stateContainer.selectedFn + "\"]")?.Count == 0)
             {
                 switch (tempType)

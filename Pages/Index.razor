@@ -4,6 +4,9 @@
 @inject ILocalStorageService localStorage
 @inject StateContainer stateContainer
 @inject IConfiguration render
+@inject IStringLocalizer<Localization.SharedResource> Loc
+
+<PageTitle>@ReturnTitle()</PageTitle>
 
 @if (stateContainer.showModal)
 {
@@ -13,77 +16,94 @@
 {
     <ColorSelect OnClose="ModalClose"></ColorSelect>
 }
+@if (stateContainer.showFMIPopup)
+{
+    <FMIPopup OnClose="ModalClose"></FMIPopup>
+}
 <MenuBar refreshParent="refreshParent" onInputFileChange="OnInputFileChange" fileIsLoaded="FileIsLoaded" />
-<SideBar refreshParent="refreshParent" newFunction="NewFunction" />
-<div id="mainWindow" class="main" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
-    <div>
-        @if (stateContainer.inputDropStatus == "file-input-zone-drop")
-        {
-            <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" title="Open (upload)" /></div>
-        }
-        <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <style type="text/css">
-                    @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
-                </style>
-                <radialGradient id="fnSelected" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0" />
-                </radialGradient>
-                <radialGradient id="fnExit" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:0" />
-                </radialGradient>
-                <radialGradient id="fnGroup" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0" />
-                </radialGradient>
-                <radialGradient id="fnEntry" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:0" />
-                </radialGradient>
-                <radialGradient id="fnBackground" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:0" />
-                </radialGradient>
-                <radialGradient id="fnParent" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                    <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0.75" />
-                    <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0.5" />
-                    <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0" />
-                </radialGradient>
-            </defs>
-            @if (stateContainer.fileLoaded)
+<SideBar refreshParent="refreshParent" newFunction="NewFunction" nextFn="NextFn"/>
+<div id="mainWindow" class="main">
+    @if (stateContainer.spreadsheetVisible > 0) {
+        <div class="main-visualiser @(stateContainer.spreadsheetVisible==1?"main-half":"")">
+            <Spreadsheet @ref="spreadsheet" refreshParent="refreshParent"></Spreadsheet>
+        </div>
+    }
+    @if (stateContainer.spreadsheetVisible != 2)
+    {
+        <div class="main-visualiser @(stateContainer.spreadsheetVisible==1?"main-half":"")" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
+            @if (stateContainer.inputDropStatus == "file-input-zone-drop")
             {
-                <g @onclick="UnSelect" @ontouchstart="UnSelectTouch">
-                    <rect fill=@render[stateContainer.newFnStyle+":canvas-color"] opacity=@render[stateContainer.newFnStyle+":canvas-opacity"] width="100%" height="100%" />
-                </g>
-                foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn && x.Name != stateContainer.selectedLabel))
-                {
-                    <CouplingDisplay coupling=@coupling refreshParent="refreshParent" />
-                }
-                foreach (Function function in stateContainer.functionList.FindAll(x => x.IDNr != stateContainer.selectedFn))
-                {
-                    <FunctionDisplay function=@function refreshParent="refreshParent" />
-                }
-                foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.Name == stateContainer.selectedLabel))
-                {
-                    <CouplingDisplay coupling=@coupling refreshParent="refreshParent" />
-                }
-                if (stateContainer.selectedFn != "-1")
-                {
-                    <FunctionDisplay function=@stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn) refreshParent="refreshParent" />
-                }
+                <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" title=@Loc["OPEN_TOOLTIP"] /></div>
             }
-        </svg>
-        <p>
-            @stateContainer.debugOutput
-        </p>
-    </div>
+            <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <style type="text/css">
+                        @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
+                    </style>
+                    <radialGradient id="selected-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0.75" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":selected-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="exit-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:1" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:0.75" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":exit-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="group-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0.75" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":group-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="entry-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:1" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:0.75" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":entry-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="background-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:1" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:0.75" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":background-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="parent-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0.75" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":parent-fill"];stop-opacity:0" />
+                    </radialGradient>
+                    <radialGradient id="hold-fill" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" style="stop-color:@render[stateContainer.newFnStyle+":hold-fill"];stop-opacity:1" />
+                        <stop offset="75%" style="stop-color:@render[stateContainer.newFnStyle+":hold-fill"];stop-opacity:0.75" />
+                        <stop offset="100%" style="stop-color:@render[stateContainer.newFnStyle+":hold-fill"];stop-opacity:0" />
+                    </radialGradient>
+                </defs>
+                @if (stateContainer.fileLoaded)
+                {
+                    <g @onclick="UnSelect">
+                        <rect fill=@render[stateContainer.newFnStyle+":canvas-color"] opacity=@render[stateContainer.newFnStyle+":canvas-opacity"] width="100%" height="100%" />
+                    </g>
+                    foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn != stateContainer.selectedFn && x.toFn != stateContainer.selectedFn && x.Name != stateContainer.selectedLabel))
+                    {
+                        <CouplingDisplay coupling=@coupling refreshParent="refreshParent" />
+                    }
+                    foreach (Function function in stateContainer.functionList.FindAll(x => x.IDNr != stateContainer.selectedFn))
+                    {
+                        <FunctionDisplay function=@function refreshParent="refreshParent" />
+                    }
+                    if (stateContainer.selectedCoupling is not null)
+                    {
+                        <CouplingDisplay coupling=@stateContainer.selectedCoupling refreshParent="refreshParent" />
+                    }
+                    if (stateContainer.selectedFunction is not null)
+                    {
+                        <FunctionDisplay function=@stateContainer.selectedFunction refreshParent="refreshParent" />
+                    }
+                }
+            </svg>
+            <p>
+                @stateContainer.debugOutput
+            </p>
+        </div>
+    }
 </div>
 
 @code {
@@ -91,23 +111,55 @@
     public double newFnX = -40;
     public double newFnY = 0;
     public bool isNewModel = true;
+    protected Spreadsheet? spreadsheet;
+    private static Func<string, string, Task>? UpdateFileContent;
+    //protected IEnumerable<Claim> _claims = Enumerable.Empty<Claim>(); //private string[] returnClaims = { "idp", "name", "oid" };
 
-    private void refreshParent()
+    private string ReturnTitle()
+    {
+        if (stateContainer.fileName != "" && stateContainer.fileName != "FMV_new.xfmv")
+        {
+            return "FRAM Model Visualiser - " + stateContainer.fileName.Replace(".xfmv", "");
+        }
+        else
+        {
+            return "FRAM Model Visualiser";
+        }
+    }
+    private async void refreshParent()
     {
         StateHasChanged();
+        if (spreadsheet is not null)
+        {
+            await spreadsheet.UpdateState();
+        }
     }
     private void ModalClose(bool state)
     {
         stateContainer.showModal = state;
         stateContainer.showColorPicker = state;
+        stateContainer.showFMIPopup = state;
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender)
+        if (firstRender)
+        {
+            FocusElement("openFileBtn");
+            UpdateFileContent = OpenFileContent;
+            var content = await JSRuntime.InvokeAsync<string>("fileOpenAs");
+            if (content != "waiting")
+            {
+                stateContainer.selectedFn = "-1";
+                await Restore();
+            }
+            //await GetClaimsPrincipalData(); //
+        }
+        else
         {
             try
             {
                 await localStorage.SetItemAsync("backupData", stateContainer.projectData_Undo[0].OuterXml);
+                await localStorage.SetItemAsync("backupFileName", stateContainer.fileName);
             }
             catch
             {
@@ -115,9 +167,62 @@
             }
         }
     }
+    //private async Task GetClaimsPrincipalData()
+    //{
+    // Gets an AuthenticationState that describes the current user.
+    //@inject AuthenticationStateProvider AuthStateProvider
+    //var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+    //var user = authState.User;
+    // Checks if the user has been authenticated.
+    //if (user.Identity is not null && user.Identity.IsAuthenticated)
+    //{
+    //    Console.WriteLine($"{user.Identity.Name} is authenticated.");
+    // The claims mentioned in returnClaims variable are selected only.
+    //_claims = user.Claims; //.Where(x => returnClaims.Contains(x.Type));
+    //}
+    //}
+
+    [JSInvokable]  //gets called by js if opened with file content
+    public static async Task FileContent(string content, string name)
+    {
+        try
+        {
+            if (UpdateFileContent is not null)
+            {
+                await UpdateFileContent.Invoke(content, name);
+            }
+        }
+        catch
+        {
+
+        }
+    }
+    private async Task OpenFileContent(string content, string name)
+    {
+        if (content.Length > 0 && name.Length > 0)
+        {
+            stateContainer.debugOutput = "File loading ...";
+            stateContainer.fileLoaded = false;
+            stateContainer.viewWidth = 0;
+            stateContainer.viewHeight = 0;
+            stateContainer.undoIndex = 0;
+            stateContainer.projectData_Undo = new XmlDocument[stateContainer.undoLength];
+            stateContainer.projectData_Undo[0] = new XmlDocument();
+            stateContainer.projectData_Undo[0].LoadXml(content);
+            stateContainer.fileName = name;
+            stateContainer.inputDropStatus = "file-input-zone-hide";
+            FileIsLoaded();
+            StateHasChanged();
+        }
+        else
+        {
+            stateContainer.selectedFn = "-1";
+            await Restore();
+        }
+    }
     private void NewFunction()
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
         {
             stateContainer.defaultFnLabel();
         }
@@ -128,7 +233,7 @@
             stateContainer.tempZoomF = 1;
             stateContainer.scaleZoom = 1.5;
             stateContainer.projectData_Undo[0] = new XmlDocument();
-            stateContainer.projectData_Undo[0].LoadXml("<FM><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
+            stateContainer.projectData_Undo[0].LoadXml("<FM Version=\"0,3,0,0\"><Functions></Functions><Aspects scaleFunction=\"1\" scaleAspect=\"1\" scaleZoom=\"1.5\" Enhanced=\"true\"></Aspects></FM>");
             stateContainer.inputDropStatus = "file-input-zone-hide";
             stateContainer.fileLoaded = true;
         }
@@ -155,15 +260,15 @@
         }
         else
         {
-            if (stateContainer.selectedFn == "-1")
+            if (stateContainer.selectedFn == "-1" || stateContainer.selectedFunction is null)
             {
                 newFnX = 20;
                 newFnY = 20;
             }
             else
             {
-                newFnX = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.x + 90??20;
-                newFnY = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.y + 110??20;
+                newFnX = stateContainer.selectedFunction.x + 90;
+                newFnY = stateContainer.selectedFunction.y + 110;
             }
         }
         stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, newFnX + 120);
@@ -190,8 +295,25 @@
         XmlNode IDName = stateContainer.projectData_Undo[0].CreateElement("IDName");
         IDName.InnerText = "";
         itemF.AppendChild(IDName);
+        XmlAttribute profileFn = stateContainer.projectData_Undo[0].CreateAttribute("profileFn");
+        profileFn.Value = "";
+        itemF.Attributes.Append(profileFn);
+        XmlAttribute profileI = stateContainer.projectData_Undo[0].CreateAttribute("profileI");
+        profileI.Value = "";
+        itemF.Attributes.Append(profileI);
+        XmlAttribute profileP = stateContainer.projectData_Undo[0].CreateAttribute("profileP");
+        profileP.Value = "";
+        itemF.Attributes.Append(profileP);
+        XmlAttribute profileR = stateContainer.projectData_Undo[0].CreateAttribute("profileR");
+        profileR.Value = "";
+        itemF.Attributes.Append(profileR);
+        XmlAttribute profileC = stateContainer.projectData_Undo[0].CreateAttribute("profileC");
+        profileC.Value = "";
+        itemF.Attributes.Append(profileC);
+        XmlAttribute profileT = stateContainer.projectData_Undo[0].CreateAttribute("profileT");
+        profileT.Value = "";
+        itemF.Attributes.Append(profileT);
         //if (selectedFn>-1) {selectGroupChildren(false);}
-        stateContainer.selectedFn = maxFn.ToString();
         stateContainer.isDisabled = false;
         stateContainer.selectedLabel = "";
         XmlAttribute fnX = stateContainer.projectData_Undo[0].CreateAttribute("x");
@@ -201,7 +323,8 @@
         itemF.Attributes.Append(fnX);
         itemF.Attributes.Append(fnY);
         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions")!.AppendChild(itemF);
-        stateContainer.functionList.Add(new Function(maxFn.ToString(), newFnX, newFnY, stateContainer.newFnStyle.ToString(), "2", "", 0, "false", "", ""));
+        stateContainer.functionList.Add(new Function(itemF));
+        stateContainer.selectedFn = maxFn.ToString();
         stateContainer.fnName = "";
         FocusElement("fnNameText");
         ClearElement("fnNameText");
@@ -215,7 +338,7 @@
         var buffer = new byte[e.File.Size];
         await e.File.OpenReadStream(1050000).ReadAsync(buffer);
         stateContainer.undoIndex = 0;
-        stateContainer.projectData_Undo = new XmlDocument[700];
+        stateContainer.projectData_Undo = new XmlDocument[stateContainer.undoLength];
         stateContainer.projectData_Undo[0] = new XmlDocument();
         stateContainer.projectData_Undo[0].LoadXml(Encoding.UTF8.GetString(buffer));
         stateContainer.fileName = e.File.Name;
@@ -235,9 +358,20 @@
         var getFns = stateContainer.projectData_Undo[0].SelectNodes("//FM/Functions/Function");
         if (getFns != null)
         {
+            var updateFnStyle = false;
             stateContainer.newFnStyle = int.Parse(getFns[0]?.Attributes?["fnStyle"]?.Value ?? "0");
+            if (render[stateContainer.newFnStyle + ":Name"] == null)
+            {
+                stateContainer.newFnStyle = 0;
+                updateFnStyle = true;
+            }
             foreach (XmlNode fn in getFns)
             {
+                //update fnStyle if the style index is not present in the current renderoptions.json, as caught in the check above
+                if (updateFnStyle)
+                {
+                    fn.SelectSingleNode("@fnStyle")!.Value = "0";
+                }
                 //this is for modern background functions to indicate which side to place the aspect circle, Input (left) or Output (right)
                 if (fn.SelectSingleNode("@orphans") == null)
                 {
@@ -255,13 +389,47 @@
                     isInput.Value = "false";
                     fn.Attributes!.Append(isInput);
                 }
+                if (fn.SelectSingleNode("@profileFn") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileFn"));
+                }
+                if (fn.SelectSingleNode("@profileI") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileI"));
+                }
+                if (fn.SelectSingleNode("@profileP") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileP"));
+                }
+                if (fn.SelectSingleNode("@profileR") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileR"));
+                }
+                if (fn.SelectSingleNode("@profileC") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileC"));
+                }
+                if (fn.SelectSingleNode("@profileT") == null)
+                {
+                    fn.Attributes!.Append(stateContainer.projectData_Undo[0].CreateAttribute("profileT"));
+                }
                 //as the Functions are read from the loaded file, add them to the functionList
-                stateContainer.functionList.Add(new Function(fn.SelectSingleNode("IDNr")!.InnerText, double.Parse(fn.SelectSingleNode("@x")?.Value ?? "120"), double.Parse(fn.SelectSingleNode("@y")?.Value ?? "120"),
-                    fn.SelectSingleNode("@fnStyle")?.Value ?? stateContainer.newFnStyle.ToString(), fn.SelectSingleNode("FunctionType")?.InnerText ?? "2", fn.SelectSingleNode("IDName")?.InnerText ?? "",
-                    int.Parse(fn.SelectSingleNode("@orphans")?.Value ?? "0"), fn.SelectSingleNode("@isInput")?.Value ?? "false", fn.SelectSingleNode("@style")?.Value ?? "", fn.SelectSingleNode("@color")?.Value ?? ""));
-                maxFn = Math.Max(maxFn, Convert.ToInt32(fn.SelectSingleNode("IDNr")!.InnerText));
-                stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, Convert.ToDouble(fn.SelectSingleNode("@x")?.Value??"120") + 120);
-                stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, Convert.ToDouble(fn.SelectSingleNode("@y")?.Value ?? "120") + 120);
+                maxFn = Math.Max(maxFn, int.Parse(fn.SelectSingleNode("IDNr")?.InnerText??"0"));
+                stateContainer.functionList.Add(new Function(fn));
+                var _x = fn.SelectSingleNode("@x")?.Value ?? "50";
+                if (_x == "") 
+                {
+                    _x = "50"; 
+                    fn.SelectSingleNode("@x")!.Value = "50";
+                }
+                var _y = fn.SelectSingleNode("@y")?.Value ?? "50";
+                if (_y == "")
+                {
+                    _y = "50";
+                    fn.SelectSingleNode("@y")!.Value = "50";
+                }
+                stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, double.Parse(_x) + 120);
+                stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, double.Parse(_y) + 120);
             }
         }
         if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects") == null)
@@ -394,9 +562,9 @@
                 {
                     dictArray[2] = aspect.FunctionIDNr;
                     dictArray[3] = aspect.Type.Substring(0, 1);
-                    stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]),
-                        double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]),
-                        int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]));
+                    stateContainer.reSetAspect(dictArray, double.Parse(render[stateContainer.newFnStyle + ":aspectX:O"]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:O"]!),
+                        double.Parse(render[stateContainer.newFnStyle + ":aspectX:" + dictArray[3]]!), double.Parse(render[stateContainer.newFnStyle + ":aspectY:" + dictArray[3]]!),
+                        int.Parse(render[stateContainer.newFnStyle + ":aspect-font-wrap"]!));
                     aspect.Orphan = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode("//FM/" + aspect.Type + "s/" + aspect.Type + "[IDNr=\"" + aspect.IDNr + "\"]/@orphan")!.Value = "false";
                     isOutputOrphan = "false";
@@ -432,9 +600,15 @@
             }
             aspectsA.SelectSingleNode("@WebEnhanced")!.Value = "notupdated";
         }
-        stateContainer.tempZoomA = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value);
-        stateContainer.tempZoomF = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value);
-        stateContainer.scaleZoom = Convert.ToDouble(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value);
+        double tryZoomA = 1;
+        double tryZoomF = 1;
+        double tryZoomS = 1.5;
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value, out tryZoomA);
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value, out tryZoomF);
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value, out tryZoomS);
+        stateContainer.tempZoomA = tryZoomA;
+        stateContainer.tempZoomF = tryZoomF;
+        stateContainer.scaleZoom = tryZoomS;
         stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
         stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
         newFnX = 20;
@@ -442,12 +616,22 @@
         isNewModel = false;
         stateContainer.fileLoaded = true;
         stateContainer.debugOutput = "";
+        spreadsheet?.InitialState();
+        FocusElement("newFnButton");
     }
-    private void UnSelectTouch(TouchEventArgs e)
+    private async void UnSelect(MouseEventArgs e)
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
         {
             stateContainer.defaultFnLabel();
+        }
+        if (stateContainer.selectedFunction is not null)
+        {
+            stateContainer.selectedFunction.fnClass = "fn-point";
+        }
+        if (stateContainer.selectedCoupling is not null)
+        {
+            stateContainer.selectedCoupling.aspectClass = "fn-point";
         }
         stateContainer.selectedFn = "-1";
         stateContainer.isDisabled = true;
@@ -455,19 +639,10 @@
         stateContainer.fnName = "";
         stateContainer.touchAction = "auto";
         StateHasChanged();
-    }
-    private void UnSelect(MouseEventArgs e)
-    {
-        if (stateContainer.selectedFn != "-1" && stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label == "")
+        if (spreadsheet is not null)
         {
-            stateContainer.defaultFnLabel();
+            await spreadsheet.UpdateState();
         }
-        stateContainer.selectedFn = "-1";
-        stateContainer.isDisabled = true;
-        stateContainer.selectedLabel = "";
-        stateContainer.fnName = "";
-        stateContainer.touchAction = "auto";
-        StateHasChanged();
     }
     public async void ClearElement(string elementName)
     {
@@ -479,74 +654,100 @@
     }
     private void NextFn(KeyboardEventArgs e)
     {
-        var findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-        var findCoupling = stateContainer.couplingList.Find(x => x.Name == stateContainer.selectedLabel);
-        if (stateContainer.selectedFn != "-1" && findFn?.label == "")
+        if (stateContainer.fileLoaded)
         {
-            stateContainer.defaultFnLabel();
-        }
-        if (findFn != null)
-        {
-            findFn.dragFn = false;
-        }
-        if (findCoupling != null)
-        {
-            findCoupling.dragAspect = false;
-            stateContainer.selectedLabel = "";
-        }
-        if (e.Key == "ArrowRight")
-        {
-            stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) + 1).ToString();
-            findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-            if (findFn == null)
+            if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
             {
-                findFn = stateContainer.functionList.First();
-                stateContainer.selectedFn = findFn.IDNr;
+                stateContainer.defaultFnLabel();
             }
-            stateContainer.fnName = findFn.label;
-            FocusElement("newFnButton");
-        }
-        else if (e.Key == "ArrowLeft")
-        {
-            stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) - 1).ToString();
-            findFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
-            if (findFn == null)
+            if (stateContainer.selectedFunction is not null)
             {
-                findFn = stateContainer.functionList.Last();
-                stateContainer.selectedFn = findFn.IDNr;
+                stateContainer.selectedFunction.dragFn = false;
             }
-            stateContainer.fnName = findFn.label;
-            stateContainer.isDisabled = false;
-            FocusElement("newFnButton");
-        }
-        else if (e.Code == "KeyI")
-        {
-            FocusElement("newIButton");
-        }
-        else if (e.Code == "KeyO")
-        {
-            FocusElement("newOButton");
-        }
-        else if (e.Code == "KeyP")
-        {
-            FocusElement("newPButton");
-        }
-        else if (e.Code == "KeyR")
-        {
-            FocusElement("newRButton");
-        }
-        else if (e.Code == "KeyT")
-        {
-            FocusElement("newTButton");
-        }
-        else if (e.Code == "KeyC")
-        {
-            FocusElement("newCButton");
-        }
-        else if (e.Key == "+")
-        {
-            FocusElement("newFnButton");
+            if (stateContainer.selectedCoupling is not null)
+            {
+                stateContainer.selectedCoupling.dragAspect = false;
+                stateContainer.selectedCoupling.aspectClass = "fn-point";
+                stateContainer.selectedLabel = "";
+            }
+            if (e.Key == "ArrowRight")
+            {
+                stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) + 1).ToString();
+                if (stateContainer.selectedFunction is null)
+                {
+                    stateContainer.selectedFn = stateContainer.functionList.First().IDNr;
+                }
+                stateContainer.fnName = stateContainer.selectedFunction?.label ?? "";
+                stateContainer.isDisabled = false;
+                FocusElement("newFnButton");
+            }
+            else if (e.Key == "ArrowLeft")
+            {
+                stateContainer.selectedFn = (int.Parse(stateContainer.selectedFn) - 1).ToString();
+                if (stateContainer.selectedFunction is null)
+                {
+                    stateContainer.selectedFn = stateContainer.functionList.Last().IDNr;
+                }
+                stateContainer.fnName = stateContainer.selectedFunction?.label ?? "";
+                stateContainer.isDisabled = false;
+                FocusElement("newFnButton");
+            }
+            else if (e.Code == "KeyI")
+            {
+                FocusElement("newIButton");
+            }
+            else if (e.Code == "KeyO")
+            {
+                FocusElement("newOButton");
+            }
+            else if (e.Code == "KeyP")
+            {
+                FocusElement("newPButton");
+            }
+            else if (e.Code == "KeyR")
+            {
+                FocusElement("newRButton");
+            }
+            else if (e.Code == "KeyT")
+            {
+                FocusElement("newTButton");
+            }
+            else if (e.Code == "KeyC")
+            {
+                FocusElement("newCButton");
+            }
+            else if (e.Key == "+")
+            {
+                FocusElement("newFnButton");
+            }
         }
     }
-    
+    private async Task Restore()
+    {
+        try
+        {
+            stateContainer.isBackup = await localStorage.GetItemAsync<bool>("isBackup");
+            if (stateContainer.isBackup)
+            {
+                stateContainer.debugOutput = "Backup loading ...";
+                stateContainer.fileLoaded = false;
+                stateContainer.viewWidth = 0;
+                stateContainer.viewHeight = 0;
+                stateContainer.undoIndex = 0;
+                stateContainer.projectData_Undo = new XmlDocument[stateContainer.undoLength];
+                stateContainer.projectData_Undo[0] = new XmlDocument();
+                stateContainer.projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
+                stateContainer.fileName = await localStorage.GetItemAsync<string>("backupFileName");
+                stateContainer.inputDropStatus = "file-input-zone-hide";
+                stateContainer.isBackup = false;
+                FileIsLoaded();
+                await localStorage.SetItemAsync("isBackup", false);
+                StateHasChanged();
+            }
+        }
+        catch
+        {
+            stateContainer.debugOutput = "";
+        }
+    }
 }

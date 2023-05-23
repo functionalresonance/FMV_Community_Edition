@@ -1,0 +1,14 @@
+﻿.modal-fmi {
+    max-width: fit-content;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-left: 3.5rem;
+}
+.modal-body {
+    overflow-y: scroll;
+    max-height: 80vh;
+    font-family: Consolas, Courier New, Courier, monospace;
+    font-size:  smaller;
+    white-space: pre;
+}

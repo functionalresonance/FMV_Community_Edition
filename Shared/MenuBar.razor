@@ -1,42 +1,44 @@
 ﻿@inject NavigationManager NavManager
-@inject SignOutSessionStateManager SignOutManager
 @inject ILocalStorageService localStorage
 @inject IJSRuntime JSRuntime
 @inject BrowserService Service
 @inject StateContainer stateContainer
 @inject IConfiguration render
+@inject IStringLocalizer<Localization.SharedResource> Loc
+@inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> OptionsSnapshot
 
 <div class="navbar fixed-top bg-light p-2">
     <div>
         <div class="btn btn-menu file-input-zone oi oi-data-transfer-upload" >
-            <InputFile OnChange="onInputFileChange" single accept=".xfmv" title="Open (upload)" />
+            <InputFile id="openFileBtn" OnChange="onInputFileChange" single accept=".xfmv" title=@Loc["OPEN_TOOLTIP"] />
         </div>
-        <button class="btn btn-menu oi oi-data-transfer-download" title="Save (download)" @onclick=OnFileSave></button>
-        <button class="btn btn-menu oi oi-image" title="Save image" @onclick=OnImageSave></button>
-        <button class="btn btn-menu oi oi-zoom-out" title="Zoom out" @onclick=zoomMinus @onfocusin=@(() => stateContainer.updateUndo()) ></button>
-        <button class="btn btn-menu oi oi-fullscreen-enter" title="Zoom fullscreen" @onclick=zoomFill @onfocusin=@(() => stateContainer.updateUndo())></button>
-        <button class="btn btn-menu oi oi-zoom-in" title="Zoom in" @onclick=zoomPlus @onfocusin=@(() => stateContainer.updateUndo())></button>
+        <button id="saveFileBtn" class="btn btn-menu oi oi-data-transfer-download" title=@Loc["SAVE_TOOLTIP"] @onclick=OnFileSave></button>
+        <button class="btn btn-menu oi oi-image" title=@Loc["IMAGE_TOOLTIP"] @onclick=OnImageSave></button>
+        <button class="btn btn-menu oi oi-zoom-out" title=@Loc["ZOOM_MINUS_TOOLTIP"] @onclick=zoomMinus @onfocusin=@(() => stateContainer.updateUndo())></button>
+        <button class="btn btn-menu oi oi-fullscreen-enter" title=@Loc["ZOOM_FULLSCREEN"] @onclick=zoomFill @onfocusin=@(() => stateContainer.updateUndo())></button>
+        <button class="btn btn-menu oi oi-zoom-in" title=@Loc["ZOOM_PLUS_TOOLTIP"] @onclick=zoomPlus @onfocusin=@(() => stateContainer.updateUndo())></button>
         <AuthorizeView>
             <Authorized>
-                <button class="btn btn-menu oi oi-action-undo" title="Undo" @onclick=actionUndo></button>
-                <button class="btn btn-menu oi oi-action-redo" title="Redo" @onclick=actionRedo></button>
+                <button class="btn btn-menu oi oi-action-undo" title=@Loc["UNDO_TOOLTIP"] @onclick=actionUndo></button>
+                <button class="btn btn-menu oi oi-action-redo" title=@Loc["REDO_TOOLTIP"] @onclick=actionRedo></button>
             </Authorized>
         </AuthorizeView>
     </div>
     <div class="float-right">
-        <button class="btn btn-menu oi oi-tags" title="Show Aspect labels" @onclick=ShowLabels></button>
+        <button class="btn btn-menu oi oi-tags" title=@Loc["SHOW_LABEL"] @onclick=ShowLabels></button>
         <AuthorizeView>
             <Authorized>
-                <button class="btn btn-menu oi oi-eye" title="Model rendering" @onclick=ChangeFnStyle @onfocusin=@(() => stateContainer.updateUndo()) ></button>
-                <button class="btn btn-menu oi oi-reload" title="Reload" @onclick=Recover></button>
-                <button class="btn btn-menu oi oi-account-logout" title="Logout" @onclick=@BeginLogout></button>
+                <button class="btn btn-menu oi oi-eye" title=@Loc["RENDER"] @onclick=ChangeFnStyle @onfocusin=@(() => stateContainer.updateUndo())></button>
+                <button class="btn btn-menu oi oi-spreadsheet" title=@Loc["TABLE_VIEW"] @onclick=showSpreadsheet></button>
+                <button class="btn btn-menu oi oi-reload" title=@Loc["RELOAD"] @onclick=Recover></button>
+                <button class="btn btn-menu oi oi-account-logout" title=@Loc["LOGOUT"] @onclick=@BeginLogout></button>
             </Authorized>
             <NotAuthorized>
-                <button class="btn btn-menu oi oi-eye" title="Model rendering" @onclick=ChangeFnStyleBasic @onfocusin=@(() => stateContainer.updateUndo())></button>
-                <button class="btn btn-menu oi oi-account-login" title="Login" @onclick=BeginLogin></button>
+                <button class="btn btn-menu oi oi-eye" title=@Loc["RENDER"] @onclick=ChangeFnStyleBasic @onfocusin=@(() => stateContainer.updateUndo())></button>
+                <button class="btn btn-menu oi oi-account-login" title=@Loc["LOGIN"] @onclick=BeginLogin></button>
             </NotAuthorized>
         </AuthorizeView>
-        <button class="btn btn-menu oi oi-info" title="Info" @onclick=ShowInfo></button>
+        <button class="btn btn-menu oi oi-info" title=@Loc["INFO_TOOLTIP"] @onclick=ShowInfo></button>
     </div>
 </div>
 
@@ -47,8 +49,16 @@
     public EventCallback<InputFileChangeEventArgs> onInputFileChange { get; set; }
     [Parameter]
     public EventCallback fileIsLoaded { get; set; }
-    private bool isBackup = false;
 
+    public void showSpreadsheet()
+    {
+        stateContainer.spreadsheetVisible += 1;
+        if (stateContainer.spreadsheetVisible > 2)
+        {
+            stateContainer.spreadsheetVisible = 0;
+        }
+        refreshParent.InvokeAsync();
+    }
     public async void OnFileSave()
     {
         if (stateContainer.fileLoaded)
@@ -107,15 +117,15 @@
         if (stateContainer.fileLoaded)
         {
             var dimensions = await Service.getDimensions();
-            if (stateContainer.canvasWidth / stateContainer.canvasHeight > Convert.ToDouble(dimensions.width - 250) / Convert.ToDouble(dimensions.height - 70))
+            if (stateContainer.canvasWidth / stateContainer.canvasHeight > Convert.ToDouble(dimensions.width - 270) / Convert.ToDouble(dimensions.height - 90))
             {
-                stateContainer.canvasWidth = dimensions.width - 250;
+                stateContainer.canvasWidth = dimensions.width - 270;
                 stateContainer.scaleZoom = stateContainer.canvasWidth / stateContainer.viewWidth;
                 stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
             }
             else
             {
-                stateContainer.canvasHeight = dimensions.height - 70;
+                stateContainer.canvasHeight = dimensions.height - 90;
                 stateContainer.scaleZoom = stateContainer.canvasHeight / stateContainer.viewHeight;
                 stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             }
@@ -137,7 +147,7 @@
             stateContainer.selectedFn = stateContainer.selectedFn_Undo[stateContainer.undoIndex];
             if (stateContainer.selectedFn != "-1")
             {
-                stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
+                stateContainer.fnName = stateContainer.selectedFunction?.label ?? "";
                 stateContainer.isDisabled = false;
             }
             stateContainer.undoIndex -= 1;
@@ -155,7 +165,7 @@
                 stateContainer.selectedFn = stateContainer.selectedFn_Undo[stateContainer.undoIndex + 1];
                 if (stateContainer.selectedFn != "-1")
                 {
-                    stateContainer.fnName = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn)?.label ?? "";
+                    stateContainer.fnName = stateContainer.selectedFunction?.label ?? "";
                     stateContainer.isDisabled = false;
                 }
             }
@@ -213,18 +223,16 @@
     private async Task BeginLogout(MouseEventArgs args)
     {
         await Backup();
-        await SignOutManager.SetSignOutState();
-        NavManager.NavigateTo("./authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
+        //await SignOutManager.SetSignOutState();
+        NavManager.NavigateToLogout("./authentication/logout", Uri.EscapeDataString(NavManager.Uri));
+        //NavManager.NavigateTo("./authentication/logout?returnUrl=" + Uri.EscapeDataString(NavManager.Uri));
     }
     private async Task BeginLogin(MouseEventArgs args)
     {
         await Backup();
-        NavManager.NavigateTo("./authentication/login");
-    }
-    protected override async Task OnInitializedAsync()
-    {
-        stateContainer.selectedFn = "-1";
-        await Restore();
+        NavManager.NavigateToLogin(OptionsSnapshot.Get(Options.DefaultName).AuthenticationPaths.LogInPath);
+        //NavManager.NavigateTo("./authentication/login");
+
     }
     public async Task Backup()
     {
@@ -243,20 +251,20 @@
     {
         try
         {
-            isBackup = await localStorage.GetItemAsync<bool>("isBackup");
-            if (isBackup)
+            stateContainer.isBackup = await localStorage.GetItemAsync<bool>("isBackup");
+            if (stateContainer.isBackup)
             {
                 stateContainer.debugOutput = "Backup loading ...";
                 stateContainer.fileLoaded = false;
                 stateContainer.viewWidth = 0;
                 stateContainer.viewHeight = 0;
                 stateContainer.undoIndex = 0;
-                stateContainer.projectData_Undo = new XmlDocument[700];
+                stateContainer.projectData_Undo = new XmlDocument[stateContainer.undoLength];
                 stateContainer.projectData_Undo[0] = new XmlDocument();
                 stateContainer.projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
                 stateContainer.fileName = await localStorage.GetItemAsync<string>("backupFileName");
                 stateContainer.inputDropStatus = "file-input-zone-hide";
-                isBackup = false;
+                stateContainer.isBackup = false;
                 await fileIsLoaded.InvokeAsync();
                 await localStorage.SetItemAsync("isBackup", false);
             }

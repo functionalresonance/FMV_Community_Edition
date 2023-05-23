@@ -11,7 +11,7 @@
     {
         if (!firstRender)
         {
-            if (Action == "login-failed")
+            if (Action == "login-failed" || Action == "logout-callback" || Action == "logout-failed")
             {
                 Navigation.NavigateTo($"./");
             }

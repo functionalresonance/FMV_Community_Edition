@@ -58,7 +58,7 @@
             }
         }
         public bool dragAspect { get; set; } = false;
-        public string aspectClass { get; set; } = "fn-hover";
+        public string aspectClass { get; set; } = "fn-point";
         public double labelX { get; set; }
         public double labelY { get; set; }
         public double startLabelX { get; set; } = 0;
@@ -75,6 +75,9 @@
         public double drawBy { get; set; }
         public double drawIntx { get; set; }
         public double drawInty { get; set; }
+        public bool wasActive { get; set; } = false;
+        public bool activated { get; set; } = false;
+        public string fmiHighlight { get; set; } = "";
         public List<string> ReturnTextLines(int length)
         {
             var textLines = new List<string>();
@@ -160,16 +163,16 @@
             {
                 string[] _curve = new string[10]
                 {
-            drawTox.ToString("#.##"),
-            drawToy.ToString("#.##"),
-            drawFromx.ToString("#.##"),
-            drawFromy.ToString("#.##"),
-            drawAx.ToString("#.##"),
-            drawAy.ToString("#.##"),
-            drawBx.ToString("#.##"),
-            drawBy.ToString("#.##"),
-            drawIntx.ToString("#.##"),
-            drawInty.ToString("#.##")
+            drawTox.ToString("0.##"),
+            drawToy.ToString("0.##"),
+            drawFromx.ToString("0.##"),
+            drawFromy.ToString("0.##"),
+            drawAx.ToString("0.##"),
+            drawAy.ToString("0.##"),
+            drawBx.ToString("0.##"),
+            drawBy.ToString("0.##"),
+            drawIntx.ToString("0.##"),
+            drawInty.ToString("0.##")
                 };
                 return string.Join("|", _curve);
             }
@@ -179,9 +182,9 @@
             get
             {
                 string[] _curve2 = new string[13] {
-            "M", drawFromx.ToString("#.##"), drawFromy.ToString("#.##"),
-            "Q", drawAx.ToString("#.##"), drawAy.ToString("#.##"), drawIntx.ToString("#.##"), drawInty.ToString("#.##"),
-            "Q", drawBx.ToString("#.##"), drawBy.ToString("#.##"), drawTox.ToString("#.##"), drawToy.ToString("#.##")
+            "M", drawFromx.ToString("0.##"), drawFromy.ToString("0.##"),
+            "Q", drawAx.ToString("0.##"), drawAy.ToString("0.##"), drawIntx.ToString("0.##"), drawInty.ToString("0.##"),
+            "Q", drawBx.ToString("0.##"), drawBy.ToString("0.##"), drawTox.ToString("0.##"), drawToy.ToString("0.##")
             };
                 return string.Join(" ", _curve2);
             }
@@ -435,9 +438,9 @@
             }
 
             string[] curve2 = new string[13] {
-            "M", drawFromx.ToString("#.##"), drawFromy.ToString("#.##"),
-            "Q", drawAx.ToString("#.##"), drawAy.ToString("#.##"), drawIntx.ToString("#.##"), drawInty.ToString("#.##"),
-            "Q", drawBx.ToString("#.##"), drawBy.ToString("#.##"), drawTox.ToString("#.##"), drawToy.ToString("#.##")
+            "M", drawFromx.ToString("0.##"), drawFromy.ToString("0.##"),
+            "Q", drawAx.ToString("0.##"), drawAy.ToString("0.##"), drawIntx.ToString("0.##"), drawInty.ToString("0.##"),
+            "Q", drawBx.ToString("0.##"), drawBy.ToString("0.##"), drawTox.ToString("0.##"), drawToy.ToString("0.##")
         };
             resetLabel();
             return string.Join(" ", curve2);

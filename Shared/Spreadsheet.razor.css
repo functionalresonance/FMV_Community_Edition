@@ -1,0 +1,102 @@
+﻿/* Sticky header while scrolling */
+::deep thead {
+    position: sticky;
+    top: 0;
+    background-color: rgb(180, 187, 195);
+    z-index: 1;
+}
+    ::deep thead .show-properties {
+        background-color: rgb(253, 168, 112, 0.75);
+    }
+    ::deep thead .show-aspects {
+        background-color: rgb(154, 224, 140, 0.75);
+    }
+    ::deep thead .show-fmiprofile {
+        background-color: rgb(141, 180, 226, 0.75);
+    }
+::deep tbody {
+    border: thin solid grey;
+}
+/* Assign default width to Function label column 
+::deep thead .fn-label {
+    width: 20rem;
+}*/
+/* Stop Function label text from wrapping, and truncate with ellipsis 
+::deep tbody .fn-label {
+    white-space: normal;
+    overflow: visible;
+    max-width: 0;
+}*/
+::deep .col-title-text {
+    font-weight: bold;
+}
+::deep th {
+    font-weight: normal;
+    border: thin solid grey;
+    padding-left: 0.25rem;
+}
+::deep td {
+    border-right: thin solid grey;
+    padding-left: 0.25rem;
+}
+/* Stop the last page from collapsing to the number of rows on it */
+::deep tr {
+    height: 1.8rem;
+}
+/* Subtle stripe effect */
+::deep tr:nth-child(even) {
+    background: rgb(180, 200, 226, 0.40);
+}
+    ::deep tr:has(.select-row) {
+        background: rgb(255, 216, 0, 0.75);
+    }
+    ::deep tr:has(.entry-fill) {
+        background: rgb(42, 155, 0, 0.75);
+    }
+    ::deep tr:has(.exit-fill) {
+        background: rgb(255, 17, 0, 0.75);
+    }
+    ::deep tr:has(.background-fill) {
+        background: rgb(126, 157, 188, 0.75);
+    }
+    ::deep tr:has(.hold-fill) {
+        background: rgb(191, 191, 0, 0.75);
+    }
+/* Magnifying glass */
+::deep .search .col-options-button {
+    margin-right: 0.25rem;
+}
+.search-box input {
+    border: thin solid grey;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+    .search-box input:focus {
+        outline: none;
+    }
+label {
+    gap: 0.5rem;
+    border: 1px solid #F1F3F4;
+    padding: 0 0.75rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0,0,0,0.04);
+    cursor: pointer;
+}
+    label:hover {
+        border: 1px solid dimgrey;
+    }
+.show-properties {
+    background: rgb(253, 168, 112, 0.75);
+}
+.show-aspects {
+    background: rgb(154, 224, 140, 0.75);
+}
+.show-fmiprofile {
+    background: rgb(141, 180, 226, 0.75);
+}
+a {
+    cursor: pointer;
+}

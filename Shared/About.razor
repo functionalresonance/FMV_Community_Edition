@@ -1,6 +1,6 @@
 ﻿
-<div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+<div class="modal fade show" id="myModal" style="display:block" aria-modal="true" role="dialog" @onclick=clickOut>
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" @onclick=clickNothing @onclick:stopPropagation>
         <div class="modal-content">
             <div class="modal-header sticky-top bg-white">
                 <h4 class="modal-title">FMV - the FRAM Model Visualiser</h4>
@@ -12,6 +12,7 @@
                     for modelling non-trivial socio-technical systems, please visit the website <a href="https://functionalresonance.com/" target="_blank">functionalresonance.com</a>
                 </p>
                 <p>
+                    Ctrl+R &ensp; Refresh New Model<br />
                     <a class="oi oi-data-transfer-upload" /> Upload an existing FMV data file&emsp; <a class="oi oi-data-transfer-download" /> Download the model as an FMV data file<br />
                     <a class="oi oi-image" /> Download the model as an SVG image file<br />
                     <a class="oi oi-zoom-out" /> Zoom out&emsp; <a class="oi oi-fullscreen-enter" /> Zoom fullscreen&emsp; <a class="oi oi-zoom-in" /> Zoom in&emsp; <br />
@@ -77,6 +78,8 @@
                         </Authorized>
                     </AuthorizeView>
                     <a class="pr-3" href="https://zerprize.co.nz/Home/Privacy" target="_blank">Privacy Policy</a>
+                    <a class="pr-3" href="https://github.com/Zerprize-Limited/FMV_Community_Edition/wiki/FRAM-Model-Visualiser-Instructions" target="_blank">Instructions</a>
+                    <a class="pr-3">Refresh version Ctrl+Shift+R</a>
                 </div>
                 <div class="float-right">
                     <button type="button" class="btn btn-modal" @onclick="@(() => OnClick.InvokeAsync(false))">Close</button>
@@ -90,4 +93,11 @@
 
     [Parameter] public EventCallback<bool> OnClick { get; set; }
 
+    private void clickNothing(MouseEventArgs e)
+    {
+    }
+    private async void clickOut(MouseEventArgs e)
+    {
+        await OnClick.InvokeAsync(false);
+    }
 }

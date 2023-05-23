@@ -1,0 +1,293 @@
+﻿@inject StateContainer stateContainer
+@inject IJSRuntime JSRuntime
+@inject IConfiguration render
+@inject IStringLocalizer<Localization.SharedResource> Loc
+
+<div>
+    <div class="d-inline-flex align-items-center mb-2">
+        @Loc["S_SHOW"]:
+        <label class="show-properties"><input type="checkbox" @bind="showProperties" /> @Loc["S_PROPERTIES"]</label>
+        <label class="show-aspects"><input type="checkbox" @bind="showAspects" /> @Loc["S_ASPECTS"]</label>
+        <label class="show-fmiprofile"><input type="checkbox" @bind="showFMIProfile" /> @Loc["FMI_PROFILE_SHORT"]</label>
+        <button class="btn btn-menu oi oi-file ml-2" title=@Loc["S_SAVE_FN"] @onclick=saveSpreadsheet></button>
+        <button class="btn btn-menu oi oi-document ml-2" title=@Loc["S_SAVE_COUPLING"] @onclick=saveCouplings></button>
+    </div>
+    <QuickGrid @ref="thisGrid" Items=@FilteredFunctions Theme="fmv">
+        <TemplateColumn Title="IDNr" SortBy="@sortByIDNr" Align="Align.Center" IsDefaultSortColumn="true" >
+            <a class="@SelectRow(context.IDNr, context.fmiHighlight)" @onclick=@((e) => selectGrid(context.IDNr, context.label))>@context.IDNr</a>
+        </TemplateColumn>
+        <TemplateColumn Title="IDName" Class="search" SortBy="@sortByIDName">
+            <ColumnOptions>
+                <div class="search-box">
+                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
+                </div>
+            </ColumnOptions>
+            <ChildContent>
+                <a @onclick=@((e) => selectGrid(context.IDNr, context.label))>@context.label</a>
+            </ChildContent>
+        </TemplateColumn>
+        @if (showProperties)
+        {
+            <PropertyColumn Title="FunctionType" Class="show-properties" Property="@(fn => render[stateContainer.newFnStyle+":"+fn.FunctionType+":Name"])" Sortable="true" />
+            <TemplateColumn Title=@Loc["COLOUR"] Class="show-properties" SortBy="@sortByColour">
+                <input type="color" value=@returnColor(context.fnColorValue, false) inert />
+            </TemplateColumn>
+            <PropertyColumn Title=@Loc["FN_ORPHAN"] Class="show-properties" Property="@(fn => Convert.ToString(fn.orphans,2))" Sortable="true" />
+            <PropertyColumn Title=@Loc["FN_INPUT"] Class="show-properties" Property="@(fn => fn.isInput)" Sortable="true" />
+        }
+        @if (showAspects)
+        {
+            <TemplateColumn Title="O" Class="show-aspects search">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <input type="search" autofocus @bind="aspectFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
+                    </div>
+                </ColumnOptions>
+                <ChildContent>
+                    @foreach (var GetListO in stateContainer.outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == context.IDNr))
+                    {
+                        <div>[@GetListO.IDName]</div>
+                    }
+                </ChildContent>
+            </TemplateColumn>
+            <TemplateColumn Title="I" Class="show-aspects">
+            @foreach (var GetListI in stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == context.IDNr))
+                {
+                    <div>[@GetListI.IDName]</div>
+                }
+            </TemplateColumn>
+            <TemplateColumn Title="P" Class="show-aspects">
+                @foreach (var GetListP in stateContainer.aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == context.IDNr))
+                {
+                    <div>[@GetListP.IDName]</div>
+                }
+            </TemplateColumn>
+            <TemplateColumn Title="R" Class="show-aspects">
+                @foreach (var GetListR in stateContainer.aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == context.IDNr))
+                {
+                    <div>[@GetListR.IDName]</div>
+                }
+            </TemplateColumn>
+            <TemplateColumn Title="C" Class="show-aspects">
+                @foreach (var GetListC in stateContainer.aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == context.IDNr))
+                {
+                    <div>[@GetListC.IDName]</div>
+                }
+            </TemplateColumn>
+            <TemplateColumn Title="T" Class="show-aspects">
+                @foreach (var GetListT in stateContainer.aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == context.IDNr))
+                {
+                    <div>[@GetListT.IDName]</div>
+                }
+            </TemplateColumn>
+        }
+        @if (showFMIProfile)
+        {
+            <PropertyColumn Title=@Loc["FMI_TYPE"] Class="show-fmiprofile" Property="@(fn => fn.fmiType)" Sortable="true" />
+            <PropertyColumn Title="p O" Class="show-fmiprofile" Property="@(fn => fn.profileFn)" Sortable="true" />
+            <PropertyColumn Title="p I" Class="show-fmiprofile" Property="@(fn => fn.profileI)" Sortable="true" />
+            <PropertyColumn Title="p P" Class="show-fmiprofile" Property="@(fn => fn.profileP)" Sortable="true" />
+            <PropertyColumn Title="p R" Class="show-fmiprofile" Property="@(fn => fn.profileR)" Sortable="true" />
+            <PropertyColumn Title="p C" Class="show-fmiprofile" Property="@(fn => fn.profileC)" Sortable="true" />
+            <PropertyColumn Title="p T" Class="show-fmiprofile" Property="@(fn => fn.profileT)" Sortable="true" />
+            <PropertyColumn Title=@Loc["FMI_ACTIVATED"] Class="show-fmiprofile" Property="@(fn => fn.wasActive)" Sortable="true" />
+        }
+    </QuickGrid>
+</div>
+@code {
+    QuickGrid<Function>? thisGrid;
+    bool showProperties = true;
+    bool showAspects = false;
+    bool showFMIProfile = false;
+    string? nameFilter;
+    string? aspectFilter;
+    [Parameter]
+    public EventCallback refreshParent { get; set; }
+
+    public async Task UpdateState()
+    {
+        await  thisGrid!.RefreshDataAsync();
+    }
+    public void InitialState()
+    {
+        StateHasChanged();
+    }
+
+    GridSort<Function> sortByColour = GridSort<Function>
+        .ByAscending(fn => fn.fnColorValue)
+        .ThenAscending(fn => fn.label);
+
+    GridSort<Function> sortByIDNr = GridSort<Function>
+        .ByAscending(fn => int.Parse(fn.IDNr));
+
+    GridSort<Function> sortByIDName = GridSort<Function>
+        .ByAscending(fn => fn.label);
+
+    IQueryable<Function> FilteredFunctions
+    {
+        get
+        {
+            var result = stateContainer.functionList.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                result = result!.Where(fn => fn.label.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+            if (!string.IsNullOrEmpty(aspectFilter))
+            {
+                result = result!.Where(fn => stateContainer.outputsList.Any(x => x.IDName.Contains(aspectFilter, StringComparison.CurrentCultureIgnoreCase) && x.FunctionIDNr == fn.IDNr)
+                    || stateContainer.aspectsList.Any(x => x.IDName.Contains(aspectFilter, StringComparison.CurrentCultureIgnoreCase) && x.FunctionIDNr == fn.IDNr)
+                );
+            }
+            return result!;
+        }
+    }
+    private string returnColor(string clr, bool blank)
+    {
+        if (clr.StartsWith("#"))
+        {
+            return clr;
+        }
+        else if (clr != "")
+        {
+            return "#" + uint.Parse(clr).ToString("X6");
+        }
+        else
+        {
+            if (blank)
+            {
+                return "";
+            } 
+            else
+            {
+                return "#F0F0F0";
+            }
+        }
+    }
+    private string SelectRow(string IDNr, string Highlight)
+    {
+        if (stateContainer.selectedFn == IDNr)
+        {
+            return "select-row";
+        }
+        else
+        {
+            return Highlight;
+        }
+    }
+    private RenderFragment columnTest()
+    {
+        return@<textarea></textarea>;
+    }
+    private void selectGrid(string IDNr, string label)
+    {
+        if (IDNr is not null)
+        {
+            if (stateContainer.selectedFunction is not null)
+            {
+                stateContainer.selectedFunction.fnClass = "fn-point";
+            }
+            if (IDNr != stateContainer.selectedFn)
+            {
+                stateContainer.selectedLabel = "";
+                stateContainer.selectedFn = IDNr;
+                stateContainer.fnName = label;
+                stateContainer.isDisabled = false;
+                refreshParent.InvokeAsync();
+            }
+        }
+    }
+    private async void saveSpreadsheet()
+    {
+        string saveCsv = "IDNr,IDName";
+        if (showProperties)
+        {
+            saveCsv += ",FunctionType," + @Loc["COLOUR"] + "," + @Loc["FN_ORPHAN"] + "," + @Loc["FN_INPUT"];
+        }
+        if (showAspects)
+        {
+            saveCsv += ",O,I,P,R,C,T";
+        }
+        if (showFMIProfile)
+        {
+            saveCsv += "," + Loc["FMI_TYPE"] + ",p O,p I,p P,p R,p C,p T," + @Loc["FMI_ACTIVATED"];
+        }
+        foreach (var fn in FilteredFunctions)
+        {
+            saveCsv += "\n" + fn.IDNr + ",\"" + fn.label + "\"";
+            if (showProperties)
+            {
+                saveCsv += "," + fn.FunctionType + "," + returnColor(fn.fnColorValue, true) + "," + Convert.ToString(fn.orphans, 2) +"," + fn.isInput;
+            }
+            if (showAspects)
+            {
+                saveCsv += ",\"";
+                var newA = "[";
+                foreach (var GetListO in stateContainer.outputsList.FindAll(x => x.Type == "Output" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListO.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\",\"";
+                newA = "[";
+                foreach (var GetListI in stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListI.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\",\"";
+                newA = "[";
+                foreach (var GetListP in stateContainer.aspectsList.FindAll(x => x.Type == "Precondition" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListP.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\",\"";
+                newA = "[";
+                foreach (var GetListR in stateContainer.aspectsList.FindAll(x => x.Type == "Resource" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListR.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\",\"";
+                newA = "[";
+                foreach (var GetListC in stateContainer.aspectsList.FindAll(x => x.Type == "Control" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListC.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\",\"";
+                newA = "[";
+                foreach (var GetListT in stateContainer.aspectsList.FindAll(x => x.Type == "Time" && x.FunctionIDNr == fn.IDNr))
+                {
+                    saveCsv += newA + GetListT.IDName + "]";
+                    newA = "\n[";
+                }
+                saveCsv += "\"";
+            }
+            if (showFMIProfile)
+            {
+                saveCsv += "," + fn.fmiType + "," + fn.profileFn + "," + fn.profileI + "," + fn.profileP + "," + fn.profileR + "," + fn.profileC + "," + fn.profileT + "," + fn.wasActive;
+            }
+        }
+        await JSRuntime.InvokeAsync<object>(
+            "FileSaveAs",
+            stateContainer.fileName.Replace(".xfmv","-functions.csv"),
+            saveCsv
+        );
+    }
+    private async void saveCouplings()
+    {
+        string saveCsv = Loc["COUPLING_NAME"] + "," + Loc["FN_OUTPUT"] + " IDNr," + Loc["FN_OUTPUT"] + " IDName," + Loc["ASPECT_LABEL"] + "," + Loc["FN_TO"] + " IDNr," + Loc["FN_TO"] + " IDName," + Loc["FN_TO_ASPECT"];
+        foreach (var coupling in stateContainer.couplingList)
+        {
+            saveCsv += "\n\"" + coupling.Name + "\"," + coupling.outputFn + ",\"<" + stateContainer.functionList.Find(fn => fn.IDNr == coupling.outputFn)!.label + ">\",\"["
+                + coupling.label +"]\"," + coupling.toFn + ",\"<" + stateContainer.functionList.Find(fn => fn.IDNr == coupling.toFn)!.label + ">\"," + coupling.toType;
+        }
+        await JSRuntime.InvokeAsync<object>(
+            "FileSaveAs",
+            stateContainer.fileName.Replace(".xfmv", "-couplings.csv"),
+            saveCsv
+        );
+    }
+}

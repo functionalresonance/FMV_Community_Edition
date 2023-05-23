@@ -1,116 +1,140 @@
 ﻿@inject StateContainer stateContainer
+@inject IJSRuntime JSRuntime
 
-<div id="myModal" class="modal fade show" style="display:block" aria-modal="true" role="dialog" tabindex="0" @onkeydown="checkforEsc">
-    <div class="modal-dialog modal-dialog-centered modal-color">
+<div id="myModal" class="modal fade show" style="display:block" aria-modal="true" role="dialog" tabindex="100" @onkeydown="checkforEsc" @onclick=clickOut>
+    <div class="modal-dialog modal-dialog-centered modal-color" @onclick=clickNothing @onclick:stopPropagation>
         <div class="modal-content">
             <div class="modal-header sticky-top bg-white p-0">
-                    <button class="btn btn-menu oi oi-loop-circular" style="top:0" @onclick=@((e) => freezeColor(e, "")) />
-                <input type="color" class="w-100" value="@displayValue" @oninput="colorInput" />
+                <button class="btn btn-menu oi oi-loop-circular" style="top:0" @onclick=@((e) => freezeColor(e, "")) />
+                <input id="colorSelector" type="color" class="w-100" value="@displayValue" @oninput="colorInput" />
                 <button type="button" class="close m-0 pt-1 pb-1 pl-3 pr-3" @onclick="checkForClose">&times;</button>
             </div>
             <div class="modal-body p-0" >
                 <svg width="341px" height="131px">
                     <!--original standard colours-->
-                    <rect x="27" y="1" width="51" height="25" fill="#E50000" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#E50000")) @onclick=@((e) => freezeColor(e, "#E50000"))></rect>
-                    <rect x="79" y="1" width="51" height="25" fill="#BAB727" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BAB727")) @onclick=@((e) => freezeColor(e, "#BAB727"))></rect>
-                    <rect x="131" y="1" width="51" height="25" fill="#17BD01" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#17BD01")) @onclick=@((e) => freezeColor(e, "#17BD01"))></rect>
-                    <rect x="183" y="1" width="51" height="25" fill="#01A6DB" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#01A6DB")) @onclick=@((e) => freezeColor(e, "#01A6DB"))></rect>
-                    <rect x="235" y="1" width="51" height="25" fill="#9070C0" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#9070C0")) @onclick=@((e) => freezeColor(e, "#9070C0"))></rect>
-                    <rect x="287" y="1" width="51" height="25" fill="#838383" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#838383")) @onclick=@((e) => freezeColor(e, "#838383"))></rect>
+                    <rect x="27" y="1" width="51" height="25" id="#E50000" fill="#E50000" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#E50000")) @onclick=@((e) => freezeColor(e, "#E50000"))></rect>
+                    <rect x="79" y="1" width="51" height="25" id="#BAB727" fill="#BAB727" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#BAB727")) @onclick=@((e) => freezeColor(e, "#BAB727"))></rect>
+                    <rect x="131" y="1" width="51" height="25" id="#17BD01" fill="#17BD01" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#17BD01")) @onclick=@((e) => freezeColor(e, "#17BD01"))></rect>
+                    <rect x="183" y="1" width="51" height="25" id="#01A6DB" fill="#01A6DB" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#01A6DB")) @onclick=@((e) => freezeColor(e, "#01A6DB"))></rect>
+                    <rect x="235" y="1" width="51" height="25" id="#9070C0" fill="#9070C0" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#9070C0")) @onclick=@((e) => freezeColor(e, "#9070C0"))></rect>
+                    <rect x="287" y="1" width="51" height="25" id="#838383" fill="#838383" tabindex="102" @onmouseover=@((e)=> selectColor(e, "#838383")) @onclick=@((e) => freezeColor(e, "#838383"))></rect>
                     <!--first custom row-->
-                    <rect x="27" y="27" width="25" height="25" fill="#D885DE" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#D885DE")) @onclick=@((e) => freezeColor(e, "#D885DE"))></rect>
-                    <rect x="53" y="27" width="25" height="25" fill="#FB5050" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FB5050")) @onclick=@((e) => freezeColor(e, "#FB5050"))></rect>
-                    <rect x="79" y="27" width="25" height="25" fill="#FDA870" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FDA870")) @onclick=@((e) => freezeColor(e, "#FDA870"))></rect>
-                    <rect x="105" y="27" width="25" height="25" fill="#FFFF90" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFFF90")) @onclick=@((e) => freezeColor(e, "#FFFF90"))></rect>
-                    <rect x="131" y="27" width="25" height="25" fill="#CDF08E" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#CDF08E")) @onclick=@((e) => freezeColor(e, "#CDF08E"))></rect>
-                    <rect x="157" y="27" width="25" height="25" fill="#9AE08C" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#9AE08C")) @onclick=@((e) => freezeColor(e, "#9AE08C"))></rect>
-                    <rect x="183" y="27" width="25" height="25" fill="#96D1A9" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#96D1A9")) @onclick=@((e) => freezeColor(e, "#96D1A9"))></rect>
-                    <rect x="209" y="27" width="25" height="25" fill="#90BFCD" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#90BFCD")) @onclick=@((e) => freezeColor(e, "#90BFCD"))></rect>
-                    <rect x="235" y="27" width="25" height="25" fill="#8DB4E2" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#8DB4E2")) @onclick=@((e) => freezeColor(e, "#8DB4E2"))></rect>
-                    <rect x="261" y="27" width="25" height="25" fill="#A6A4E0" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#A6A4E0")) @onclick=@((e) => freezeColor(e, "#A6A4E0"))></rect>
-                    <rect x="287" y="27" width="25" height="25" fill="#B39DDF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#B39DDF")) @onclick=@((e) => freezeColor(e, "#B39DDF"))></rect>
-                    <rect x="313" y="27" width="25" height="25" fill="#D885DE" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#D885DE")) @onclick=@((e) => freezeColor(e, "#D885DE"))></rect>
+                    <rect x="27" y="27" width="25" height="25" id="#D885DE" fill="#D885DE" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#D885DE")) @onclick=@((e) => freezeColor(e, "#D885DE"))></rect>
+                    <rect x="53" y="27" width="25" height="25" id="#FB5050" fill="#FB5050" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#FB5050")) @onclick=@((e) => freezeColor(e, "#FB5050"))></rect>
+                    <rect x="79" y="27" width="25" height="25" id="#FDA870" fill="#FDA870" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#FDA870")) @onclick=@((e) => freezeColor(e, "#FDA870"))></rect>
+                    <rect x="105" y="27" width="25" height="25" id="#FFFF90" fill="#FFFF90" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#FFFF90")) @onclick=@((e) => freezeColor(e, "#FFFF90"))></rect>
+                    <rect x="131" y="27" width="25" height="25" id="#CDF08E" fill="#CDF08E" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#CDF08E")) @onclick=@((e) => freezeColor(e, "#CDF08E"))></rect>
+                    <rect x="157" y="27" width="25" height="25" id="#9AE08C" fill="#9AE08C" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#9AE08C")) @onclick=@((e) => freezeColor(e, "#9AE08C"))></rect>
+                    <rect x="183" y="27" width="25" height="25" id="#96D1A9" fill="#96D1A9" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#96D1A9")) @onclick=@((e) => freezeColor(e, "#96D1A9"))></rect>
+                    <rect x="209" y="27" width="25" height="25" id="#90BFCD" fill="#90BFCD" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#90BFCD")) @onclick=@((e) => freezeColor(e, "#90BFCD"))></rect>
+                    <rect x="235" y="27" width="25" height="25" id="#8DB4E2" fill="#8DB4E2" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#8DB4E2")) @onclick=@((e) => freezeColor(e, "#8DB4E2"))></rect>
+                    <rect x="261" y="27" width="25" height="25" id="#A6A4E0" fill="#A6A4E0" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#A6A4E0")) @onclick=@((e) => freezeColor(e, "#A6A4E0"))></rect>
+                    <rect x="287" y="27" width="25" height="25" id="#B39DDF" fill="#B39DDF" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#B39DDF")) @onclick=@((e) => freezeColor(e, "#B39DDF"))></rect>
+                    <rect x="313" y="27" width="25" height="25" id="#D885DE" fill="#D885DE" tabindex="103" @onmouseover=@((e)=> selectColor(e, "#D885DE")) @onclick=@((e) => freezeColor(e, "#D885DE"))></rect>
                     <!--lightest pastel colours-->
-                    <rect x="27" y="53" width="25" height="12" fill="#FFBFDF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFBFDF")) @onclick=@((e) => freezeColor(e, "#FFBFDF"))></rect>
-                    <rect x="53" y="53" width="25" height="12" fill="#FFBFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFBFBF")) @onclick=@((e) => freezeColor(e, "#FFBFBF"))></rect>
-                    <rect x="79" y="53" width="25" height="12" fill="#FFDFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFDFBF")) @onclick=@((e) => freezeColor(e, "#FFDFBF"))></rect>
-                    <rect x="105" y="53" width="25" height="12" fill="#FFFFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFFFBF")) @onclick=@((e) => freezeColor(e, "#FFFFBF"))></rect>
-                    <rect x="131" y="53" width="25" height="12" fill="#DFFFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#DFFFBF")) @onclick=@((e) => freezeColor(e, "#DFFFBF"))></rect>
-                    <rect x="157" y="53" width="25" height="12" fill="#BFFFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFFFBF")) @onclick=@((e) => freezeColor(e, "#BFFFBF"))></rect>
-                    <rect x="183" y="53" width="25" height="12" fill="#BFFFDF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFFFDF")) @onclick=@((e) => freezeColor(e, "#BFFFDF"))></rect>
-                    <rect x="209" y="53" width="25" height="12" fill="#BFFFFF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFFFFF")) @onclick=@((e) => freezeColor(e, "#BFFFFF"))></rect>
-                    <rect x="235" y="53" width="25" height="12" fill="#BFDFFF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFDFFF")) @onclick=@((e) => freezeColor(e, "#BFDFFF"))></rect>
-                    <rect x="261" y="53" width="25" height="12" fill="#BFBFFF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFBFFF")) @onclick=@((e) => freezeColor(e, "#BFBFFF"))></rect>
-                    <rect x="287" y="53" width="25" height="12" fill="#DFBFFF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#DFBFFF")) @onclick=@((e) => freezeColor(e, "#DFBFFF"))></rect>
-                    <rect x="313" y="53" width="25" height="12" fill="#FFBFFF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFBFFF")) @onclick=@((e) => freezeColor(e, "#FFBFFF"))></rect>
+                    <rect x="27" y="53" width="25" height="12" id="#FFBFDF" fill="#FFBFDF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#FFBFDF")) @onclick=@((e) => freezeColor(e, "#FFBFDF"))></rect>
+                    <rect x="53" y="53" width="25" height="12" id="#FFBFBF" fill="#FFBFBF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#FFBFBF")) @onclick=@((e) => freezeColor(e, "#FFBFBF"))></rect>
+                    <rect x="79" y="53" width="25" height="12" id="#FFDFBF" fill="#FFDFBF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#FFDFBF")) @onclick=@((e) => freezeColor(e, "#FFDFBF"))></rect>
+                    <rect x="105" y="53" width="25" height="12" id="#FFFFBF" fill="#FFFFBF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#FFFFBF")) @onclick=@((e) => freezeColor(e, "#FFFFBF"))></rect>
+                    <rect x="131" y="53" width="25" height="12" id="#DFFFBF" fill="#DFFFBF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#DFFFBF")) @onclick=@((e) => freezeColor(e, "#DFFFBF"))></rect>
+                    <rect x="157" y="53" width="25" height="12" id="#BFFFBF" fill="#BFFFBF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#BFFFBF")) @onclick=@((e) => freezeColor(e, "#BFFFBF"))></rect>
+                    <rect x="183" y="53" width="25" height="12" id="#BFFFDF" fill="#BFFFDF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#BFFFDF")) @onclick=@((e) => freezeColor(e, "#BFFFDF"))></rect>
+                    <rect x="209" y="53" width="25" height="12" id="#BFFFFF" fill="#BFFFFF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#BFFFFF")) @onclick=@((e) => freezeColor(e, "#BFFFFF"))></rect>
+                    <rect x="235" y="53" width="25" height="12" id="#BFDFFF" fill="#BFDFFF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#BFDFFF")) @onclick=@((e) => freezeColor(e, "#BFDFFF"))></rect>
+                    <rect x="261" y="53" width="25" height="12" id="#BFBFFF" fill="#BFBFFF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#BFBFFF")) @onclick=@((e) => freezeColor(e, "#BFBFFF"))></rect>
+                    <rect x="287" y="53" width="25" height="12" id="#DFBFFF" fill="#DFBFFF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#DFBFFF")) @onclick=@((e) => freezeColor(e, "#DFBFFF"))></rect>
+                    <rect x="313" y="53" width="25" height="12" id="#FFBFFF" fill="#FFBFFF" tabindex="104" @onmouseover=@((e)=> selectColor(e, "#FFBFFF")) @onclick=@((e) => freezeColor(e, "#FFBFFF"))></rect>
                     <!--light intermediate row-->	
                     @{
                         int setY = 66;
-                        <rect x="27" y="@(setY)" width="25" height="12" fill="#FF7FBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF7FBF")) @onclick=@((e) => freezeColor(e, "#FF7FBF"))></rect>
+                        <rect x="27" y="@(setY)" width="25" height="12" id="#FF7FBF" fill="#FF7FBF" tabindex="105" @onmouseover=@((e)=> selectColor(e, "#FF7FBF")) @onclick=@((e) => freezeColor(e, "#FF7FBF"))></rect>
                         for (int i2 = 0; i2 < 4; i2+=2)
                         {
                             var i = i2;
-                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" fill=@("#FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2")))></rect>
-                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF" + (255 - 64 * 2).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF" + (255 - 64 * 2).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF" + (255 - 64 * 2).ToString("X2")))></rect>
-                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (255 - 64 * 2).ToString("X2") + "FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - 64 * 2).ToString("X2") + "FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - 64 * 2).ToString("X2") + "FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2")))></rect>
-                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (255 - 64 * 2).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - 64 * 2).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF")) @onclick=@((e) => freezeColor(e, "#" + (255 - 64 * 2).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF"))></rect>
-                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2") + "FF") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2") + "FF")) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2") + "FF"))></rect>
+                            var c1 = "#FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2");
+                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" id=@c1 fill=@c1 tabindex="@(106 + i/2)" @onmouseover=@((e)=> selectColor(e, c1)) @onclick=@((e) => freezeColor(e, c1))></rect>
+                            var c2 = "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF" + (255 - 64 * 2).ToString("X2");
+                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" id=@c2 fill=@c2 tabindex="@(108 + i/2)" @onmouseover=@((e)=> selectColor(e, c2)) @onclick=@((e) => freezeColor(e, c2))></rect>
+                            var c3 = "#" + (255 - 64 * 2).ToString("X2") + "FF" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2");
+                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" id=@c3 fill=@c3 tabindex="@(110 + i/2)" @onmouseover=@((e)=> selectColor(e, c3)) @onclick=@((e) => freezeColor(e, c3))></rect>
+                            var c4 = "#" + (255 - 64 * 2).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2)).ToString("X2") + "FF";
+                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" id=@c4 fill=@c4 tabindex="@(112 + i/2)" @onmouseover=@((e)=> selectColor(e, c4)) @onclick=@((e) => freezeColor(e, c4))></rect>
+                            var c5 = "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2)).ToString("X2") + (255 - 64 * 2).ToString("X2") + "FF";
+                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" id=@c5 fill=@c5 tabindex="@(114 + i/2)" @onmouseover=@((e)=> selectColor(e, c5)) @onclick=@((e) => freezeColor(e, c5))></rect>
                         }
-                        <rect x="313" y="@setY" width="25" height="12" fill=@("#FF" + (255 - 64 * 2).ToString("X2") + "FF") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF" + (255 - 64 * 2).ToString("X2") + "FF")) @onclick=@((e) => freezeColor(e, "#FF" + (255 - 64 * 2).ToString("X2") + "FF"))></rect>
+                        <rect x="313" y="@setY" width="25" height="12" id="#FF7FFF" fill="#FF7FFF" tabindex="116" @onmouseover=@((e)=> selectColor(e, "#FF7FFF")) @onclick=@((e) => freezeColor(e, "#FF7FFF"))></rect>
                     }
                     <!--basic saturated colours-->
-                    <rect x="27" y="79" width="25" height="12" fill="#FF007F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF007F")) @onclick=@((e) => freezeColor(e, "#FF007F"))></rect>
+                    <rect x="27" y="79" width="25" height="12" id="#FF007F" fill="#FF007F" tabindex="117" @onmouseover=@((e)=> selectColor(e, "#FF007F")) @onclick=@((e) => freezeColor(e, "#FF007F"))></rect>
                     @for (int tt = 0; tt < 2; tt++)
                     {
                         var t1 = tt;
-                        <rect x="@(53 + t1 * 26)" y="79" width="25" height="12" fill=@("#FF" + (t1 * 127).ToString("X2") + "00") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF" + (t1 * 127).ToString("X2") + "00")) @onclick=@((e) => freezeColor(e, "#FF" + (t1 * 127).ToString("X2") + "00"))></rect>
-                        <rect x="@(105 + t1 * 26)" y="79" width="25" height="12" fill=@("#" + (255 - t1 * 128).ToString("X2") + "FF00") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - t1 * 128).ToString("X2") + "FF00")) @onclick=@((e) => freezeColor(e, "#" + (255 - t1 * 128).ToString("X2") + "FF00"))></rect>
-                        <rect x="@(157 + t1 * 26)" y="79" width="25" height="12" fill=@("#00FF" + (t1 * 127).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#00FF" + (t1 * 127).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#00FF" + (t1 * 127).ToString("X2")))></rect>
-                        <rect x="@(209 + t1 * 26)" y="79" width="25" height="12" fill=@("#00" + (255 - t1 * 128).ToString("X2") + "FF") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#00" + (255 - t1 * 128).ToString("X2") + "FF")) @onclick=@((e) => freezeColor(e, "#00" + (255 - t1 * 128).ToString("X2") + "FF"))></rect>
-                        <rect x="@(261 + t1 * 26)" y="79" width="25" height="12" fill=@("#" + (t1 * 127).ToString("X2") + "00FF") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (t1 * 127).ToString("X2") + "00FF")) @onclick=@((e) => freezeColor(e, "#" + (t1 * 127).ToString("X2") + "00FF"))></rect>
+                        var c1 = "#FF" + (t1 * 127).ToString("X2") + "00";
+                        <rect x="@(53 + t1 * 26)" y="79" width="25" height="12" id=@c1 fill=@c1 tabindex="@(118 + t1)" @onmouseover=@((e)=> selectColor(e, c1)) @onclick=@((e) => freezeColor(e, c1))></rect>
+                        var c2 = "#" + (255 - t1 * 128).ToString("X2") + "FF00";
+                        <rect x="@(105 + t1 * 26)" y="79" width="25" height="12" id=@c2 fill=@c2 tabindex="@(120 + t1)" @onmouseover=@((e)=> selectColor(e, c2)) @onclick=@((e) => freezeColor(e, c2))></rect>
+                        var c3 = "#00FF" + (t1 * 127).ToString("X2");
+                        <rect x="@(157 + t1 * 26)" y="79" width="25" height="12" id=@c3 fill=@c3 tabindex="@(122 + t1)" @onmouseover=@((e)=> selectColor(e, c3)) @onclick=@((e) => freezeColor(e, c3))></rect>
+                        var c4 = "#00" + (255 - t1 * 128).ToString("X2") + "FF";
+                        <rect x="@(209 + t1 * 26)" y="79" width="25" height="12" id=@c4 fill=@c4 tabindex="@(124 + t1)" @onmouseover=@((e)=> selectColor(e, c4)) @onclick=@((e) => freezeColor(e, c4))></rect>
+                        var c5 = "#" + (t1 * 127).ToString("X2") + "00FF";
+                        <rect x="@(261 + t1 * 26)" y="79" width="25" height="12" id=@c5 fill=@c5 tabindex="@(126 + t1)" @onmouseover=@((e)=> selectColor(e, c5)) @onclick=@((e) => freezeColor(e, c5))></rect>
                     }
-                    <rect x="313" y="79" width="25" height="12" fill="#FF00FF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FF00FF")) @onclick=@((e) => freezeColor(e, "#FF00FF"))></rect>
+                    <rect x="313" y="79" width="25" height="12" id="#FF00FF" fill="#FF00FF" tabindex="128" @onmouseover=@((e)=> selectColor(e, "#FF00FF")) @onclick=@((e) => freezeColor(e, "#FF00FF"))></rect>
                     <!--dark intermediate row-->
                     @{
                         var a = 32;
-					    setY = 92;
-                        <rect x="@(1 + 2 * 13)" y="@(setY)" width="25" height="12" fill=@("#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - 2 * 64) + 2 * 64 / 256 * (256 - 64 * 2) - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - 2 * 64) + 2 * 64 / 256 * (256 - 64 * 2) - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - 2 * 64) + 2 * 64 / 256 * (256 - 64 * 2) - a).ToString("X2")))></rect>
-					    for (int i4=0 ; i4<4 ; i4+=2) {
+                        setY = 92;
+                        <rect x="@(1 + 2 * 13)" y="@(setY)" width="25" height="12" id="#DF5F9F" fill="#DF5F9F" tabindex="129" @onmouseover=@((e)=> selectColor(e, "#DF5F9F")) @onclick=@((e) => freezeColor(e, "#DF5F9F"))></rect>
+                        for (int i4=0 ; i4<4 ; i4+=2) {
                             var i = i4;
-                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2")))></rect>
-                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2")))></rect>
-                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2")))></rect>
-                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2")))></rect>
-                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2")))></rect>
+                            var c1 = "#" + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2");
+                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" id=@c1 fill=@c1 tabindex="@(130 + i/2)" @onmouseover=@((e)=> selectColor(e, c1)) @onclick=@((e) => freezeColor(e, c1))></rect>
+                            var c2 = "#" + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2");
+                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" id=@c2 fill=@c2 tabindex="@(132 + i/2)" @onmouseover=@((e)=> selectColor(e, c2)) @onclick=@((e) => freezeColor(e, c2))></rect>
+                            var c3 = "#" + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2") + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2");
+                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" id=@c3 fill=@c3 tabindex="@(134 + i/2)" @onmouseover=@((e)=> selectColor(e, c3)) @onclick=@((e) => freezeColor(e, c3))></rect>
+                            var c4 = "#" + (255 - 64 * 2 - a).ToString("X2") + Convert.ToInt32((255 - (double)i * 64) + (double)i * 64 / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - a).ToString("X2");
+                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" id=@c4 fill=@c4 tabindex="@(136 + i/2)" @onmouseover=@((e)=> selectColor(e, c4)) @onclick=@((e) => freezeColor(e, c4))></rect>
+                            var c5 = "#" + Convert.ToInt32((double)i * 64 + (255 - (double)i * 64) / 256 * (256 - 64 * 2) - (double)a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2");
+                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" id=@c5 fill=@c5 tabindex="@(138 + i/2)" @onmouseover=@((e)=> selectColor(e, c5)) @onclick=@((e) => freezeColor(e, c5))></rect>
                         }
-                        <rect x="313" y="@setY" width="25" height="12" fill=@("#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (255 - a).ToString("X2") + (255 - 64 * 2 - a).ToString("X2") + (255 - a).ToString("X2")))></rect>
+                        <rect x="313" y="@setY" width="25" height="12" id="#DF5FDF" fill="#DF5FDF" tabindex="140" @onmouseover=@((e)=> selectColor(e, "#DF5FDF")) @onclick=@((e) => freezeColor(e, "#DF5FDF"))></rect>
                     }
                     <!--last 2 dark rows-->
 				    @for (int t4=2 ; t4<4 ; t4++) 
                     {
                         var t = t4;
                         setY = 144 - t * 13;
-                        <rect x="@(1 + 2 * 13)" y="@setY" width="25" height="12" fill=@("#" + (64 * t - 1).ToString("X2") + "00" + Convert.ToInt32((255 - 2 * 64) - (255 - 2 * 64) / 256 * (256 - 64 * (double)t)).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (64 * t - 1).ToString("X2") + "00" + Convert.ToInt32((255 - 2 * 64) - (255 - 2 * 64) / 256 * (256 - 64 * (double)t)).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (64 * t - 1).ToString("X2") + "00" + Convert.ToInt32((255 - 2 * 64) - (255 - 2 * 64) / 256 * (256 - 64 * (double)t)).ToString("X2")))></rect>
-					    for (int i6=0 ; i6<4 ; i6+=2) {
+                        //tempCanvas.graphics.beginFill(uint("0x" + getRGBpart(64 * t - (t == 0 ? 0 : 1)) + "00" + getRGBpart((255 - i * 64) - (255 - i * 64) / 256 * (256 - 64 * t)))); tempCanvas.graphics.drawRect(setX + i * 13 - 13, setY, 12, 12);
+                        var c0 = "#" + (64 * t - 1).ToString("X2") + "00" + Convert.ToInt32((255 - 3 * 64) - (255 - 3 * 64) / 256 * (256 - 64 * (double)t)).ToString("X2");
+                        <rect x="@(1 + 2 * 13)" y="@setY" width="25" height="12" id=@c0 fill=@c0 tabindex="@(173 - t*11)" @onmouseover=@((e)=> selectColor(e, c0)) @onclick=@((e) => freezeColor(e, c0))></rect>
+                        for (int i6=0 ; i6<4 ; i6+=2) {
                             var i = i6;
-                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00")) @onclick=@((e) => freezeColor(e, "#" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00"))></rect>
-                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2") + "00") tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2") + "00")) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2") + "00"))></rect>
-                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" fill=@("#00" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#00" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#00" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2")))></rect>
-                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" fill=@("#00" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#00" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#00" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2")))></rect>
-                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" fill=@("#" + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00" + (64 * t - 1).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00" + (64 * t - 1).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + Convert.ToInt32((double)i * 64 - (i==0 ? 0 : 1) - ((double)i * 64 - (i==0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00" + (64 * t - 1).ToString("X2")))></rect>
+                            var c1 = "#" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i == 0 ? 0 : 1) - ((double)i * 64 - (i == 0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00";
+                            <rect x="@(53 + i * 13)" y="@setY" width="25" height="12" id=@c1 fill=@c1 tabindex="@(173 - t*11 + i/2)" @onmouseover=@((e)=> selectColor(e, c1)) @onclick=@((e) => freezeColor(e, c1))></rect>
+                            var c2 = "#" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2") + "00";
+                            <rect x="@(105 + i * 13)" y="@setY" width="25" height="12" id=@c2 fill=@c2 tabindex="@(175 - t*11 + i/2)" @onmouseover=@((e)=> selectColor(e, c2)) @onclick=@((e) => freezeColor(e, c2))></rect>
+                            var c3 = "#00" + (64 * t - 1).ToString("X2") + Convert.ToInt32((double)i * 64 - (i == 0 ? 0 : 1) - ((double)i * 64 - (i == 0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2");
+                            <rect x="@(157 + i * 13)" y="@setY" width="25" height="12" id=@c3 fill=@c3 tabindex="@(177 - t*11 + i/2)" @onmouseover=@((e)=> selectColor(e, c3)) @onclick=@((e) => freezeColor(e, c3))></rect>
+                            var c4 = "#00" + Convert.ToInt32((255 - (double)i * 64) - (255 - (double)i * 64) / 256 * (256 - 64 * (double)t)).ToString("X2") + (64 * t - 1).ToString("X2");
+                            <rect x="@(209 + i * 13)" y="@setY" width="25" height="12" id=@c4 fill=@c4 tabindex="@(179 - t*11 + i/2)" @onmouseover=@((e)=> selectColor(e, c4)) @onclick=@((e) => freezeColor(e, c4))></rect>
+                            var c5 = "#" + Convert.ToInt32((double)i * 64 - (i == 0 ? 0 : 1) - ((double)i * 64 - (i == 0 ? 0 : 1)) / 256 * (256 - 64 * (double)t)).ToString("X2") + "00" + (64 * t - 1).ToString("X2");
+                            <rect x="@(261 + i * 13)" y="@setY" width="25" height="12" id=@c5 fill=@c5 tabindex="@(181 - t*11 + i/2)" @onmouseover=@((e)=> selectColor(e, c5)) @onclick=@((e) => freezeColor(e, c5))></rect>
                         }
-                        <rect x="313" y="@setY" width="25" height="12" fill=@("#" + (64 * t - 1).ToString("X2") + "00" + (64 * t - 1).ToString("X2")) tabindex="0" @onmouseover=@((e)=> selectColor(e, "#" + (64 * t - 1).ToString("X2") + "00" + (64 * t - 1).ToString("X2"))) @onclick=@((e) => freezeColor(e, "#" + (64 * t - 1).ToString("X2") + "00" + (64 * t - 1).ToString("X2")))></rect>
+                        var c6 = "#" + (64 * t - 1).ToString("X2") + "00" + (64 * t - 1).ToString("X2");
+                        <rect x="313" y="@setY" width="25" height="12" id=@c6 fill=@c6 tabindex="@(183 - t*11)" @onmouseover=@((e)=> selectColor(e, c6)) @onclick=@((e) => freezeColor(e, c6))></rect>
                     }
                     <!--White and (Black removed)  <rect x="2" y="158" width="23" height="23" fill="#000000" stroke="#7F7F7F" stroke-width="1" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#000000")) @onclick=@((e) => freezeColor(e, "#000000"))></rect> -->
-                    <rect x="2" y="2" width="23" height="23" fill="#FFFFFF" stroke="#BFBFBF" stroke-width="1" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#FFFFFF")) @onclick=@((e) => freezeColor(e, "#FFFFFF"))></rect>
-                    <rect x="1" y="27" width="25" height="12" fill="#EFEFEF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#EFEFEF")) @onclick=@((e) => freezeColor(e, "#EFEFEF"))></rect>
-                    <rect x="1" y="40" width="25" height="12" fill="#DFDFDF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#DFDFDF")) @onclick=@((e) => freezeColor(e, "#DFDFDF"))></rect>
-                    <rect x="1" y="53" width="25" height="12" fill="#BFBFBF" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#BFBFBF")) @onclick=@((e) => freezeColor(e, "#BFBFBF"))></rect>
-                    <rect x="1" y="66" width="25" height="12" fill="#9F9F9F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#9F9F9F")) @onclick=@((e) => freezeColor(e, "#9F9F9F"))></rect>
-                    <rect x="1" y="79" width="25" height="12" fill="#7F7F7F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#7F7F7F")) @onclick=@((e) => freezeColor(e, "#7F7F7F"))></rect>
-                    <rect x="1" y="92" width="25" height="12" fill="#5F5F5F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#5F5F5F")) @onclick=@((e) => freezeColor(e, "#5F5F5F"))></rect>
-                    <rect x="1" y="105" width="25" height="12" fill="#3F3F3F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#3F3F3F")) @onclick=@((e) => freezeColor(e, "#3F3F3F"))></rect>
-                    <rect x="1" y="118" width="25" height="12" fill="#0F0F0F" tabindex="0" @onmouseover=@((e)=> selectColor(e, "#0F0F0F")) @onclick=@((e) => freezeColor(e, "#0F0F0F"))></rect>
+                    <rect x="2" y="2" width="23" height="23" id="#FFFFFF" fill="#FFFFFF" stroke="#BFBFBF" stroke-width="1" tabindex="101" @onmouseover=@((e)=> selectColor(e, "#FFFFFF")) @onclick=@((e) => freezeColor(e, "#FFFFFF"))></rect>
+                    <rect x="1" y="27" width="25" height="12" id="#EFEFEF" fill="#EFEFEF" tabindex="163" @onmouseover=@((e)=> selectColor(e, "#EFEFEF")) @onclick=@((e) => freezeColor(e, "#EFEFEF"))></rect>
+                    <rect x="1" y="40" width="25" height="12" id="#DFDFDF" fill="#DFDFDF" tabindex="164" @onmouseover=@((e)=> selectColor(e, "#DFDFDF")) @onclick=@((e) => freezeColor(e, "#DFDFDF"))></rect>
+                    <rect x="1" y="53" width="25" height="12" id="#BFBFBF" fill="#BFBFBF" tabindex="165" @onmouseover=@((e)=> selectColor(e, "#BFBFBF")) @onclick=@((e) => freezeColor(e, "#BFBFBF"))></rect>
+                    <rect x="1" y="66" width="25" height="12" id="#9F9F9F" fill="#9F9F9F" tabindex="166" @onmouseover=@((e)=> selectColor(e, "#9F9F9F")) @onclick=@((e) => freezeColor(e, "#9F9F9F"))></rect>
+                    <rect x="1" y="79" width="25" height="12" id="#7F7F7F" fill="#7F7F7F" tabindex="167" @onmouseover=@((e)=> selectColor(e, "#7F7F7F")) @onclick=@((e) => freezeColor(e, "#7F7F7F"))></rect>
+                    <rect x="1" y="92" width="25" height="12" id="#5F5F5F" fill="#5F5F5F" tabindex="168" @onmouseover=@((e)=> selectColor(e, "#5F5F5F")) @onclick=@((e) => freezeColor(e, "#5F5F5F"))></rect>
+                    <rect x="1" y="105" width="25" height="12" id="#3F3F3F" fill="#3F3F3F" tabindex="169" @onmouseover=@((e)=> selectColor(e, "#3F3F3F")) @onclick=@((e) => freezeColor(e, "#3F3F3F"))></rect>
+                    <rect x="1" y="118" width="25" height="12" id="#0F0F0F" fill="#0F0F0F" tabindex="170" @onmouseover=@((e)=> selectColor(e, "#0F0F0F")) @onclick=@((e) => freezeColor(e, "#0F0F0F"))></rect>
                 </svg>
             </div>
         </div>
@@ -122,13 +146,13 @@
     private string colorValue = "";
     private string displayValue = "";
     private string initialValue = "";
-    private bool freeze = false;
-
+    private bool freeze = true;
+    
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            Function? sFn = stateContainer.functionList.Find(x => x.IDNr == stateContainer.selectedFn);
+            Function? sFn = stateContainer.selectedFunction;
             if (sFn != null)
             {
                 switch (sFn.fnColorStyle)
@@ -150,17 +174,24 @@
                             {
                                 initialValue = "#" + Convert.ToUInt32(sFn.fnColorValue).ToString("X6");
                             }
-                        break;
+                            break;
                         }
                     default: initialValue = "#FFFFFF"; break;
                 }
                 displayValue = initialValue;
                 colorValue = displayValue;
                 StateHasChanged();
+                FocusElement(displayValue);
             }
         }
     }
-
+    private void clickNothing(MouseEventArgs e)
+    {
+    }
+    private async void clickOut(MouseEventArgs e)
+    {
+        await OnClose.InvokeAsync(false);
+    }
     private void selectColor(MouseEventArgs e, string selectedColor)
     {
         if (!freeze)
@@ -173,7 +204,7 @@
         if (colorValue == selectedColor)
         {
             colorValue = selectedColor;
-            freeze = false;
+            freeze = true;
         }
         else
         {
@@ -181,7 +212,13 @@
             colorValue = selectedColor;
             stateContainer.updateColor(selectedColor);
         }
-        displayValue = colorValue;
+        if (selectedColor == "")
+        {
+            displayValue = "#F0F0F0";
+        } else
+        {
+            displayValue = colorValue;
+        }
     }
     private void colorInput(ChangeEventArgs e)
     {
@@ -189,16 +226,27 @@
         colorValue = e.Value?.ToString() ?? "#FFFFFF";
         stateContainer.updateColor(colorValue);
     }
-    private void checkforEsc(KeyboardEventArgs e)
+    private async void checkforEsc(KeyboardEventArgs e)
     {
         if (e.Key == "Escape")
         {
             stateContainer.updateColor(initialValue);
-            OnClose.InvokeAsync(false);
+            await OnClose.InvokeAsync(false);
         }
         else if (e.Key == "Enter" && freeze)
         {
-            OnClose.InvokeAsync(false);
+            await OnClose.InvokeAsync(false);
+        }
+        else if (e.Key == " ")
+        {
+            var checkColor = await JSRuntime.InvokeAsync<string>("getFocusElement");
+            if (checkColor.StartsWith("#"))
+            {
+                colorValue = checkColor;
+                stateContainer.updateColor(checkColor);
+                displayValue = checkColor;
+                StateHasChanged();
+            }
         }
     }
     private void checkForClose()
@@ -209,4 +257,15 @@
         }
         OnClose.InvokeAsync(false);
     }
+    public async void FocusElement(string elementName)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("focusInput", elementName);
+        }
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("focusInput", "colorSelector");
+        }
+    } 
 }
