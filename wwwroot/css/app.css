@@ -6,12 +6,12 @@
     font-family: 'PT Sans Caption';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/PTSansCaption-Regular.eot'); /* IE9 Compat Modes */
-    src: url('../fonts/PTSansCaption-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('../fonts/PTSansCaption-Regular.woff2') format('woff2'), /* Super Modern Browsers */
-    url('../fonts/PTSansCaption-Regular.woff') format('woff'), /* Modern Browsers */
-    url('../fonts/PTSansCaption-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/PTSansCaption-Regular.svg#PTSansCaption') format('svg'); /* Legacy iOS */
+    src: url('fonts/ptsanscaption-regular.eot'); /* IE9 Compat Modes */
+    src: url('fonts/ptsanscaption-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ 
+    url('fonts/ptsanscaption-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('fonts/ptsanscaption-regular.woff') format('woff'), /* Modern Browsers */
+    url('fonts/ptsanscaption-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('fonts/ptsanscaption-regular.svg#PTSansCaption') format('svg'); /* Legacy iOS */
 }
 
 html, body {
