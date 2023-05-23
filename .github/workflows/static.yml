@@ -37,7 +37,8 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.0-preview.3.23177.8'
+          dotnet-version: '8.0'
+          dotnet-quality: 'preview'
      # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         run: dotnet publish FMV_Standard.csproj -c Release -o release --nologo
