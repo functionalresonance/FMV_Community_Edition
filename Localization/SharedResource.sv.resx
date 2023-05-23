@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ASPECT_FONT_DECREASE" xml:space="preserve">
+    <value>Decrease Aspect text (Esc=default)</value>
+  </data>
+  <data name="ASPECT_FONT_INCREASE" xml:space="preserve">
+    <value>Increase Aspect text (Esc=default)</value>
+  </data>
+  <data name="ASPECT_LABEL" xml:space="preserve">
+    <value>Aspekt namn</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="COLOUR" xml:space="preserve">
+    <value>Färg</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="CONTROL" xml:space="preserve">
+    <value>Kontrol</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="COUPLING_NAME" xml:space="preserve">
+    <value>Coupling Name</value>
+  </data>
+  <data name="FMI_ACTIVATED" xml:space="preserve">
+    <value>Aktiverad</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="FMI_ALL" xml:space="preserve">
+    <value>∀ = All</value>
+  </data>
+  <data name="FMI_ANY" xml:space="preserve">
+    <value>∃ = Any</value>
+  </data>
+  <data name="FMI_DELAY" xml:space="preserve">
+    <value>Dröjsmål</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="FMI_EVERY_NTH" xml:space="preserve">
+    <value>Integer N = Every Nth Cycle</value>
+  </data>
+  <data name="FMI_INITIAL_ONLY" xml:space="preserve">
+    <value>0 = Initial only</value>
+  </data>
+  <data name="FMI_NONE" xml:space="preserve">
+    <value>∅ = None</value>
+  </data>
+  <data name="FMI_NOT_ACTIVATED" xml:space="preserve">
+    <value>Show not activated</value>
+  </data>
+  <data name="FMI_PLAY" xml:space="preserve">
+    <value>Continue Interpretation</value>
+  </data>
+  <data name="FMI_PROFILE" xml:space="preserve">
+    <value>Interpretation Profile</value>
+  </data>
+  <data name="FMI_PROFILE_SHORT" xml:space="preserve">
+    <value>FMI Profil</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="FMI_RANDOM" xml:space="preserve">
+    <value>0&lt;p&lt;1 = Random Probability p()</value>
+  </data>
+  <data name="FMI_RESET" xml:space="preserve">
+    <value>Återställ FMI</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="FMI_SHOW_ACTIVATED" xml:space="preserve">
+    <value>Show activated</value>
+  </data>
+  <data name="FMI_SHOW_LOG" xml:space="preserve">
+    <value>Show FMI LOG</value>
+  </data>
+  <data name="FMI_STEP" xml:space="preserve">
+    <value>Advance one cycle</value>
+  </data>
+  <data name="FMI_TYPE" xml:space="preserve">
+    <value>FMI Type</value>
+  </data>
+  <data name="FN_COLOUR" xml:space="preserve">
+    <value>Funktionens färg</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="FN_FONT_DECREASE" xml:space="preserve">
+    <value>Decrease Function text (Esc=default)</value>
+  </data>
+  <data name="FN_FONT_INCREASE" xml:space="preserve">
+    <value>Increase Function text (Esc=default)</value>
+  </data>
+  <data name="FN_INPUT" xml:space="preserve">
+    <value>Has Input</value>
+  </data>
+  <data name="FN_ORPHAN" xml:space="preserve">
+    <value>Has Orphans</value>
+  </data>
+  <data name="FN_OUTPUT" xml:space="preserve">
+    <value>Output Function</value>
+  </data>
+  <data name="FN_TO" xml:space="preserve">
+    <value>To Function</value>
+  </data>
+  <data name="FN_TO_ASPECT" xml:space="preserve">
+    <value>To Function Aspect Type</value>
+  </data>
+  <data name="IMAGE_TOOLTIP" xml:space="preserve">
+    <value>Spara bild</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="INFO_TOOLTIP" xml:space="preserve">
+    <value>Info</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="INPUT" xml:space="preserve">
+    <value>Input</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="LOGIN" xml:space="preserve">
+    <value>Inloggning</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="LOGOUT" xml:space="preserve">
+    <value>Utloggning</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="NAME_FN" xml:space="preserve">
+    <value>Funktionens namn</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="NEW_TOOLTIP" xml:space="preserve">
+    <value>Ny funktion</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="OPEN_TOOLTIP" xml:space="preserve">
+    <value>Öppna (upload)</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="OUTPUT" xml:space="preserve">
+    <value>Output</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="PRECONDITION" xml:space="preserve">
+    <value>Förutsättning</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="REDO_TOOLTIP" xml:space="preserve">
+    <value>Göra om</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="RELOAD" xml:space="preserve">
+    <value>Ladda om</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="RENDER" xml:space="preserve">
+    <value>Modell Design</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="RESOURCE" xml:space="preserve">
+    <value>Resurs</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="SAVE_TOOLTIP" xml:space="preserve">
+    <value>Spara (download)</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="SEARCH_CONTAINS" xml:space="preserve">
+    <value>innehåller...</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="SHOW_LABEL" xml:space="preserve">
+    <value>Visa aspektens namn</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="S_ASPECTS" xml:space="preserve">
+    <value>Aspekter</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="S_PROPERTIES" xml:space="preserve">
+    <value>Egenskaper</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="S_SAVE_COUPLING" xml:space="preserve">
+    <value>Save Couplings as CSV</value>
+  </data>
+  <data name="S_SAVE_FN" xml:space="preserve">
+    <value>Save Functions as CSV</value>
+  </data>
+  <data name="S_SHOW" xml:space="preserve">
+    <value>Visa</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="TABLE_VIEW" xml:space="preserve">
+    <value>Tabellvy</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>Tid</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="UNDO_TOOLTIP" xml:space="preserve">
+    <value>Ångra</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="ZOOM_FULLSCREEN" xml:space="preserve">
+    <value>Zooma för att fylla</value>
+    <comment>Google translate</comment>
+  </data>
+  <data name="ZOOM_MINUS_TOOLTIP" xml:space="preserve">
+    <value>Zooma ut</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+  <data name="ZOOM_PLUS_TOOLTIP" xml:space="preserve">
+    <value>Zooma in</value>
+    <comment>Source: FMV v2.2</comment>
+  </data>
+</root>
