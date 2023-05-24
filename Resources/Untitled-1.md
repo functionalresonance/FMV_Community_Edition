@@ -13,7 +13,7 @@ June 2023
 
 ---
 
-# ![FRAM width:80px](https://zerprize.co.nz/assets/images/FRAM_icon_0.svg) FMV History
+# ![FRAM](https://zerprize.co.nz/assets/images/FRAM_icon_80.svg) FMV History
 
 **2012** - Hollnagel, Erik.  
 *FRAM, the functional resonance analysis method: modelling complex socio-technical systems.*  Ashgate Publishing, Ltd.
@@ -27,7 +27,7 @@ Second some kind of FRAM Model Interpreter (FMI)"
 
 ---
 
-# ![FRAM width:80px](https://zerprize.co.nz/assets/images/FRAM_icon_0.svg) FMV History
+# ![FRAM](https://zerprize.co.nz/assets/images/FRAM_icon_80.svg) FMV History
 
 **2018** - FMV version 1.0 (to 1.5)  
 Supported multiple free versions for Mac, Windows and Ubuntu. Included the manual track-and-playback option for instantiations
