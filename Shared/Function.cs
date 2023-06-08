@@ -6,7 +6,6 @@ namespace FMV_Standard.Shared
 {
     public class Function
     {
-        private string _label;
         private string _fnStyle;
         private string _FunctionType;
         public Function(XmlNode fn)
@@ -20,12 +19,12 @@ namespace FMV_Standard.Shared
             this.y = double.Parse(_y);
             _fnStyle = fn.SelectSingleNode("@fnStyle")?.Value ?? "0";
             _FunctionType = fn.SelectSingleNode("FunctionType")?.InnerText ?? "2";
-            _label = fn.SelectSingleNode("IDName")?.InnerText ?? "";
+            this.IDName = fn.SelectSingleNode("IDName")?.InnerText ?? "";
             this.orphans = int.Parse(fn.SelectSingleNode("@orphans")?.Value ?? "0");
             this.isInput = fn.SelectSingleNode("@isInput")?.Value ?? "false";
             this.fnColorStyle = fn.SelectSingleNode("@style")?.Value ?? "";
             this.fnColorValue = fn.SelectSingleNode("@color")?.Value ?? "";
-            options = fnStyle + ":" + FunctionType + ":";
+            options = $"{fnStyle}:{FunctionType}:";
             this.profileFn = fn.SelectSingleNode("@profileFn")?.Value ?? "";
             this.profileI = fn.SelectSingleNode("@profileI")?.Value ?? "";
             this.profileP = fn.SelectSingleNode("@profileP")?.Value ?? "";
@@ -35,6 +34,7 @@ namespace FMV_Standard.Shared
         }
         public string options { get; set; }
         public string IDNr { get; set; }
+        public string IDName { get; set; }
         public int orphans { get; set; }
         public string isInput { get; set; }
         public string fnColorStyle { get; set; }
@@ -70,7 +70,7 @@ namespace FMV_Standard.Shared
             set
             {
                 _fnStyle = value;
-                options = _fnStyle + ":" + _FunctionType + ":";
+                options = $"{_fnStyle}:{_FunctionType}:";
             }
         }
         public string FunctionType
@@ -79,21 +79,13 @@ namespace FMV_Standard.Shared
             set
             {
                 _FunctionType = value;
-                options = _fnStyle + ":" + _FunctionType + ":";
-            }
-        }
-        public string label
-        {
-            get { return _label; }
-            set
-            {
-                _label = value;
+                options = $"{_fnStyle}:{_FunctionType}:";
             }
         }
         public List<string> ReturnTextLines(int length)
         {
             var textLines = new List<string>();
-            string[] textWords = _label.Split(" ");
+            string[] textWords = IDName.Split(" ");
             int tL = 0;
             textLines.Add("");
             int lL = length;
@@ -169,9 +161,10 @@ namespace FMV_Standard.Shared
         }
         public bool isActive()
         {
-			if (activeI.Count == 0) {
-				return false;
-			} 
+            if (activeI.Count == 0)
+            {
+                return false;
+            }
             else
             {
                 switch (profileI)
@@ -206,7 +199,7 @@ namespace FMV_Standard.Shared
                 }
                 return true;
             }
-	    }
+        }
         public void resetAspects()
         {
             activeI.Clear();

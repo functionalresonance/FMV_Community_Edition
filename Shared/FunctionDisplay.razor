@@ -1,18 +1,19 @@
 ﻿@inject StateContainer stateContainer
+
 @inject IConfiguration render
 
 @if (function != null)
 {
-    var displayFnText = function.ReturnTextLines(int.Parse(render[function.fnStyle + ":fn-font-wrap"]!));
+    var displayFnText = function.ReturnTextLines(int.Parse(render[$"{function.fnStyle}:fn-font-wrap"]!));
     var fnTextCount = displayFnText.Count;
     @if (function.IDNr == stateContainer.selectedFn)
-    { //this draws the highlighted couplings attached if the function is selected 
-        // they are drawn here with the function (and not with the other couplings) to make it easier to redraw them when the selected function is moved
+    { //this draws the highlighted couplings attached if the function is selected
+      // they are drawn here with the function (and not with the other couplings) to make it easier to redraw them when the selected function is moved
         foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))
         {
             @if (coupling != null && function != null)
             {
-                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[function.fnStyle + ":aspect-font-wrap"]!));
+                var displayAspectText = coupling.ReturnTextLines(int.Parse(render[$"{function.fnStyle}:aspect-font-wrap"]!));
                 var aspectTextCount = displayAspectText.Count;
                 double fnX = function.x;
                 double fnY = function.y;
@@ -23,8 +24,8 @@
                 {
                     deltaX = 93.5;
                     deltaY = 50;
-                    double.TryParse(render[function.fnStyle + ":aspectX:O"], out deltaX);
-                    double.TryParse(render[function.fnStyle + ":aspectY:O"], out deltaY);
+                    double.TryParse(render[$"{function.fnStyle}:aspectX:O"], out deltaX);
+                    double.TryParse(render[$"{function.fnStyle}:aspectY:O"], out deltaY);
                     fnX += deltaX;
                     fnY += deltaY;
                 }
@@ -32,12 +33,12 @@
                 {
                     deltaX = 6;
                     deltaY = 50;
-                    double.TryParse(render[function.fnStyle + ":aspectX:" + coupling.toType], out deltaX);
-                    double.TryParse(render[function.fnStyle + ":aspectY:" + coupling.toType], out deltaY);
+                    double.TryParse(render[$"{function.fnStyle}:aspectX:{coupling.toType}"], out deltaX);
+                    double.TryParse(render[$"{function.fnStyle}:aspectY:{coupling.toType}"], out deltaY);
                     fnX += deltaX;
                     fnY += deltaY;
                 }
-                <path fill="none" stroke-width="5" stroke=@render[function.fnStyle+":selected-fill"] stroke-linecap="round" opacity="0.5" d=@coupling.reDrawLines(fnX,fnY,isOutput) />
+                <path fill="none" stroke-width="5" stroke=@render[$"{function.fnStyle}:selected-fill"] stroke-linecap="round" opacity="0.5" d=@coupling.reDrawLines(fnX,fnY,isOutput) />
                 <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay">
                     <rect x=@(coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) width=@coupling.Twidth height=@(Math.Min(5 + aspectTextCount * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
                     <text x=@(coupling.labelX/stateContainer.tempZoomA) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
@@ -53,7 +54,7 @@
     <g class=@function.fnClass transform="translate(@function.x,@function.y)" @onclick="SelectFn" @onmousedown="MoveFnStart" @ontouchstart="MoveFnStartTouch" @onmousemove="MoveFn" @ontouchmove="MoveFnTouch" @onmouseup="MoveFnStop" @ontouchend="MoveFnStopTouch">
         @if (function.fmiHighlight != "")
         { //this is the highlight if the function is highlighted by the FMI
-            <circle id="fmi-highlight" style=@highlightSpeed() cx="50" cy="50" r=@render[function.fnStyle+":highlight-r"] fill=@("url(#"+function.fmiHighlight+")") opacity="0.75" />
+            <circle id="fmi-highlight" style=@highlightSpeed() cx="50" cy="50" r=@render[$"{function.fnStyle}:highlight-r"] fill=@($"url(#{function.fmiHighlight})") opacity="0.75" />
         }
         @if (function.IDNr == stateContainer.selectedFn)
         {
@@ -62,52 +63,52 @@
                 <circle cx="50" cy="50" fill="white" opacity="0" r="100%" />
             }
             //this is the highlight if the function is selected
-            <circle cx="50" cy="50" r=@render[function.fnStyle+":highlight-r"] fill="url(#selected-fill)" />
+            <circle cx="50" cy="50" r=@render[$"{function.fnStyle}:highlight-r"] fill="url(#selected-fill)" />
         }
         @if (function.orphans > 0)
         {
             if (((function.orphans >> 0) & 1) == 1) //Input
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:I"] cy=@render[$"{function.fnStyle}:aspectY:I"] r="7" />
             }
             if (((function.orphans >> 1) & 1) == 1) //Output
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:O"] cy=@render[$"{function.fnStyle}:aspectY:O"] r="7" />
             }
             if (((function.orphans >> 2) & 1) == 1) //Precondition
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:P"] cy=@render[$"{function.fnStyle}:aspectY:P"] r="7" />
             }
             if (((function.orphans >> 3) & 1) == 1) //Resource
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:R"] cy=@render[$"{function.fnStyle}:aspectY:R"] r="7" />
             }
             if (((function.orphans >> 4) & 1) == 1) //Control
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:C"] cy=@render[$"{function.fnStyle}:aspectY:C"] r="7" />
             }
             if (((function.orphans >> 5) & 1) == 1) //Time
             {
-                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r="7" />
+                <circle stroke-width="5" stroke="#FF0000" fill="none" opacity="0.7" cx=@render[$"{function.fnStyle}:aspectX:T"] cy=@render[$"{function.fnStyle}:aspectY:T"] r="7" />
             }
         }
         <!-- This is the Function main outline -->
         <defs>
             <radialGradient id="fnVariable" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.25" />
-                <stop offset="80%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:0.25" />
-                <stop offset="80%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
-                <stop offset="100%" style="stop-color:@render[function.options+"fn-stroke"];stop-opacity:1" />
+                <stop offset="0%" style="stop-color:@render[$"{function.options}fn-stroke"];stop-opacity:0.25" />
+                <stop offset="80%" style="stop-color:@render[$"{function.options}fn-stroke"];stop-opacity:0.25" />
+                <stop offset="80%" style="stop-color:@render[$"{function.options}fn-stroke"];stop-opacity:1" />
+                <stop offset="100%" style="stop-color:@render[$"{function.options}fn-stroke"];stop-opacity:1" />
             </radialGradient>
         </defs>
-        <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
-            @if (render[function.options + "fn-connector-path"] != "" && render[function.options + "fn-connector-path"] is not null)
+        <g stroke-width=@render[$"{function.options}fn-stroke-width"] stroke="url(#fnVariable)">
+            @if (render[$"{function.options}fn-connector-path"] != "" && render[$"{function.options}fn-connector-path"] is not null)
             {
-                <path d=@render[function.options+"fn-connector-path"] />
+                <path d=@render[$"{function.options}fn-connector-path"] />
             }
-            @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+            @if (render[$"{function.options}fn-path"] != "" && render[$"{function.options}fn-path"] is not null)
             {
-                <path fill=@render[function.options+"fn-fill"] fill-opacity=@render[function.options+"fn-opacity"] d=@render[function.options+"fn-path"] />
+                <path fill=@render[$"{function.options}fn-fill"] fill-opacity=@render[$"{function.options}fn-opacity"] d=@render[$"{function.options}fn-path"] />
             }
         </g>
         @if (function.fnColorStyle != null)
@@ -115,7 +116,7 @@
             if (function.fnColorStyle.Length != 0)
             {
                 isFnColor = true;
-                styleStroke = render[function.options + "fn-color-width"]!;
+                styleStroke = render[$"{function.options}fn-color-width"]!;
                 switch (function.fnColorStyle)
                 {
                     case "blue": styleColor = "#01A6DB"; break;
@@ -125,31 +126,33 @@
                     case "yellow": styleColor = "#BAB727"; break;
                     case "purple": styleColor = "#9070C0"; break;
                     case "white": styleColor = "#FFFFFF"; break;
-                    case "custom": {
-                        if (function.fnColorValue.StartsWith("#"))
+                    case "custom":
                         {
-                            styleColor = function.fnColorValue;
-                        } else
-                        {
-                            styleColor = "#" + "000000".Substring(Convert.ToUInt32(function.fnColorValue).ToString("X").Length) + Convert.ToUInt32(function.fnColorValue).ToString("X");
+                            if (function.fnColorValue.StartsWith("#"))
+                            {
+                                styleColor = function.fnColorValue;
+                            }
+                            else
+                            {
+                                styleColor = $"#{Convert.ToUInt32(function.fnColorValue).ToString("X6")}";
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    default: styleColor = render[function.options + "aspect-stroke"] ?? "#FFFFFF"; styleStroke = render[function.options + "aspect-stroke-width"] ?? "0"; break;
+                    default: styleColor = render[$"{function.options}aspect-stroke"] ?? "#FFFFFF"; styleStroke = render[$"{function.options}aspect-stroke-width"] ?? "0"; break;
                 }
                 if (styleColor != "#FFFFFF")
                 {
                     <g>
-                        @if (render[function.options + "fn-color-path"] != "" && render[function.options + "fn-color-path"] is not null)
+                        @if (render[$"{function.options}fn-color-path"] != "" && render[$"{function.options}fn-color-path"] is not null)
                         {
                             <g stroke-width=@styleStroke stroke=@styleColor>
-                                <path fill="none" d=@render[function.options+"fn-color-path"] />
+                                <path fill="none" d=@render[$"{function.options}fn-color-path"] />
                             </g>
                         }
-                        @if (render[function.options + "fn-path"] != "" && render[function.options + "fn-path"] is not null)
+                        @if (render[$"{function.options}fn-path"] != "" && render[$"{function.options}fn-path"] is not null)
                         {
-                            <g stroke-width=@render[function.options+"fn-stroke-width"] stroke="url(#fnVariable)">
-                                <path fill="none" d=@render[function.options+"fn-path"] />
+                            <g stroke-width=@render[$"{function.options}fn-stroke-width"] stroke="url(#fnVariable)">
+                                <path fill="none" d=@render[$"{function.options}fn-path"] />
                             </g>
                         }
                     </g>
@@ -168,60 +171,60 @@
         {
             isFnColor = false;
         }
-        @if (render[function.options + "aspect-stroke"] != "" && render[function.options + "aspect-stroke"] is not null)
+        @if (render[$"{function.options}aspect-stroke"] != "" && render[$"{function.options}aspect-stroke"] is not null)
         {
-            <g stroke-width=@render[function.options+"aspect-stroke-width"] stroke=@render[function.options+"aspect-stroke"]>
-                <circle cx=@render[function.fnStyle+":aspectX:I"] cy=@render[function.fnStyle+":aspectY:I"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-                <circle cx=@render[function.fnStyle+":aspectX:O"] cy=@render[function.fnStyle+":aspectY:O"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-                <circle cx=@render[function.fnStyle+":aspectX:T"] cy=@render[function.fnStyle+":aspectY:T"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-                <circle cx=@render[function.fnStyle+":aspectX:C"] cy=@render[function.fnStyle+":aspectY:C"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-                <circle cx=@render[function.fnStyle+":aspectX:P"] cy=@render[function.fnStyle+":aspectY:P"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
-                <circle cx=@render[function.fnStyle+":aspectX:R"] cy=@render[function.fnStyle+":aspectY:R"] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-fill"] />
+            <g stroke-width=@render[$"{function.options}aspect-stroke-width"] stroke=@render[$"{function.options}aspect-stroke"]>
+                <circle cx=@render[$"{function.fnStyle}:aspectX:I"] cy=@render[$"{function.fnStyle}:aspectY:I"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:O"] cy=@render[$"{function.fnStyle}:aspectY:O"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:T"] cy=@render[$"{function.fnStyle}:aspectY:T"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:C"] cy=@render[$"{function.fnStyle}:aspectY:C"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:P"] cy=@render[$"{function.fnStyle}:aspectY:P"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:R"] cy=@render[$"{function.fnStyle}:aspectY:R"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
             </g>
         }
-        @if (render[function.options + "fn-path"] == "" || render[function.options + "fn-path"] is null) //modern background
+        @if (render[$"{function.options}fn-path"] == "" || render[$"{function.options}fn-path"] is null) //modern background
         {
             if (!isFnColor)
             {
-                styleStroke = @render[function.options + "aspect-alt-stroke-width"]!;
-                styleColor = @render[function.options + "aspect-alt-stroke"]!;
+                styleStroke = @render[$"{function.options}aspect-alt-stroke-width"]!;
+                styleColor = @render[$"{function.options}aspect-alt-stroke"]!;
             }
             string isIO;
             double fontAdjustX;
-            double fontAdjustY = 2.8 - (6 - double.Parse(render[function.options + "aspect-font-size"]!)) / 2;
+            double fontAdjustY = 2.8 - (6 - double.Parse(render[$"{function.options}aspect-font-size"]!)) / 2;
             if (function.isInput == "true")
             {
                 isIO = "I";
-                fontAdjustX = -1.8 + (6 - double.Parse(render[function.options + "aspect-font-size"]!)) / 2;
+                fontAdjustX = -1.8 + (6 - double.Parse(render[$"{function.options}aspect-font-size"]!)) / 2;
             }
             else
             {
                 isIO = "O";
-                fontAdjustX = -3.1 + (6 - double.Parse(render[function.options + "aspect-font-size"]!)) / 2;
+                fontAdjustX = -3.1 + (6 - double.Parse(render[$"{function.options}aspect-font-size"]!)) / 2;
             }
             <g stroke-width=@styleStroke stroke=@styleColor>
-                <circle cx=@render[function.fnStyle+":aspectX:"+isIO] cy=@render[function.fnStyle+":aspectY:"+isIO] r=@render[function.options+"aspect-r"] fill=@render[function.options+"aspect-alt-fill"] />
+                <circle cx=@render[$"{function.fnStyle}:aspectX:{isIO}"] cy=@render[$"{function.fnStyle}:aspectY:{isIO}"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-alt-fill"] />
             </g>
-            <g font-size="@(render[function.options+"aspect-font-size"]+"pt")" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"aspect-font-color"]>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:"+isIO]!)+fontAdjustX) y=@(double.Parse(render[function.fnStyle+":aspectY:"+isIO]!)+fontAdjustY)>@isIO</text>
+            <g font-size="@(render[$"{function.options}aspect-font-size"]+"pt")" font-family="'PT Sans Caption', sans-serif" fill=@render[$"{function.options}aspect-font-color"]>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:{isIO}"]!)+fontAdjustX) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:{isIO}"]!)+fontAdjustY)>@isIO</text>
             </g>
-            <rect x="@(50 - double.Parse(render[function.options+"fn-alt-width"]!)/2)" y="@(50 - fnTextCount * 5*stateContainer.tempZoomF - 5)"
-                  rx=@render[function.options+"fn-alt-r"] ry=@render[function.options+"fn-alt-r"] width=@render[function.options+"fn-alt-width"] height="@(9 + fnTextCount * 10*stateContainer.tempZoomF)" fill=@render[function.options+"fn-alt-fill"] style="stroke:none;opacity:1" />
+            <rect x="@(50 - double.Parse(render[$"{function.options}fn-alt-width"]!)/2)" y="@(50 - fnTextCount * 5*stateContainer.tempZoomF - 5)"
+                  rx=@render[$"{function.options}fn-alt-r"] ry=@render[$"{function.options}fn-alt-r"] width=@render[$"{function.options}fn-alt-width"] height="@(9 + fnTextCount * 10*stateContainer.tempZoomF)" fill=@render[$"{function.options}fn-alt-fill"] style="stroke:none;opacity:1" />
         }
-        else 
+        else
         {
-            double fontAdjust = (6 - double.Parse(render[function.options + "aspect-font-size"]!)) / 2;
-            <g font-size="@(render[function.options+"aspect-font-size"]+"pt")" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"aspect-font-color"]>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:T"]!)-2.6+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:T"]!)+2.8-fontAdjust)>T</text>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:C"]!)-3.1+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:C"]!)+2.8-fontAdjust)>C</text>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:I"]!)-1.8+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:I"]!)+2.8-fontAdjust)>I</text>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:O"]!)-3.1+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:O"]!)+2.8-fontAdjust)>O</text>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:P"]!)-2.4+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:P"]!)+2.8-fontAdjust)>P</text>
-                <text x=@(double.Parse(render[function.fnStyle+":aspectX:R"]!)-2.7+fontAdjust) y=@(double.Parse(render[function.fnStyle+":aspectY:R"]!)+2.8-fontAdjust)>R</text>
+            double fontAdjust = (6 - double.Parse(render[$"{function.options}aspect-font-size"]!)) / 2;
+            <g font-size="@(render[$"{function.options}aspect-font-size"]+"pt")" font-family="'PT Sans Caption', sans-serif" fill=@render[$"{function.options}aspect-font-color"]>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:T"]!)-2.6+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:T"]!)+2.8-fontAdjust)>T</text>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:C"]!)-3.1+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:C"]!)+2.8-fontAdjust)>C</text>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:I"]!)-1.8+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:I"]!)+2.8-fontAdjust)>I</text>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:O"]!)-3.1+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:O"]!)+2.8-fontAdjust)>O</text>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:P"]!)-2.4+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:P"]!)+2.8-fontAdjust)>P</text>
+                <text x=@(double.Parse(render[$"{function.fnStyle}:aspectX:R"]!)-2.7+fontAdjust) y=@(double.Parse(render[$"{function.fnStyle}:aspectY:R"]!)+2.8-fontAdjust)>R</text>
             </g>
         }
         <text transform="scale(@stateContainer.tempZoomF)" x="@(50 / stateContainer.tempZoomF)" y="@(50 / stateContainer.tempZoomF - fnTextCount * 5 - 2)"
-              font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill=@render[function.options+"fn-font-color"]>
+              font-size="6pt" text-anchor="middle" width="60" height="40" font-family="'PT Sans Caption', sans-serif" fill=@render[$"{function.options}fn-font-color"]>
             @for (int i = 0; i < fnTextCount; i++)
             {
                 <tspan x="@(50 / stateContainer.tempZoomF)" dy="10">@displayFnText[i]</tspan>
@@ -248,7 +251,7 @@
         }
         else
         {
-            return "animation-duration: " + ((double)stateContainer.cycleDelay / 1000).ToString("0.0#s");
+            return $"animation-duration: {((double)stateContainer.cycleDelay / 1000).ToString("0.0#s")}";
         }
     }
     private void SelectFn(MouseEventArgs e)
@@ -267,7 +270,7 @@
                 }
                 stateContainer.selectedLabel = "";
                 stateContainer.selectedFn = function.IDNr;
-                stateContainer.fnName = function.label;
+                stateContainer.fnName = function.IDName;
                 stateContainer.isDisabled = false;
                 refreshParent.InvokeAsync();
             }
@@ -275,7 +278,7 @@
     }
     private void MoveFnStartTouch(TouchEventArgs e)
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.IDName == "")
         {
             stateContainer.defaultFnLabel();
         }
@@ -293,7 +296,7 @@
     }
     private void MoveFnStart(MouseEventArgs e)
     {
-        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.label == "")
+        if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.IDName == "")
         {
             stateContainer.defaultFnLabel();
         }
@@ -357,8 +360,8 @@
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))
                 {
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + coupling.Name + "\"]/Curve2")!.InnerText = coupling.curve2;
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + coupling.Name + "\"]/Curve")!.InnerText = coupling.curve;
+                    stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{coupling.Name}\"]/Curve2")!.InnerText = coupling.curve2;
+                    stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{coupling.Name}\"]/Curve")!.InnerText = coupling.curve;
                 }
             }
             function.dragFn = false;
@@ -376,8 +379,8 @@
             {
                 foreach (Coupling coupling in stateContainer.couplingList.FindAll(x => x.outputFn == function.IDNr || x.toFn == function.IDNr))
                 {
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + coupling.Name + "\"]/Curve2")!.InnerText = coupling.curve2;
-                    stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/Aspect[Name=\"" + coupling.Name + "\"]/Curve")!.InnerText = coupling.curve;
+                    stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{coupling.Name}\"]/Curve2")!.InnerText = coupling.curve2;
+                    stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{coupling.Name}\"]/Curve")!.InnerText = coupling.curve;
                 }
             }
             function.dragFn = false;

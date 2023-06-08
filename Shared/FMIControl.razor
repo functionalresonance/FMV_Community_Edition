@@ -23,8 +23,7 @@
     [Parameter]
     public EventCallback refreshParent { get; set; }
 
-    private int cycleFMI = 0;
-    private List<string> activeAspectsArray = new List<string>();
+    private List<Coupling> activeAspectsArray = new List<Coupling>();
     private List<string> trackExitFunctions = new List<string>();
     private string stepTOTAL = "";
     private bool isPlaying = false;
@@ -68,9 +67,7 @@
         isPlaying = false;
         stateContainer.selectedFn = "-1";
         stateContainer.selectedLabel = "";
-        stateContainer.isDisabled = true;
-        stateContainer.fnName = "";
-        cycleFMI = 0;
+        stateContainer.cycleFMI = 0;
         stateContainer.fmiMessage = "";
         foreach (var fn in stateContainer.functionList)
         {
@@ -106,14 +103,17 @@
             {
                 foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
                 {
-                    trackExitFunctions.Add(Exitfn.label);
+                    trackExitFunctions.Add(Exitfn.IDName);
                 }
             }
         }
         await refreshParent.InvokeAsync();
+        await Task.Delay(stateContainer.cycleDelay + 1);
+        bFMI_cycle_Couplings();
+        await refreshParent.InvokeAsync();
         if (isPlaying)
         {
-            await Task.Delay(stateContainer.cycleDelay+1);
+            await Task.Delay(stateContainer.cycleDelay + 1);
             bFMI_play();
         }
     }
@@ -125,12 +125,42 @@
             return;
         }
         var checkCycle = bFMI_cycle();
+        bFMI_cycle_Couplings();
         refreshParent.InvokeAsync();
         if (checkCycle == "End")
         {
             foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
             {
-                trackExitFunctions.Add(Exitfn.label);
+                trackExitFunctions.Add(Exitfn.IDName);
+            }
+        }
+    }
+    private void bFMI_cycle_Couplings()
+    {
+        foreach (var coupling in activeAspectsArray)
+        {
+            coupling.activated = true;
+            coupling.fmiHighlight = "entry-fill";
+            coupling.wasActive = true;
+            var nextFn = stateContainer.functionList.Find(x => x.IDNr == coupling.toFn);
+            if (nextFn is not null)
+            {
+                switch (coupling.toType)
+                {
+                    case "I": if (!nextFn.activeI.Contains(coupling.Name)) nextFn.activeI.Add(coupling.Name); break;
+                    case "P": if (!nextFn.activeP.Contains(coupling.Name)) nextFn.activeP.Add(coupling.Name); break;
+                    case "R": if (!nextFn.activeR.Contains(coupling.Name)) nextFn.activeR.Add(coupling.Name); break;
+                    case "C": if (!nextFn.activeC.Contains(coupling.Name)) nextFn.activeC.Add(coupling.Name); break;
+                    case "T": if (!nextFn.activeT.Contains(coupling.Name)) nextFn.activeT.Add(coupling.Name); break;
+                }
+                //var outputFn = stateContainer.functionList.Find(x => x.IDNr == coupling.outputFn);
+                //if (outputFn is not null)
+                //{
+                //    foreach (var meta in outputFn.metadata)
+                //    {
+                //        nextFn.newVariable($"{coupling.toType}{coupling.outputFn}_{meta[0]}", meta[1]);
+                //    }
+                //}
             }
         }
     }
@@ -143,7 +173,7 @@
         foreach (var pCoupling in stateContainer.couplingList) //.FindAll(x => x.activated == true))
         {
             pCoupling.activated = false;
-            if (cycleFMI == 0)
+            if (stateContainer.cycleFMI == 0)
             {
                 pCoupling.wasActive = false;
                 pCoupling.fmiHighlight = "";
@@ -164,10 +194,10 @@
                 }
             }
         }
-        if (cycleFMI == 0)
+        if (stateContainer.cycleFMI == 0)
         {
-            stateContainer.fmiMessage = "FRAM Model Interpreter - FMI Basic  -----  (c) Erik Hollnagel, 2020\nFMI session log: " + DateTime.Now.ToString() + "\n\n";
-            activeAspectsArray = new List<string>();
+            stateContainer.fmiMessage = $"FRAM Model Interpreter - FMI Basic  -----  (c) Erik Hollnagel, 2020\nFMI session log: {DateTime.Now.ToString()}\n\n";
+            activeAspectsArray = new List<Coupling>();
             trackExitFunctions = new List<string>();
             //This loop checks for Orphans and then for functions that have Aspects but not an Input or Output
             //(Can't be a Background Function if it has other Aspects)
@@ -175,7 +205,7 @@
             {
                 if (fnO.orphans > 0)
                 {
-                    stateContainer.fmiMessage += "WARNING: <" + fnO.label + "> has an orphan\n";
+                    stateContainer.fmiMessage += $"WARNING: <{fnO.IDName}> has an orphan\n";
                     fnO.fmiHighlight = "exit-fill";
                     fmiError = true;
                 }
@@ -185,13 +215,13 @@
                 {
                     if (stateContainer.aspectsList.FindAll(x => x.FunctionIDNr == fnO.IDNr && x.Type == "Input").Count == 0)
                     {
-                        stateContainer.fmiMessage += "WARNING: <" + fnO.label + "> does not have any Inputs\n";
+                        stateContainer.fmiMessage += $"WARNING: <{fnO.IDName}> does not have any Inputs\n";
                         fnO.fmiHighlight = "exit-fill";
                         fmiError = true;
                     }
                     if (stateContainer.outputsList.FindAll(x => x.FunctionIDNr == fnO.IDNr && x.Type == "Output").Count == 0)
                     {
-                        stateContainer.fmiMessage += "WARNING: <" + fnO.label + "> does not have any Outputs\n";
+                        stateContainer.fmiMessage += $"WARNING: <{fnO.IDName}> does not have any Outputs\n";
                         fnO.fmiHighlight = "exit-fill";
                         fmiError = true;
                     }
@@ -205,7 +235,7 @@
             //If the previous loop passes, then this loop starts the initialisation
             var IProfile = "";
             var IProfileExit = "";
-            var ICycle0 =  "BEGIN CYCLE 0\n";
+            var ICycle0 = "BEGIN CYCLE 0\n";
             foreach (var fnBG in stateContainer.functionList)
             {
                 fnBG.wasActive = false;
@@ -223,14 +253,14 @@
                     checkOtoA += stateContainer.aspectsList.FindAll(x => x.IDName == hasOutput.IDName && x.Type != "Input").Count;
                 }
                 check3 = stateContainer.aspectsList.FindAll(x => x.FunctionIDNr == fnBG.IDNr && x.Type == "Input").Count;
-                if (check1 == 0) 
+                if (check1 == 0)
                 { //has only inputs or outputs (no other Aspects)
                     if (check3 == 0 && checkOtoI > 0) //is Entry function (has no Input and has at least 1 Output going to other function Input)
                     {
                         fnBG.fmiType = "Entry";
                         //if (fnBG.profileFn == "") fnBG.profileFn = "0";
-                        stateContainer.fmiMessage += "Entry function <" + fnBG.label + ">\n";
-                        ICycle0 += "Entry function <" + fnBG.label + "> has been activated\n";
+                        stateContainer.fmiMessage += $"Entry function <{fnBG.IDName}>\n";
+                        ICycle0 += $"Entry function <{fnBG.IDName}> has been activated\n";
                         // if (enableTheLab) evaluate(iBG);
                         var canActivate = true;
                         /*
@@ -251,42 +281,28 @@
                             trackHighlights += 1;
                             foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG.IDNr))
                             {
-                                coupling.wasActive = true;
-                                coupling.activated = true;
-                                coupling.fmiHighlight = "entry-fill";
-                                var nextFn = stateContainer.functionList.Find(x => x.IDNr == coupling.toFn);
-                                if (nextFn is not null)
-                                {
-                                    switch (coupling.toType)
-                                    {
-                                        case "I": nextFn.activeI.Add(coupling.Name); break;
-                                        case "P": nextFn.activeP.Add(coupling.Name); break;
-                                        case "R": nextFn.activeR.Add(coupling.Name); break;
-                                        case "C": nextFn.activeC.Add(coupling.Name); break;
-                                        case "T": nextFn.activeT.Add(coupling.Name); break;
-                                    }
-                                }
+                                activeAspectsArray.Add(coupling);
                             }
                         }
                         else
                         {
                             fnBG.fmiHighlight = "hold-fill";
                         }
-                        IProfile = "Function <" + fnBG.label + ">:\n    Output: " + (fnBG.profileFn == "" ? "0" : fnBG.profileFn) + "\n" + IProfile;
+                        IProfile = $"Function <{fnBG.IDName}>:\n    Output: {(fnBG.profileFn == "" ? "0" : fnBG.profileFn)}\n{IProfile}";
                     }
                     else if (check2 == 0 && check3 > 0) //is Exit function
                     {
                         fnBG.fmiType = "Exit";
-                        stateContainer.fmiMessage += "Exit function <" + fnBG.label + ">\n";
+                        stateContainer.fmiMessage += $"Exit function <{fnBG.IDName}>\n";
                         fnBG.fmiHighlight = "exit-fill";
                         trackHighlights += 1;
-                        trackExitFunctions.Add(fnBG.label);
-                        IProfileExit += "Function <" + fnBG.label + ">:\n    Input: " + (fnBG.profileI == "" ? "All" : fnBG.profileI) + "        ".Substring(0, 8 - 3) + "\n";
+                        trackExitFunctions.Add(fnBG.IDName);
+                        IProfileExit += $"Function <{fnBG.IDName}>:\n    Input: {(fnBG.profileI == "" ? "All" : fnBG.profileI)}{"        ".Substring(0, 8 - 3)}\n";
                     }
                     else if (check2 == 0 || check3 == 0)
                     { //other Background functions (not Entry or Exit)
                         fnBG.fmiType = "Background";
-                        ICycle0 += "Background function <" + fnBG.label + "> has been activated\n";
+                        ICycle0 += $"Background function <{fnBG.IDName}> has been activated\n";
                         //if (enableTheLab) evaluate(iBG);
                         var canActivate0 = true;
                         /*
@@ -331,34 +347,33 @@
                     }
                     else
                     { //else Passthrough function (Input and Output but no other Aspects)
-                        fnBG.fmiType = "Passthrough";
-                        IProfile += "Function <" + fnBG.label + ">:";
-                        IProfile += "\n    Input: " + (fnBG.profileI == "" ? "All" : fnBG.profileI) + "        ".Substring(0, 8 - 3);
-                        IProfile += "Precondition: " + (fnBG.profileP == "" ? "All" : fnBG.profileP) + "        ".Substring(0, 8 - (fnBG.profileP.Length == 0 ? 3 : fnBG.profileP.Length));
-                        IProfile += "Resource: " + (fnBG.profileR == "" ? "All" : fnBG.profileR) + "        ".Substring(0, 8 - (fnBG.profileR.Length == 0 ? 3 : fnBG.profileR.Length));
-                        IProfile += "Control: " + (fnBG.profileC == "" ? "All" : fnBG.profileC) + "        ".Substring(0, 8 - (fnBG.profileC.Length == 0 ? 3 : fnBG.profileC.Length));
-                        IProfile += "Time: " + (fnBG.profileT == "" ? "All" : fnBG.profileT) + "        ".Substring(0, 8 - (fnBG.profileT.Length == 0 ? 3 : fnBG.profileT.Length)) + "\n";
+                        IProfile += $"Function <{fnBG.IDName}>:";
+                        IProfile += $"\n    Input: {(fnBG.profileI == "" ? "All" : fnBG.profileI)}{"        ".Substring(0, 8 - 3)}";
+                        IProfile += $"Precondition: {(fnBG.profileP == "" ? "All" : fnBG.profileP)}{"        ".Substring(0, 8 - (fnBG.profileP.Length == 0 ? 3 : fnBG.profileP.Length))}";
+                        IProfile += $"Resource: {(fnBG.profileR == "" ? "All" : fnBG.profileR)}{"        ".Substring(0, 8 - (fnBG.profileR.Length == 0 ? 3 : fnBG.profileR.Length))}";
+                        IProfile += $"Control: {(fnBG.profileC == "" ? "All" : fnBG.profileC)}{"        ".Substring(0, 8 - (fnBG.profileC.Length == 0 ? 3 : fnBG.profileC.Length))}";
+                        IProfile += $"Time: {(fnBG.profileT == "" ? "All" : fnBG.profileT)}{"        ".Substring(0, 8 - (fnBG.profileT.Length == 0 ? 3 : fnBG.profileT.Length))}\n";
                     }
                 }
                 else
                 {
                     fnBG.fmiType = "Foreground";
-                    IProfile += "Function <" + fnBG.label + ">:";
-                    IProfile += "\n    Input: " + (fnBG.profileI == "" ? "All" : fnBG.profileI) + "        ".Substring(0, 8 - 3);
-                    IProfile += "Precondition: " + (fnBG.profileP == "" ? "All" : fnBG.profileP) + "        ".Substring(0, 8 - (fnBG.profileP.Length == 0 ? 3 : fnBG.profileP.Length));
-                    IProfile += "Resource: " + (fnBG.profileR == "" ? "All" : fnBG.profileR) + "        ".Substring(0, 8 - (fnBG.profileR.Length == 0 ? 3 : fnBG.profileR.Length));
-                    IProfile += "Control: " + (fnBG.profileC == "" ? "All" : fnBG.profileC) + "        ".Substring(0, 8 - (fnBG.profileC.Length == 0 ? 3 : fnBG.profileC.Length));
-                    IProfile += "Time: " + (fnBG.profileT == "" ? "All" : fnBG.profileT) + "        ".Substring(0, 8 - (fnBG.profileT.Length == 0 ? 3 : fnBG.profileT.Length)) + "\n";
+                    IProfile += $"Function <{fnBG.IDName}>:";
+                    IProfile += $"\n    Input: {(fnBG.profileI == "" ? "All" : fnBG.profileI)}{"        ".Substring(0, 8 - 3)}";
+                    IProfile += $"Precondition: {(fnBG.profileP == "" ? "All" : fnBG.profileP)}{"        ".Substring(0, 8 - (fnBG.profileP.Length == 0 ? 3 : fnBG.profileP.Length))}";
+                    IProfile += $"Resource: {(fnBG.profileR == "" ? "All" : fnBG.profileR)}{"        ".Substring(0, 8 - (fnBG.profileR.Length == 0 ? 3 : fnBG.profileR.Length))}";
+                    IProfile += $"Control: {(fnBG.profileC == "" ? "All" : fnBG.profileC)}{"        ".Substring(0, 8 - (fnBG.profileC.Length == 0 ? 3 : fnBG.profileC.Length))}";
+                    IProfile += $"Time: {(fnBG.profileT == "" ? "All" : fnBG.profileT)}{"        ".Substring(0, 8 - (fnBG.profileT.Length == 0 ? 3 : fnBG.profileT.Length))}\n";
                 }
             }
-            stateContainer.fmiMessage += "\nInterpretation Profile\n" + IProfile + IProfileExit + "\nSummary of FMIlog\nBegin initialisation\n";
+            stateContainer.fmiMessage += $"\nInterpretation Profile\n{IProfile}{IProfileExit}\nSummary of FMIlog\nBegin initialisation\n";
             stateContainer.fmiMessage += "---  MODEL INITIALISATION COMPLETED.\n";
             stateContainer.fmiMessage += ICycle0;
             returnString = "0";
         }
-        else if (cycleFMI > 0)
+        else if (stateContainer.cycleFMI > 0)
         {
-            stateContainer.fmiMessage += "BEGIN CYCLE " + cycleFMI.ToString() + "\n";
+            stateContainer.fmiMessage += $"BEGIN CYCLE {stateContainer.cycleFMI.ToString()}\n";
             foreach (var fnBG2 in stateContainer.functionList)
             {
                 if (fnBG2.fmiType == "Entry")
@@ -371,7 +386,7 @@
                         var cycleFn = false;
                         if (checkProfileFn >= 1)
                         {
-                            double checkCycle = (double)cycleFMI / checkProfileFn;
+                            double checkCycle = (double)stateContainer.cycleFMI / checkProfileFn;
                             if (checkCycle == (int)checkCycle)
                             {
                                 cycleFn = true;
@@ -408,9 +423,7 @@
                                 trackHighlights += 1;
                                 foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn))
                                 { //This activates the Outputs of the current Function
-                                    activeAspectsArray.Add(coupling.Name);
-                                    coupling.activated = true;
-                                    coupling.fmiHighlight = "entry-fill";
+                                    activeAspectsArray.Add(coupling);
                                 }
                             }
                             else
@@ -457,14 +470,14 @@
                             {
                                 fnBG2.fmiHighlight = "entry-fill";
                                 trackHighlights += 1;
-                                stateContainer.fmiMessage += "Function <" + fnBG2.label + "> has been activated\n";
+                                stateContainer.fmiMessage += $"Function <{fnBG2.IDName}> has been activated\n";
                             }
                             else
                             {
                                 fnBG2.fmiHighlight = "exit-fill";
                                 trackHighlights += 1;
-                                trackExitFunctions.Remove(fnBG2.label);
-                                stateContainer.fmiMessage += "Exit function <" + fnBG2.label + "> has been activated\n";
+                                trackExitFunctions.Remove(fnBG2.IDName);
+                                stateContainer.fmiMessage += $"Exit function <{fnBG2.IDName}> has been activated\n";
                             }
                             foreach (var coupling in stateContainer.couplingList.FindAll(x => x.toFn == fnBG2.IDNr && !x.activated))
                             {//This is about clearing the Aspects that were consumed, but not if also part of repeating cycle
@@ -478,15 +491,13 @@
                                         case "C": fnBG2.activeC.Remove(coupling.Name); break;
                                         case "T": fnBG2.activeT.Remove(coupling.Name); break;
                                     }
-                                    activeAspectsArray.Remove(coupling.Name);
+                                    activeAspectsArray.Remove(coupling);
                                     coupling.fmiHighlight = "";
                                 }
                             }
                             foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn))
                             { //This activates the Outputs of the current Function
-                                activeAspectsArray.Add(coupling.Name);
-                                coupling.activated = true;
-                                coupling.fmiHighlight = "entry-fill";
+                                activeAspectsArray.Add(coupling);
                             }
                         }
                         else
@@ -504,27 +515,7 @@
                     }
                 }
             }
-            foreach (var key in activeAspectsArray)
-            {
-                var coupling = stateContainer.couplingList.Find(x => x.Name == key);
-                if (coupling is not null)
-                {
-                    coupling.wasActive = true;
-                    var nextFn = stateContainer.functionList.Find(x => x.IDNr == coupling.toFn);
-                    if (nextFn is not null)
-                    {
-                        switch (coupling.toType)
-                        {
-                            case "I": if (!nextFn.activeI.Contains(coupling.Name)) nextFn.activeI.Add(coupling.Name); break;
-                            case "P": if (!nextFn.activeP.Contains(coupling.Name)) nextFn.activeP.Add(coupling.Name); break;
-                            case "R": if (!nextFn.activeR.Contains(coupling.Name)) nextFn.activeR.Add(coupling.Name); break;
-                            case "C": if (!nextFn.activeC.Contains(coupling.Name)) nextFn.activeC.Add(coupling.Name); break;
-                            case "T": if (!nextFn.activeT.Contains(coupling.Name)) nextFn.activeT.Add(coupling.Name); break;
-                        }
-                    }
-                }
-            }
-            returnString = cycleFMI.ToString();
+            returnString = stateContainer.cycleFMI.ToString();
             if (stepTOTAL == "" || stepTOTAL == null || stepTOTAL == "0")
             {
                 if (trackExitFunctions.Count == 0)
@@ -534,7 +525,7 @@
                     returnString = "End";
                 }
             }
-            else if (stepTOTAL == cycleFMI.ToString())
+            else if (stepTOTAL == stateContainer.cycleFMI.ToString())
             {
                 //bFMI.enabled = false;
                 //stateContainer.fmiMessage += "\nEnd";
@@ -545,7 +536,7 @@
         {
             stateContainer.fmiMessage += "No functions were activated during this cycle.\n";
         }
-        cycleFMI += 1;
+        stateContainer.cycleFMI += 1;
         return returnString;
     }
 }
