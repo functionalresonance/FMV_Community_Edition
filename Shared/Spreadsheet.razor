@@ -191,7 +191,7 @@
                 stateContainer.fnName = label;
                 stateContainer.isDisabled = false;
                 await refreshParent.InvokeAsync();
-                await JSRuntime.InvokeVoidAsync("focusInput", "Main-Visualiser");
+                await JSRuntime.InvokeVoidAsync("focusInput", "mainWindow");
             }
         }
     }
