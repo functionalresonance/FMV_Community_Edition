@@ -19,7 +19,7 @@
         <TemplateColumn Title="IDName" Class=@($"search fn-idname{ShowNameFiltered()}") SortBy="@sortByIDName">
             <ColumnOptions>
                 <div class="search-box">
-                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
+                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" @onkeydown:stopPropagation placeholder=@Loc["SEARCH_CONTAINS"] />
                 </div>
             </ColumnOptions>
             <ChildContent>
@@ -40,7 +40,7 @@
             <TemplateColumn Title="O" Class=@($"show-aspects search{ShowAspectFiltered()}")>
                 <ColumnOptions>
                     <div class="search-box">
-                        <input type="search" autofocus @bind="aspectFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
+                        <input type="search" autofocus @bind="aspectFilter" @bind:event="oninput" @onkeydown:stopPropagation placeholder=@Loc["SEARCH_CONTAINS"] />
                     </div>
                 </ColumnOptions>
                 <ChildContent>
