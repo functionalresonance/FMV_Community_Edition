@@ -21,7 +21,7 @@
     <FMIPopup OnClose="ModalClose"></FMIPopup>
 }
 <MenuBar refreshParent="refreshParent" onInputFileChange="OnInputFileChange" fileIsLoaded="FileIsLoaded" />
-<SideBar refreshParent="refreshParent" newFunction="NewFunction" nextFn="NextFn" />
+<SideBar refreshParent="refreshParent" newFunction="NewFunction" nextFn="NextFn"/>
 <div id="mainWindow" class="main">
     @if (stateContainer.spreadsheetVisible > 0)
     {
@@ -127,13 +127,13 @@
             return "FRAM Model Visualiser";
         }
     }
-    private async void refreshParent()
+    private void refreshParent()
     {
         StateHasChanged();
-        if (spreadsheet is not null)
-        {
-            await spreadsheet.UpdateState();
-        }
+        //if (spreadsheet is not null)
+        //{
+        //    await spreadsheet.UpdateState();
+        //}
     }
     private void ModalClose(bool state)
     {
@@ -617,10 +617,10 @@
         isNewModel = false;
         stateContainer.fileLoaded = true;
         stateContainer.debugOutput = "";
-        spreadsheet?.InitialState();
+        //spreadsheet?.InitialState();
         FocusElement("openFileBtn");
     }
-    private async void UnSelect(MouseEventArgs e)
+    private void UnSelect(MouseEventArgs e)
     {
         if (stateContainer.selectedFn != "-1" && stateContainer.selectedFunction?.IDName == "")
         {
@@ -640,10 +640,10 @@
         stateContainer.fnName = "";
         stateContainer.touchAction = "auto";
         StateHasChanged();
-        if (spreadsheet is not null)
-        {
-            await spreadsheet.UpdateState();
-        }
+        //if (spreadsheet is not null)
+        //{
+        //    await spreadsheet.UpdateState();
+        //}
     }
     public async void ClearElement(string elementName)
     {

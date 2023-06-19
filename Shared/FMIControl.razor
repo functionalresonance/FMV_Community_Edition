@@ -347,6 +347,7 @@
                     }
                     else
                     { //else Passthrough function (Input and Output but no other Aspects)
+                        fnBG.fmiType = "Passthrough";
                         IProfile += $"Function <{fnBG.IDName}>:";
                         IProfile += $"\n    Input: {(fnBG.profileI == "" ? "All" : fnBG.profileI)}{"        ".Substring(0, 8 - 3)}";
                         IProfile += $"Precondition: {(fnBG.profileP == "" ? "All" : fnBG.profileP)}{"        ".Substring(0, 8 - (fnBG.profileP.Length == 0 ? 3 : fnBG.profileP.Length))}";
@@ -421,6 +422,7 @@
                                 fnBG2.wasActive = true;
                                 fnBG2.fmiHighlight = "entry-fill";
                                 trackHighlights += 1;
+                                stateContainer.fmiMessage += $"Entry Function <{fnBG2.IDName}> has been activated\n";
                                 foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn))
                                 { //This activates the Outputs of the current Function
                                     activeAspectsArray.Add(coupling);

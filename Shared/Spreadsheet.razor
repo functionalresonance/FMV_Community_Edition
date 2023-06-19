@@ -6,14 +6,14 @@
 <div>
     <div class="d-inline-flex align-items-center mb-2">
         @Loc["S_SHOW"]:
-        <label class="show-properties"><input type="checkbox" @bind="showProperties" /> @Loc["S_PROPERTIES"]</label>
-        <label class="show-aspects"><input type="checkbox" @bind="showAspects" /> @Loc["S_ASPECTS"]</label>
-        <label class="show-fmiprofile"><input type="checkbox" @bind="showFMIProfile" /> @Loc["FMI_PROFILE_SHORT"]</label>
+        <label class="show-properties"><input type="checkbox" @bind="stateContainer.showProperties" /> @Loc["S_PROPERTIES"]</label>
+        <label class="show-aspects"><input type="checkbox" @bind="stateContainer.showAspects" /> @Loc["S_ASPECTS"]</label>
+        <label class="show-fmiprofile"><input type="checkbox" @bind="stateContainer.showFMIProfile" /> @Loc["FMI_PROFILE_SHORT"]</label>
         <button class="btn btn-menu oi oi-file ml-2" title=@Loc["S_SAVE_FN"] @onclick=saveSpreadsheet></button>
         <button class="btn btn-menu oi oi-document ml-2" title=@Loc["S_SAVE_COUPLING"] @onclick=saveCouplings></button>
     </div>
     <QuickGrid @ref="thisGrid" Items=@FilteredFunctions Theme="fmv">
-        <TemplateColumn Title="IDNr" SortBy="@sortByIDNr" Align="Align.Center" IsDefaultSortColumn="true">
+        <TemplateColumn Title="IDNr" SortBy="@sortByIDNr" Align="Align.End" IsDefaultSortColumn="true">
             <a class="@SelectRow(context.IDNr, context.fmiHighlight)" @onclick=@((e) => selectGrid(context.IDNr, context.IDName))>@context.IDNr</a>
         </TemplateColumn>
         <TemplateColumn Title="IDName" Class="search" SortBy="@sortByIDName">
@@ -26,7 +26,7 @@
                 <a @onclick=@((e) => selectGrid(context.IDNr, context.IDName))>@context.IDName</a>
             </ChildContent>
         </TemplateColumn>
-        @if (showProperties)
+        @if (stateContainer.showProperties)
         {
             <PropertyColumn Title="FunctionType" Class="show-properties" Property="@(fn => render[$"{stateContainer.newFnStyle}:{fn.FunctionType}:Name"])" Sortable="true" />
             <TemplateColumn Title=@Loc["COLOUR"] Class="show-properties" SortBy="@sortByColour">
@@ -35,7 +35,7 @@
             <PropertyColumn Title=@Loc["FN_ORPHAN"] Class="show-properties" Property="@(fn => Convert.ToString(fn.orphans,2))" Sortable="true" />
             <PropertyColumn Title=@Loc["FN_INPUT"] Class="show-properties" Property="@(fn => fn.isInput)" Sortable="true" />
         }
-        @if (showAspects)
+        @if (stateContainer.showAspects)
         {
             <TemplateColumn Title="O" Class="show-aspects search">
                 <ColumnOptions>
@@ -81,7 +81,7 @@
                 }
             </TemplateColumn>
         }
-        @if (showFMIProfile)
+        @if (stateContainer.showFMIProfile)
         {
             <PropertyColumn Title=@Loc["FMI_TYPE"] Class="show-fmiprofile" Property="@(fn => fn.fmiType)" Sortable="true" />
             <PropertyColumn Title="p O" Class="show-fmiprofile" Property="@(fn => fn.profileFn)" Sortable="true" />
@@ -96,22 +96,19 @@
 </div>
 @code {
     QuickGrid<Function>? thisGrid;
-    bool showProperties = true;
-    bool showAspects = false;
-    bool showFMIProfile = false;
     string? nameFilter;
     string? aspectFilter;
     [Parameter]
     public EventCallback refreshParent { get; set; }
 
-    public async Task UpdateState()
-    {
-        await thisGrid!.RefreshDataAsync();
-    }
-    public void InitialState()
-    {
-        StateHasChanged();
-    }
+    //public async Task UpdateState()
+    //{
+    //    await thisGrid!.RefreshDataAsync();
+    //}
+    //public void InitialState()
+    //{
+    //    StateHasChanged();
+    //}
 
     GridSort<Function> sortByColour = GridSort<Function>
         .ByAscending(fn => fn.fnColorValue)
@@ -200,26 +197,26 @@
     private async void saveSpreadsheet()
     {
         string saveCsv = "IDNr,IDName";
-        if (showProperties)
+        if (stateContainer.showProperties)
         {
             saveCsv += $",FunctionType,{@Loc["COLOUR"]},{@Loc["FN_ORPHAN"]},{@Loc["FN_INPUT"]}";
         }
-        if (showAspects)
+        if (stateContainer.showAspects)
         {
             saveCsv += ",O,I,P,R,C,T";
         }
-        if (showFMIProfile)
+        if (stateContainer.showFMIProfile)
         {
             saveCsv += $",{Loc["FMI_TYPE"]},p O,p I,p P,p R,p C,p T,{@Loc["FMI_ACTIVATED"]}";
         }
         foreach (var fn in FilteredFunctions)
         {
             saveCsv += $"\n{fn.IDNr},\"{fn.IDName}\"";
-            if (showProperties)
+            if (stateContainer.showProperties)
             {
                 saveCsv += $",{fn.FunctionType},{returnColor(fn.fnColorValue, true)},{Convert.ToString(fn.orphans, 2)},{fn.isInput}";
             }
-            if (showAspects)
+            if (stateContainer.showAspects)
             {
                 saveCsv += ",\"";
                 var newA = "[";
@@ -265,7 +262,7 @@
                 }
                 saveCsv += "\"";
             }
-            if (showFMIProfile)
+            if (stateContainer.showFMIProfile)
             {
                 saveCsv += $",{fn.fmiType},{fn.profileFn},{fn.profileI},{fn.profileP},{fn.profileR},{fn.profileC},{fn.profileT},{fn.wasActive}";
             }

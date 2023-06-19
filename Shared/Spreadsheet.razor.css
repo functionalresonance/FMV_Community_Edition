@@ -14,6 +14,9 @@
     ::deep thead .show-fmiprofile {
         background-color: rgb(141, 180, 226, 0.75);
     }
+    ::deep thead .show-selected {
+        background-color: rgb(255, 216, 0, 0.75);
+    }
 ::deep tbody {
     border: thin solid grey;
 }
@@ -34,10 +37,12 @@
     font-weight: normal;
     border: thin solid grey;
     padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
 ::deep td {
     border-right: thin solid grey;
     padding-left: 0.25rem;
+    padding-right: 0.25rem;
 }
 /* Stop the last page from collapsing to the number of rows on it */
 ::deep tr {
@@ -48,19 +53,19 @@
     background: rgb(180, 200, 226, 0.40);
 }
     ::deep tr:has(.select-row) {
-        background: rgb(255, 216, 0, 0.75);
+        background: rgb(255, 216, 0, 0.5);
     }
     ::deep tr:has(.entry-fill) {
-        background: rgb(42, 155, 0, 0.75);
+        background: rgb(42, 155, 0, 0.5);
     }
     ::deep tr:has(.exit-fill) {
-        background: rgb(255, 17, 0, 0.75);
+        background: rgb(255, 17, 0, 0.5);
     }
     ::deep tr:has(.background-fill) {
-        background: rgb(126, 157, 188, 0.75);
+        background: rgb(126, 157, 188, 0.5);
     }
     ::deep tr:has(.hold-fill) {
-        background: rgb(191, 191, 0, 0.75);
+        background: rgb(191, 191, 0, 0.5);
     }
 /* Magnifying glass */
 ::deep .search .col-options-button {

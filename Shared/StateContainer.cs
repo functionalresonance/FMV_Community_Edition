@@ -10,6 +10,9 @@ namespace FMV_Standard.Shared
     {
         private string _selectedFn = "-1";
         private string _selectedLabel = "";
+        public bool showProperties = true;
+        public bool showAspects = false;
+        public bool showFMIProfile = false;
         public int cycleFMI = 0;
         public Function? selectedFunction;
         public Coupling? selectedCoupling;

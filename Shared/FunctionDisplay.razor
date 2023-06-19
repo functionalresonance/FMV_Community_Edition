@@ -1,5 +1,4 @@
 ﻿@inject StateContainer stateContainer
-
 @inject IConfiguration render
 
 @if (function != null)
@@ -143,13 +142,13 @@
                 if (styleColor != "#FFFFFF")
                 {
                     <g>
-                        @if (render[$"{function.options}fn-color-path"] != "" && render[$"{function.options}fn-color-path"] is not null)
+                        @if (!String.IsNullOrEmpty(render[$"{function.options}fn-color-path"]))
                         {
                             <g stroke-width=@styleStroke stroke=@styleColor>
                                 <path fill="none" d=@render[$"{function.options}fn-color-path"] />
                             </g>
                         }
-                        @if (render[$"{function.options}fn-path"] != "" && render[$"{function.options}fn-path"] is not null)
+                        @if (!String.IsNullOrEmpty(render[$"{function.options}fn-path"]))
                         {
                             <g stroke-width=@render[$"{function.options}fn-stroke-width"] stroke="url(#fnVariable)">
                                 <path fill="none" d=@render[$"{function.options}fn-path"] />
@@ -171,7 +170,7 @@
         {
             isFnColor = false;
         }
-        @if (render[$"{function.options}aspect-stroke"] != "" && render[$"{function.options}aspect-stroke"] is not null)
+        @if (!String.IsNullOrEmpty(render[$"{function.options}aspect-stroke"]))
         {
             <g stroke-width=@render[$"{function.options}aspect-stroke-width"] stroke=@render[$"{function.options}aspect-stroke"]>
                 <circle cx=@render[$"{function.fnStyle}:aspectX:I"] cy=@render[$"{function.fnStyle}:aspectY:I"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
@@ -182,7 +181,7 @@
                 <circle cx=@render[$"{function.fnStyle}:aspectX:R"] cy=@render[$"{function.fnStyle}:aspectY:R"] r=@render[$"{function.options}aspect-r"] fill=@render[$"{function.options}aspect-fill"] />
             </g>
         }
-        @if (render[$"{function.options}fn-path"] == "" || render[$"{function.options}fn-path"] is null) //modern background
+        @if (String.IsNullOrEmpty(render[$"{function.options}fn-path"])) //modern background
         {
             if (!isFnColor)
             {
