@@ -7,7 +7,7 @@
     <div>
         <button type="button" class="btn btn-FMI oi oi-reload" style="transform:scale(-1,1)" title=@Loc["FMI_RESET"] tabindex="26" @onclick=bFMI_reset></button>
         <button type="button" class="btn btn-FMI oi oi-media-step-forward" title=@Loc["FMI_STEP"] tabindex="26" @onclick=bFMI_step></button>
-        <button type="button" class="btn btn-FMI oi oi-media-play" title=@Loc["FMI_PLAY"] tabindex="26" @onclick=bFMI_start></button>
+        <button type="button" class=@checkForPlay() title=@Loc["FMI_PLAY"] tabindex="26" @onclick=bFMI_start></button>
     </div>
     <div class="float-right">
         <button type="button" class="btn btn-FMI oi oi-circle-check" title=@Loc["FMI_SHOW_ACTIVATED"] tabindex="26" @onclick=bFMI_wasActive></button>
@@ -93,6 +93,17 @@
             bFMI_play();
         }
     }
+    private string checkForPlay()
+    {
+        if (isPlaying)
+        {
+            return "btn btn-FMIp oi oi-media-stop";
+        }
+        else
+        {
+            return "btn btn-FMIp oi oi-media-play";
+        }
+    }
     private async void bFMI_play()
     {
         var checkCycle = bFMI_cycle();
@@ -104,6 +115,7 @@
                 foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
                 {
                     trackExitFunctions.Add(Exitfn.IDName);
+                    Exitfn.fmiHighlight = "exit-fill";
                 }
             }
         }
@@ -132,6 +144,7 @@
             foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
             {
                 trackExitFunctions.Add(Exitfn.IDName);
+                Exitfn.fmiHighlight = "exit-fill";
             }
         }
     }
@@ -258,7 +271,7 @@
                     if (check3 == 0 && checkOtoI > 0) //is Entry function (has no Input and has at least 1 Output going to other function Input)
                     {
                         fnBG.fmiType = "Entry";
-                        //if (fnBG.profileFn == "") fnBG.profileFn = "0";
+                        //if (fnBG.profileFn == "") fnBG.profileFn = "0"; // changed, blank FMI Profile is ok, will default
                         stateContainer.fmiMessage += $"Entry function <{fnBG.IDName}>\n";
                         ICycle0 += $"Entry function <{fnBG.IDName}> has been activated\n";
                         // if (enableTheLab) evaluate(iBG);

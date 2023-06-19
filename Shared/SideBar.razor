@@ -17,9 +17,7 @@
                     </Authorized>
                 </AuthorizeView>
             </div>
-            <div class="d-flex">
-                <textarea id="fnNameText" title=@Loc["NAME_FN"] tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
-            </div>
+            <textarea id="fnNameText" title=@Loc["NAME_FN"] tabindex="4" disabled=@stateContainer.isDisabled value=@stateContainer.fnName @onchange="FnNameChange" />
         </div>
         <div class="d-flex pt-2">
             <div class="d-flex flex-column align-items-center">
@@ -71,9 +69,7 @@
                 GetNodesI = stateContainer.aspectsList.FindAll(x => x.Type == "Input" && x.FunctionIDNr == stateContainer.selectedFn);
                 if (GetNodesI.Count > 0)
                 {
-                    <div class="d-flex">
-                        <textarea @ref=GetNodesI[0].elementReference tabindex="9" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onblur=@(() => AspectBlank("Input", GetNodesI[0].IDNr)) />
-                    </div>
+                    <textarea @ref=GetNodesI[0].elementReference tabindex="9" class=@(GetNodesI[0].Orphan=="true"?"aspect-orphan":"") value=@GetNodesI[0].IDName @onchange=@((e) => AspectChange(e, "Input", GetNodesI[0].IDNr)) @onblur=@(() => AspectBlank("Input", GetNodesI[0].IDNr)) />
                 }
             }
             else

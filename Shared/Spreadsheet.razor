@@ -13,10 +13,10 @@
         <button class="btn btn-menu oi oi-document ml-2" title=@Loc["S_SAVE_COUPLING"] @onclick=saveCouplings></button>
     </div>
     <QuickGrid @ref="thisGrid" Items=@FilteredFunctions Theme="fmv">
-        <TemplateColumn Title="IDNr" SortBy="@sortByIDNr" Align="Align.End" IsDefaultSortColumn="true">
+        <TemplateColumn Title="IDNr" SortBy="@sortByIDNr" Align="Align.End" IsDefaultSortColumn="true" >
             <a class="@SelectRow(context.IDNr, context.fmiHighlight)" @onclick=@((e) => selectGrid(context.IDNr, context.IDName))>@context.IDNr</a>
         </TemplateColumn>
-        <TemplateColumn Title="IDName" Class="search" SortBy="@sortByIDName">
+        <TemplateColumn Title="IDName" Class=@($"search fn-idname{ShowNameFiltered()}") SortBy="@sortByIDName">
             <ColumnOptions>
                 <div class="search-box">
                     <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
@@ -37,7 +37,7 @@
         }
         @if (stateContainer.showAspects)
         {
-            <TemplateColumn Title="O" Class="show-aspects search">
+            <TemplateColumn Title="O" Class=@($"show-aspects search{ShowAspectFiltered()}")>
                 <ColumnOptions>
                     <div class="search-box">
                         <input type="search" autofocus @bind="aspectFilter" @bind:event="oninput" placeholder=@Loc["SEARCH_CONTAINS"] />
@@ -286,5 +286,27 @@
             stateContainer.fileName.Replace(".xfmv", "-couplings.csv"),
             saveCsv
         );
+    }
+    private string ShowNameFiltered()
+    {
+        if (String.IsNullOrEmpty(nameFilter) && String.IsNullOrEmpty(aspectFilter))
+        {
+            return "";
+        }
+        else
+        {
+            return " show-selected";
+        }
+    }
+    private string ShowAspectFiltered()
+    {
+        if (String.IsNullOrEmpty(aspectFilter))
+        {
+            return "";
+        }
+        else
+        {
+            return " show-selected";
+        }
     }
 }

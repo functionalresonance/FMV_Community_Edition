@@ -14,18 +14,21 @@
     ::deep thead .show-fmiprofile {
         background-color: rgb(141, 180, 226, 0.75);
     }
+    ::deep thead .show-metadata {
+        background-color: rgb(180, 141, 226, 0.75);
+    }
     ::deep thead .show-selected {
         background-color: rgb(255, 216, 0, 0.75);
     }
 ::deep tbody {
     border: thin solid grey;
 }
-/* Assign default width to Function label column 
-::deep thead .fn-label {
-    width: 20rem;
-}*/
+/* Assign default width to Function label column */
+::deep thead .fn-idname {
+    min-width: 15rem;
+}
 /* Stop Function label text from wrapping, and truncate with ellipsis 
-::deep tbody .fn-label {
+::deep tbody .fn-idname {
     white-space: normal;
     overflow: visible;
     max-width: 0;
@@ -40,7 +43,7 @@
     padding-right: 0.25rem;
 }
 ::deep td {
-    border-right: thin solid grey;
+    border: thin solid grey;
     padding-left: 0.25rem;
     padding-right: 0.25rem;
 }
@@ -48,10 +51,10 @@
 ::deep tr {
     height: 1.8rem;
 }
-/* Subtle stripe effect */
+    /* Subtle stripe effect 
 ::deep tr:nth-child(even) {
     background: rgb(180, 200, 226, 0.40);
-}
+}*/
     ::deep tr:has(.select-row) {
         background: rgb(255, 216, 0, 0.5);
     }
@@ -70,6 +73,10 @@
 /* Magnifying glass */
 ::deep .search .col-options-button {
     margin-right: 0.25rem;
+}
+::deep .eq-font {
+    font-size: smaller;
+    font-family: 'PT Sans Caption', sans-serif;
 }
 .search-box input {
     border: thin solid grey;
@@ -101,6 +108,9 @@ label {
 }
 .show-fmiprofile {
     background: rgb(141, 180, 226, 0.75);
+}
+.show-metadata {
+    background: rgb(180, 141, 226, 0.75);
 }
 a {
     cursor: pointer;
