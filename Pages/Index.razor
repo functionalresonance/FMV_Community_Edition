@@ -31,7 +31,7 @@
     }
     @if (stateContainer.spreadsheetVisible != 2)
     {
-        <div class="main-visualiser @(stateContainer.spreadsheetVisible==1?"main-half":"")" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
+        <div id="Main-Visualiser" class="main-visualiser @(stateContainer.spreadsheetVisible==1?"main-half":"")" touch-action=@stateContainer.touchAction @onkeydown=NextFn tabindex="0">
             @if (stateContainer.inputDropStatus == "file-input-zone-drop")
             {
                 <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" title=@Loc["OPEN_TOOLTIP"] /></div>

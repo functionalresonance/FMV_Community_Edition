@@ -176,7 +176,7 @@
     {
         return@<textarea></textarea>;
     }
-    private void selectGrid(string IDNr, string label)
+    private async void selectGrid(string IDNr, string label)
     {
         if (IDNr is not null)
         {
@@ -190,7 +190,8 @@
                 stateContainer.selectedFn = IDNr;
                 stateContainer.fnName = label;
                 stateContainer.isDisabled = false;
-                refreshParent.InvokeAsync();
+                await refreshParent.InvokeAsync();
+                await JSRuntime.InvokeVoidAsync("focusInput", "Main-Visualiser");
             }
         }
     }

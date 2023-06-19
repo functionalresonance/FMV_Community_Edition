@@ -24,6 +24,10 @@ namespace FMV_Standard.Shared
             }
             set
             {
+                if (selectedFunction is not null)
+                {
+                    selectedFunction.fnClass = "fn-point";
+                }
                 _selectedFn = value;
                 if (functionList is not null)
                 {
@@ -35,7 +39,7 @@ namespace FMV_Standard.Shared
                 }
                 if (_selectedFn != "-1" && selectedFunction is not null)
                 {
-                    selectedFunction!.fnClass = "fn-hover";
+                    selectedFunction.fnClass = "fn-hover";
                 }
                 else
                 {
