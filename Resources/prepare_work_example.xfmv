@@ -1,0 +1,275 @@
+<?xml version="1.0" standalone="yes"?>
+<FM>
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="" tracer_p="">
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="42.67" y="102" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>0</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Supply scaffold</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="224.67" y="33.33" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>1</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Logistic support</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="164.67" y="134" isInput="true" Kt="" Kp="">
+      <IDNr>2</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Prepare work</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="356" y="99.33" isInput="true" Kt="" Kp="">
+      <IDNr>3</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Move mobile scaffold</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="502" y="116.67" isInput="true" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>4</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Resume work</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="85.33" y="212.67" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>5</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Prepare operation</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="75.33" y="315.33" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>6</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Prepare scaffold</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="265.33" y="208" isInput="true" Kt="" Kp="">
+      <IDNr>7</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Tilt mobile scaffold</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="309.33" y="346" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>8</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Human resources</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="442" y="240" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>9</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Manage site activities</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="193.33" y="362" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>10</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Check working area</IDName>
+    </Function>
+  </Functions>
+  <Aspects scaleFunction="1" scaleAspect="1" scaleZoom="1.5" Enhanced="true" WebEnhanced="notupdated">
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="0" toFn="2" notGroup="true">
+      <Name>0|sso|2|I</Name>
+      <Curve>136.17|152|170.67|184|162.05|184|144.8|152|153.42|168</Curve>
+      <Curve2>M 170.67 184 Q 162.05 184 153.42 168 Q 144.8 152 136.17 152</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="2" toFn="3" notGroup="true">
+      <Name>2|pwo|3|I</Name>
+      <Curve>258.17|184|362|149.33|336.04|149.33|284.13|184|310.09|166.67</Curve>
+      <Curve2>M 362 149.33 Q 336.04 149.33 310.09 166.67 Q 284.13 184 258.17 184</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="2" toFn="7" notGroup="true">
+      <Name>2|pwo|7|I</Name>
+      <Curve>258.17|184|271.33|258|268.04|258|261.46|184|264.75|221</Curve>
+      <Curve2>M 271.33 258 Q 268.04 258 264.75 221 Q 261.46 184 258.17 184</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="5" toFn="7" notGroup="true">
+      <Name>5|poo|7|P</Name>
+      <Curve>178.83|262.67|293.33|296|236.08|296|207.46|262.67|221.77|279.34</Curve>
+      <Curve2>M 293.33 296 Q 236.08 296 221.77 279.34 Q 207.46 262.67 178.83 262.67</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="6" toFn="7" notGroup="true">
+      <Name>6|pso|7|P</Name>
+      <Curve>168.83|365.33|293.33|296|262.21|330.67|199.96|365.33|231.08|348</Curve>
+      <Curve2>M 293.33 296 Q 262.21 330.67 231.08 348 Q 199.96 365.33 168.83 365.33</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="10" toFn="7" notGroup="true">
+      <Name>10|cwao|7|P</Name>
+      <Curve>286.83|412|293.33|296|291.71|354|288.46|412|290.08|383</Curve>
+      <Curve2>M 293.33 296 Q 291.71 354 290.08 383 Q 288.46 412 286.83 412</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="8" toFn="7" notGroup="true">
+      <Name>8|hro|7|R</Name>
+      <Curve>402.83|396|336.83|296|389.83|296|422.83|346|406.33|321</Curve>
+      <Curve2>M 336.83 296 Q 389.83 296 406.33 321 Q 422.83 346 402.83 396</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="1" toFn="7" notGroup="true">
+      <Name>1|lso|7|C</Name>
+      <Curve>318.17|83.33|336.83|220|336.83|151.67|327.5|83.33|332.17|117.5</Curve>
+      <Curve2>M 336.83 220 Q 336.83 151.67 332.17 117.5 Q 327.5 83.33 318.17 83.33</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="1" toFn="3" notGroup="true">
+      <Name>1|lso|3|C</Name>
+      <Curve>318.17|83.33|427.5|111.33|427.5|97.33|372.84|83.33|400.17|90.33</Curve>
+      <Curve2>M 427.5 111.33 Q 427.5 97.33 400.17 90.33 Q 372.84 83.33 318.17 83.33</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="9" toFn="3" notGroup="true">
+      <Name>9|msao|3|P</Name>
+      <Curve>535.5|290|384|187.33|364|213|555.5|213|459.75|213</Curve>
+      <Curve2>M 384 187.33 Q 364 213 459.75 213 Q 555.5 213 535.5 290</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="7" toFn="3" notGroup="true">
+      <Name>7|tmso|3|P</Name>
+      <Curve>358.83|258|384|187.33|377.71|222.67|365.12|258|371.42|240.33</Curve>
+      <Curve2>M 384 187.33 Q 377.71 222.67 371.42 240.33 Q 365.12 258 358.83 258</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="3" toFn="4" notGroup="true">
+      <Name>3|mmso|4|I</Name>
+      <Curve>449.5|149.33|508|166.67|493.38|166.67|464.13|149.33|478.75|158</Curve>
+      <Curve2>M 508 166.67 Q 493.38 166.67 478.75 158 Q 464.13 149.33 449.5 149.33</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="8" toFn="3" notGroup="true">
+      <Name>8|hro|3|R</Name>
+      <Curve>402.83|396|427.5|187.33|427.5|291.67|415.17|396|421.33|343.83</Curve>
+      <Curve2>M 427.5 187.33 Q 427.5 291.67 421.33 343.83 Q 415.17 396 402.83 396</Curve2>
+    </Aspect>
+  </Aspects>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>lso</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>sso</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>pwo</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>mmso</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>poo</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>pso</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>tmso</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>hro</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>msao</IDName>
+      <FunctionIDNr>9</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>cwao</IDName>
+      <FunctionIDNr>10</FunctionIDNr>
+      <Description/>
+    </Output>
+  </Outputs>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>sso</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>pwo</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>pwo</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>mmso</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+      <Description/>
+    </Input>
+  </Inputs>
+  <Preconditions>
+    <Precondition orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>poo</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>pso</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>cwao</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>msao</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>tmso</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Precondition>
+  </Preconditions>
+  <Resources>
+    <Resource orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>hro</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>hro</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Resource>
+  </Resources>
+  <Controls>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>lso</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Control>
+    <Control orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>lso</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Control>
+  </Controls>
+</FM>

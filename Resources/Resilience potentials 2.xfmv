@@ -1,0 +1,256 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,0,2,0">
+  <Functions colour_t0="-1" colour_t1="-0.75" colour_t2="-0.5" colour_t3="-0.25" colour_t4="0" c_t0_value="0x40cfff" c_t2_value="0xFFFF00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="OutputDisplay" tracer_p="">
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="13.3" y="39.20000000000002" Kt="" Kp="" Kdt="0" Kdp="0" style="grey" color="8618883" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" profileFn="5">
+      <IDNr>0</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To cause an event</IDName>
+      <metadata>
+        <OutputDisplay>-1</OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="368.7" y="429.20000000000005" style="grey" color="8618883" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" profileFn="0">
+      <IDNr>1</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To have a planned response</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="588.2" y="392.20000000000005" style="grey" color="8618883" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="None" profileT="All" profileFn="0">
+      <IDNr>2</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To Provide the Resources needed</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="168.5" y="199.55" style="custom" color="65535" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="None" profileFn="0">
+      <IDNr>3</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To Monitor</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="395.2" y="287.80000000000007" style="purple" color="9466048" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" profileFn="0">
+      <IDNr>4</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To Learn</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="547" y="211.55000000000004" style="red" color="15007744" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" profileFn="0">
+      <IDNr>5</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To Anticipate</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="727.7000122070313" y="62.56666361490886" style="green" color="1555713" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="None" profileT="All" profileFn="0">
+      <IDNr>6</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To Respond</IDName>
+      <metadata>
+        <OutputDisplay active="true" equation="Aavg_OutputDisplay"></OutputDisplay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="931.7" y="158.85" style="custom" color="16711935" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" profileFn="0">
+      <IDNr>7</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To Act</IDName>
+      <metadata/>
+    </Function>
+  </Functions>
+  <Controls>
+    <Control orphan="">
+      <IDNr>1</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Control>
+    <Control orphan="">
+      <IDNr>2</IDNr>
+      <IDName>Better Predicted Response</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Control>
+  </Controls>
+  <Inputs>
+    <Input orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Planned Response</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>0</IDNr>
+      <IDName>External Events</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Monitored Situation</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Monitored Situation</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>3</IDNr>
+      <IDName>Action command</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>4</IDNr>
+      <IDName>Monitored Situation</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>5</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>6</IDNr>
+      <IDName>External Events</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Input>
+    <Input orphan="">
+      <IDNr>7</IDNr>
+      <IDName>Alert</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Input>
+  </Inputs>
+  <Outputs>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>External Events</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Planned Response</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Resources needed</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Monitored Situation</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>0</IDNr>
+      <IDName>Better Predicted Response</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>1</IDNr>
+      <IDName>Action command</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>2</IDNr>
+      <IDName>Alert</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="">
+      <IDNr>3</IDNr>
+      <IDName>Monitoring schedule</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+  </Outputs>
+  <Preconditions/>
+  <Resources>
+    <Resource orphan="">
+      <IDNr>1</IDNr>
+      <IDName>Resources needed</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Resource>
+    <Resource orphan="">
+      <IDNr>2</IDNr>
+      <IDName>Action command</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Resource>
+  </Resources>
+  <Times>
+    <Time orphan="">
+      <IDNr>1</IDNr>
+      <IDName>Monitoring schedule</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Time>
+  </Times>
+  <Playbacks>
+    <Playback type="0">4</Playback>
+    <Playback type="0">3</Playback>
+    <Playback type="2">END</Playback>
+  </Playbacks>
+  <Aspects scaleFunction="1" scaleAspect="1" scaleZoom="1.5" Enhanced="true">
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="0" toFn="3">
+      <Name>0|External Events|3|I</Name>
+      <Curve>106.800|89.200|174.500|249.550|157.575|249.550|123.725|89.200|140.650|169.375</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="0" toFn="6">
+      <Name>0|External Events|6|I</Name>
+      <Curve>106.800|89.200|733.700|112.550|576.975|112.550|263.525|89.200|420.250|100.875</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="1" toFn="2">
+      <Name>1|Planned Response|2|I</Name>
+      <Curve>462.200|479.200|594.200|442.200|561.200|442.200|495.200|479.200|528.200|460.700</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="2" toFn="6">
+      <Name>2|Resources needed|6|R</Name>
+      <Curve>681.700|442.200|799.200|150.550|799.200|296.375|740.450|442.200|769.825|369.287</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="1">
+      <Name>3|Monitored Situation|1|I</Name>
+      <Curve>262.000|249.550|374.700|479.200|346.525|479.200|290.175|249.550|318.350|364.375</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="4">
+      <Name>3|Monitored Situation|4|I</Name>
+      <Curve>262.000|249.550|401.200|337.800|366.400|337.800|296.800|249.550|331.600|293.675</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="5">
+      <Name>3|Monitored Situation|5|I</Name>
+      <Curve>262.000|249.550|553.000|261.550|480.250|261.550|334.750|249.550|407.500|255.550</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="6">
+      <Name>3|Alert|6|I</Name>
+      <Curve>262.000|249.550|733.700|112.550|615.775|112.550|379.925|249.550|497.850|181.050</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="4" toFn="2">
+      <Name>4|Lessons learned|2|C</Name>
+      <Curve>488.700|337.800|659.700|404.200|659.700|371.000|574.200|337.800|616.950|354.400</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="4" toFn="5">
+      <Name>4|Lessons learned|5|I</Name>
+      <Curve>488.700|337.800|553.000|261.550|536.925|261.550|504.775|337.800|520.850|299.675</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="4" toFn="3">
+      <Name>4|Monitoring schedule|3|T</Name>
+      <Curve>488.700|337.800|196.500|211.550|196.500|191.550|508.700|191.550|269.550|191.550</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="5" toFn="6">
+      <Name>5|Better Predicted Response|6|C</Name>
+      <Curve>640.500|261.550|799.200|74.550|799.200|54.550|660.500|54.550|759.525|54.550</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="6" toFn="4">
+      <Name>6|Action command|4|R</Name>
+      <Curve>821.200|112.550|466.700|375.800|663.950|375.800|841.200|244.175|752.575|309.987</Curve>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="6" toFn="7">
+      <Name>6|Action command|7|I</Name>
+      <Curve>821.200|112.550|937.700|208.850|908.575|208.850|850.325|112.550|879.450|160.700</Curve>
+    </Aspect>
+  </Aspects>
+</FM>

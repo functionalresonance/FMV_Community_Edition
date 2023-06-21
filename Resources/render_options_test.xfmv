@@ -1,0 +1,131 @@
+<?xml version="1.0" standalone="yes"?>
+<FM>
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="" tracer_p="">
+    <Function fnStyle="0" orphans="0" x="30.45" y="126.94" style="" color="" Tp="-1" Pp="-1" Kt="" Kp="" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" isInput="false">
+      <IDNr>0</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>0</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" x="23.03" y="11.22" style="custom" color="16777215" Kt="" Kp="" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" isInput="true">
+      <IDNr>1</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>FRAM</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" x="175.27" y="43.54" Tp="-1" Pp="-1" Kt="" Kp="" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" isInput="true">
+      <IDNr>2</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>2</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="59" x="305.34" y="15.33" style="custom" color="8388607" Kt="" Kp="" Tp="0" Pp="-1" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" isInput="true">
+      <IDNr>3</IDNr>
+      <FunctionType>1</FunctionType>
+      <IDName>3</IDName>
+    </Function>
+    <Function fnStyle="0" orphans="0" x="173.37" y="144.69" style="custom" color="16511" Tp="-1" Pp="-1" Kt="" Kp="" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" isInput="false">
+      <IDNr>4</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>4</IDName>
+    </Function>
+  </Functions>
+  <Aspects scaleFunction="2.7" scaleAspect="1" scaleZoom="2.5" Enhanced="true" WebEnhanced="notupdated">
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="3" notGroup="true">
+      <Name>4|p|3|P</Name>
+      <Curve>266.87|194.69|333.34|103.33|316.72|149.01|283.49|194.69|300.11|171.85</Curve>
+      <Curve2>M 333.34 103.33 Q 316.72 149.01 300.11 171.85 Q 283.49 194.69 266.87 194.69</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="0" toFn="1" notGroup="true">
+      <Name>0|potential|1|I</Name>
+      <Curve>123.95|176.94|29.03|61.22|9.03|119.08|143.95|119.08|76.49|119.08</Curve>
+      <Curve2>M 29.03 61.22 Q 9.03 119.08 76.49 119.08 Q 143.95 119.08 123.95 176.94</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="1" toFn="2" notGroup="true">
+      <Name>1|coupling|2|I</Name>
+      <Curve>116.53|61.22|181.27|93.54|165.09|93.54|132.72|61.22|148.9|77.38</Curve>
+      <Curve2>M 181.27 93.54 Q 165.09 93.54 148.9 77.38 Q 132.72 61.22 116.53 61.22</Curve2>
+    </Aspect>
+  </Aspects>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>potential</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>coupling</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="true">
+      <IDNr>2</IDNr>
+      <IDName>o</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>p</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+      <Description/>
+    </Output>
+  </Outputs>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>potential</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>coupling</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="true">
+      <IDNr>2</IDNr>
+      <IDName>i</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Input>
+  </Inputs>
+  <Times>
+    <Time orphan="true">
+      <IDNr>0</IDNr>
+      <IDName>t</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Time>
+  </Times>
+  <Controls>
+    <Control orphan="true">
+      <IDNr>0</IDNr>
+      <IDName>c</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Control>
+  </Controls>
+  <Resources>
+    <Resource orphan="true">
+      <IDNr>0</IDNr>
+      <IDName>r</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Resource>
+  </Resources>
+  <Preconditions>
+    <Precondition orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>p</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Precondition>
+  </Preconditions>
+  <Playbacks>
+    <Playback type="0">1</Playback>
+    <Playback type="1" from="1" to="2" Nr="I">1|coupling|2|I</Playback>
+    <Playback type="0">2</Playback>
+    <Playback type="2">END</Playback>
+  </Playbacks>
+</FM>

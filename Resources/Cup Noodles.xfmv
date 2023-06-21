@@ -1,0 +1,264 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,0,2,0">
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="" tracer_p="">
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="92.05" y="334.5" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="false" Kt="" Kp="">
+      <IDNr>0</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To partially open lid</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="272.1" y="384.85" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="false" Kt="" Kp="">
+      <IDNr>1</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To make preparations</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="36.7" y="177.05" style="white" color="16777215" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="false" Kt="" Kp="">
+      <IDNr>2</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To boil water</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="127.7" y="21.75" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="false" Kt="" Kp="">
+      <IDNr>3</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To read instructions</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="233.5" y="188.85" profileI="Any" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>4</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To add boiling water until fill mark</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="386.8" y="263.55" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>5</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To close and weigh down lid</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="543.45" y="109.1" profileI="Any" profileP="All" profileR="All" profileC="All" profileT="None" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>6</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To wait until tender</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="576.05" y="310.15" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>7</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove lid</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="713.4" y="209.1" profileP="None" profileI="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>8</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To stir carefuly</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="854.35" y="110.05" style="white" color="16777215" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" profileFn="" isInput="true" Kt="" Kp="">
+      <IDNr>9</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To enjoy cup noodles</IDName>
+    </Function>
+  </Functions>
+  <Aspects Enhanced="true" scaleFunction="1" scaleAspect="1" scaleZoom="1.7" WebEnhanced="notupdated">
+    <Aspect x="-0.000" y="0.001" directionX="to" directionY="to" notGroup="true">
+      <Name>0|Lid half open|4|P</Name>
+      <Curve>185.55|384.5|261.5|276.85|242.51|330.68|204.54|384.5|223.53|357.59</Curve>
+      <Curve2>M 261.5 276.85 Q 242.51 330.68 223.53 357.59 Q 204.54 384.5 185.55 384.5</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true">
+      <Name>1|Chopsticks|5|R</Name>
+      <Curve>365.6|434.85|458.3|351.55|458.3|393.2|411.95|434.85|435.13|414.03</Curve>
+      <Curve2>M 458.3 351.55 Q 458.3 393.2 435.13 414.03 Q 411.95 434.85 365.6 434.85</Curve2>
+    </Aspect>
+    <Aspect x="0.000" y="0.000" directionX="from" directionY="to" notGroup="true">
+      <Name>2|Boiling water|4|I</Name>
+      <Curve>130.2|227.05|239.5|238.85|212.18|238.85|157.53|227.05|184.85|232.95</Curve>
+      <Curve2>M 239.5 238.85 Q 212.18 238.85 184.85 232.95 Q 157.53 227.05 130.2 227.05</Curve2>
+    </Aspect>
+    <Aspect x="0.000" y="-0.000" directionX="from" directionY="to" notGroup="true">
+      <Name>3|Filling guidance|4|C</Name>
+      <Curve>221.2|71.75|305|200.85|305|136.3|263.1|71.75|284.05|104.03</Curve>
+      <Curve2>M 305 200.85 Q 305 136.3 284.05 104.03 Q 263.1 71.75 221.2 71.75</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="0.000" directionX="from" directionY="to" notGroup="true">
+      <Name>3|Filling guidance|5|C</Name>
+      <Curve>221.2|71.75|458.3|275.55|458.3|173.65|339.75|71.75|399.03|122.7</Curve>
+      <Curve2>M 458.3 275.55 Q 458.3 173.65 399.03 122.7 Q 339.75 71.75 221.2 71.75</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="-0.003" directionX="to" directionY="to" notGroup="true">
+      <Name>3|2-3 minutes|6|T</Name>
+      <Curve>221.2|71.75|571.45|121.1|483.89|96.43|308.76|71.75|396.33|84.09</Curve>
+      <Curve2>M 571.45 121.1 Q 483.89 96.43 396.33 84.09 Q 308.76 71.75 221.2 71.75</Curve2>
+    </Aspect>
+    <Aspect x="0.000" y="0.000" directionX="to" directionY="to" notGroup="true">
+      <Name>4|Noodles covered with boiling water|5|I</Name>
+      <Curve>327|238.85|392.8|313.55|376.35|313.55|343.45|238.85|359.9|276.2</Curve>
+      <Curve2>M 392.8 313.55 Q 376.35 313.55 359.9 276.2 Q 343.45 238.85 327 238.85</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="0.000" directionX="to" directionY="from" notGroup="true">
+      <Name>5|Lid is closed|6|I</Name>
+      <Curve>480.3|313.55|549.45|159.1|532.16|159.1|497.59|313.55|514.88|236.33</Curve>
+      <Curve2>M 549.45 159.1 Q 532.16 159.1 514.88 236.33 Q 497.59 313.55 480.3 313.55</Curve2>
+    </Aspect>
+    <Aspect x="0.000" y="-0.000" directionX="from" directionY="to" notGroup="true">
+      <Name>6|Tender noodles|7|I</Name>
+      <Curve>636.95|159.1|582.05|360.15|562.05|284.76|656.95|234.49|609.5|259.63</Curve>
+      <Curve2>M 582.05 360.15 Q 562.05 284.76 609.5 259.63 Q 656.95 234.49 636.95 159.1</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="0.000" directionX="to" directionY="to" notGroup="true">
+      <Name>6|Tender noodles|8|I</Name>
+      <Curve>636.95|159.1|719.4|259.1|698.79|259.1|657.56|159.1|678.18|209.1</Curve>
+      <Curve2>M 719.4 259.1 Q 698.79 259.1 678.18 209.1 Q 657.56 159.1 636.95 159.1</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="0.002" directionX="to" directionY="to" notGroup="true">
+      <Name>7|Lid removed|8|P</Name>
+      <Curve>669.55|360.15|741.4|297.1|723.44|328.63|687.51|360.15|705.48|344.39</Curve>
+      <Curve2>M 741.4 297.1 Q 723.44 328.63 705.48 344.39 Q 687.51 360.15 669.55 360.15</Curve2>
+    </Aspect>
+    <Aspect x="-0.000" y="0.000" directionX="to" directionY="from" notGroup="true">
+      <Name>8|Noodles are ready|9|I</Name>
+      <Curve>806.9|259.1|860.35|160.05|846.99|160.05|820.26|259.1|833.63|209.58</Curve>
+      <Curve2>M 860.35 160.05 Q 846.99 160.05 833.63 209.58 Q 820.26 259.1 806.9 259.1</Curve2>
+    </Aspect>
+  </Aspects>
+  <Controls>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Filling guidance</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Control>
+    <Control orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Filling guidance</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Control>
+  </Controls>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Boiling water</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Noodles covered with boiling water</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Lid is closed</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Tender noodles</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Tender noodles</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Noodles are ready</IDName>
+      <FunctionIDNr>9</FunctionIDNr>
+    </Input>
+  </Inputs>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lid half open</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Filling guidance</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Boiling water</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Noodles covered with boiling water</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>2-3 minutes</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Lid is closed</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>Tender noodles</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>Lid removed</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>Noodles are ready</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>Chopsticks</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Output>
+  </Outputs>
+  <Preconditions>
+    <Precondition orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lid half open</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Lid removed</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+    </Precondition>
+  </Preconditions>
+  <Resources>
+    <Resource orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Chopsticks</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Resource>
+  </Resources>
+  <Times>
+    <Time orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>2-3 minutes</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Time>
+  </Times>
+  <Playbacks>
+    <Playback type="0">3</Playback>
+    <Playback type="1" from="3" to="4" Nr="C">3|Filling guidance|4|C</Playback>
+    <Playback type="1" from="3" to="5" Nr="C">3|Filling guidance|5|C</Playback>
+    <Playback type="1" from="3" to="6" Nr="T">3|2-3 minutes|6|T</Playback>
+    <Playback type="0">0</Playback>
+    <Playback type="1" from="0" to="4" Nr="P">0|Lid half open|4|P</Playback>
+    <Playback type="0">1</Playback>
+    <Playback type="1" from="1" to="5" Nr="R">1|Chopsticks|5|R</Playback>
+    <Playback type="0">2</Playback>
+    <Playback type="1" from="2" to="4" Nr="I">2|Boiling water|4|I</Playback>
+    <Playback type="0">4</Playback>
+    <Playback type="1" from="4" to="5" Nr="I">4|Noodles covered with boiling water|5|I</Playback>
+    <Playback type="0">5</Playback>
+    <Playback type="1" from="5" to="6" Nr="I">5|Lid is closed|6|I</Playback>
+    <Playback type="0">6</Playback>
+    <Playback type="1" from="6" to="8" Nr="I">6|Tender noodles|8|I</Playback>
+    <Playback type="1" from="6" to="7" Nr="I">6|Tender noodles|7|I</Playback>
+    <Playback type="0">7</Playback>
+    <Playback type="1" from="7" to="8" Nr="P">7|Lid removed|8|P</Playback>
+    <Playback type="0">8</Playback>
+    <Playback type="1" from="8" to="9" Nr="I">8|Noodles are ready|9|I</Playback>
+    <Playback type="0">9</Playback>
+    <Playback type="2">END</Playback>
+  </Playbacks>
+</FM>

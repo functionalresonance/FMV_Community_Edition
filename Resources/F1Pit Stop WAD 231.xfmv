@@ -1,0 +1,1224 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,0,2,0">
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="Delay" tracer_p="Init">
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="640.6946635999177" y="226.3184027420847" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>0</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove the front left locking lug nut</IDName>
+      <Description>•4 off one for each wheel/corner of the car, use a pneumatic wrench ("tyre gun") to remove the car's single locking lug nut from each tyre then reinstall it on the new tyre.</Description>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1089.05" y="226.85" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>1</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To reinstall front left locking nut</IDName>
+      <Description>•4 off one for each wheel/corner of the car, use a pneumatic wrench ("tyre gun") to remove the car's single locking lug nut from each tyre then reinstall it on the new tyre.</Description>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="89.8" y="282.5" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="yellow" color="12236583" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>2</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To carry new tyres to pit lane</IDName>
+      <Description>(four each of wheel-off and wheel-on), two for each wheel/corner of the car, one to remove the old tyre from the car and one to put the new tyre in place.</Description>
+      <metadata>
+        <Init>0</Init>
+        <Tt>0</Tt>
+        <Tp>0</Tp>
+        <Delay>1</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="473.8" y="31.2" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="purple" color="9466048" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>3</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To stabilise the car</IDName>
+      <Description>•Two stabilisers stabilise the car on each side at the middle of the car</Description>
+      <metadata>
+        <Init>0</Init>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Tp>0.5</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="788.7" y="120.15" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="purple" color="9466048" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>4</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To adjust / replace / clean front wing</IDName>
+      <Description>•	The front wing men, if necessary, adjust the front wing angle (to provide more/less downforce) and/or change the entire front wing (in case of damage sustained during the race).</Description>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="406.5421479877674" y="147.7105415745786" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="custom" color="16711935" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>5</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To lift the front of the car</IDName>
+      <Description>oThe job of the front jack man is generally considered the most hazardous of the entire pit crew, as it requires standing directly in front of the car as it enters its pit box. Mechanics in this role have been injured in the past when drivers have overshot/failed to brake in time for their pit box.</Description>
+      <metadata>
+        <Init>0</Init>
+        <Tt active="true" equation="I29_Tt + Tp"></Tt>
+        <Tp>0.35</Tp>
+        <Delay active="true" equation="Amax_Tt>I9_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="408.3316216719778" y="763.4473684210526" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="custom" color="16711935" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>6</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To lift the rear of the car</IDName>
+      <Description>oBy contrast, due to the location of his duties directly behind the car, the rear jack man is the only team member not in his working position before the car enters its pit box.</Description>
+      <metadata>
+        <Tt active="true" equation="I29_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.35</Tp>
+        <Delay active="true" equation="Amax_Tt>I9_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="782.45" y="23.8" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="purple" color="9466048" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>7</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To adjust / replace / clean rear spoiler</IDName>
+      <Description>•The fire extinguisher man stands ready with a hand-held fire extinguisher to put out any fires that may occur during a stop, at least long enough for the pit crew and driver to evacuate.</Description>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1014.5" y="32.9" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="purple" color="9466048" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>8</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To spot the gaps</IDName>
+      <Description>2 spotters to keep an eye on Pit Lane Traffic</Description>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>1</Init>
+        <Tp>0.1</Tp>
+        <Tv>1</Tv>
+        <Delay>0</Delay>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="303.75" y="527.6" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="red" color="15007744" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>9</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To stop the car in the box</IDName>
+      <Description>Driver enters pit lane and stops</Description>
+      <metadata>
+        <Init>1</Init>
+        <Tt>0</Tt>
+        <Tp>0.1</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="9.35" y="399.4" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="false" profileFn="">
+      <IDNr>10</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To call in the car</IDName>
+      <Description>Box, box</Description>
+      <metadata>
+        <Init>0</Init>
+        <Tp>0</Tp>
+        <Tv>1</Tv>
+        <Delay>0</Delay>
+        <Tt>0</Tt>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="642.6447368421052" y="366.6473806280839" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>11</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To removr the front right lug</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="803.65" y="227.75" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>12</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove front left tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay active="true" equation="Amax_Tt>I0_Tt? 1 :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="809.65" y="366.1" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>13</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove front right tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp active="false" equation="">0.5</Tp>
+        <Delay active="true" equation="Amax_Tt>I11_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="950.1" y="368.95" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>14</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To put on new right front tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="943.2" y="228.1" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>15</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To put on new front left tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="646.7341983192846" y="632.6394492701484" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>16</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove rear right lug</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1088.05" y="373.55" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>17</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To reinstall front right locking nut</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="641.5630846525492" y="496.35003662109375" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>18</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove rear left lug</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="801.05" y="492.7" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>19</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove rear left tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay active="true" equation="Amax_Tt>I18_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="944.85" y="497.8" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>20</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To put on new left rear tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1092.2" y="492.95" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>21</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To reinstall left rear lug</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="805.65" y="634.65" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>22</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To remove right rear tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay active="true" equation="Amax_Tt>I16_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="955.3" y="633.65" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="green" color="1555713" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>23</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To put on new right rear tyre</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.5</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1102.55" y="632.6" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="blue" color="108251" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>24</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To reinstall right rear lug</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1239.6" y="762.7" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="custom" color="16711935" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>25</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To lower the rear of the car</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay active="true" equation="Amax_Tt>I23_Tt? 1 :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1186.35" y="122.6" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="custom" color="16711935" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>26</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To lower the front of the car</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.3</Tp>
+        <Delay active="true" equation="Amax_Tt>I15_Tt?1  :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1429.3421566611844" y="185.42891893888776" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="red" color="15007744" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>27</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To release the car</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>0</Init>
+        <Tp>0.2</Tp>
+        <Delay>0</Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1353.3052143297696" y="328.19211136667354" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="red" color="15007744" Kt="" Kp="" Kdt="0" Kdp="0" orphans="0" isInput="true" profileFn="">
+      <IDNr>28</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To check everything is OK</IDName>
+      <metadata>
+        <Tt active="true" equation="Amax_Tt + Tp"></Tt>
+        <Init>1</Init>
+        <Tp>0.3</Tp>
+        <Delay active="true" equation="Amax_Tt>I8_Tt? 1 :0"></Delay>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="104.04994201660156" y="523.6500244140625" style="custom" color="65535" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" isInput="true" profileFn="">
+      <IDNr>29</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To approach stop marks</IDName>
+      <metadata>
+        <Init>1</Init>
+        <Tp>0.2</Tp>
+        <Delay>1</Delay>
+        <Tt>0</Tt>
+        <Tv>1</Tv>
+      </metadata>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="176.19993591308594" y="20.40531198601974" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" style="grey" color="8618883" orphans="0" isInput="true" profileFn="">
+      <IDNr>30</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To standby with replacement jacks</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1336.25" y="577.35" style="purple" color="9466048" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" isInput="true" profileFn="">
+      <IDNr>31</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To automatically check release</IDName>
+    </Function>
+    <Function fnStyle="1" Tp="-1" Pp="-1" x="1525.4709729646381" y="390.89208341899655" Kt="" Kp="" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" orphans="0" isInput="true" profileFn="">
+      <IDNr>32</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>To show green light for release</IDName>
+    </Function>
+  </Functions>
+  <Controls>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Exit clear</IDName>
+      <FunctionIDNr>27</FunctionIDNr>
+    </Control>
+  </Controls>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>prepare pit lane</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>9</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Front left locking nut off</IDName>
+      <FunctionIDNr>12</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Front right lug off</IDName>
+      <FunctionIDNr>13</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Front right tyre off</IDName>
+      <FunctionIDNr>14</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>Front left tyre off</IDName>
+      <FunctionIDNr>15</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>New front left on</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>New front right on</IDName>
+      <FunctionIDNr>17</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>Rear left lug removed</IDName>
+      <FunctionIDNr>19</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>10</IDNr>
+      <IDName>Rear left tyre removed</IDName>
+      <FunctionIDNr>20</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>11</IDNr>
+      <IDName>New left rear tyre on</IDName>
+      <FunctionIDNr>21</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>12</IDNr>
+      <IDName>Rear right lug removed</IDName>
+      <FunctionIDNr>22</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>13</IDNr>
+      <IDName>Rear right tyre removed</IDName>
+      <FunctionIDNr>23</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>14</IDNr>
+      <IDName>New right rear tyre on</IDName>
+      <FunctionIDNr>24</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>15</IDNr>
+      <IDName>New front left on</IDName>
+      <FunctionIDNr>26</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>16</IDNr>
+      <IDName>New right rear tyre on</IDName>
+      <FunctionIDNr>25</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>17</IDNr>
+      <IDName>Car ready fro release</IDName>
+      <FunctionIDNr>27</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>18</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>19</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>20</IDNr>
+      <IDName>Monitor Gaps</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>21</IDNr>
+      <IDName>Car comes in</IDName>
+      <FunctionIDNr>29</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>22</IDNr>
+      <IDName>prepare pit lane</IDName>
+      <FunctionIDNr>30</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>23</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>24</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>25</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>26</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>11</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>27</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>18</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>28</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>16</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>29</IDNr>
+      <IDName>Front Lowered</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>30</IDNr>
+      <IDName>Rear lowered</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>31</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>32</IDNr>
+      <IDName>Release the car</IDName>
+      <FunctionIDNr>32</FunctionIDNr>
+    </Input>
+  </Inputs>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>prepare pit lane</IDName>
+      <FunctionIDNr>10</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Car comes in</IDName>
+      <FunctionIDNr>10</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>9</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Front of car lifted</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Front left locking nut off</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Front right lug off</IDName>
+      <FunctionIDNr>11</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>Front right tyre off</IDName>
+      <FunctionIDNr>13</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>Front left tyre off</IDName>
+      <FunctionIDNr>12</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>New front left on</IDName>
+      <FunctionIDNr>15</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>New front right on</IDName>
+      <FunctionIDNr>14</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>10</IDNr>
+      <IDName>Back of car lifted</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>11</IDNr>
+      <IDName>Rear left lug removed</IDName>
+      <FunctionIDNr>18</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>12</IDNr>
+      <IDName>Rear left tyre removed</IDName>
+      <FunctionIDNr>19</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>13</IDNr>
+      <IDName>New left rear tyre on</IDName>
+      <FunctionIDNr>20</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>14</IDNr>
+      <IDName>Rear right lug removed</IDName>
+      <FunctionIDNr>16</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>15</IDNr>
+      <IDName>Rear right tyre removed</IDName>
+      <FunctionIDNr>22</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>16</IDNr>
+      <IDName>New right rear tyre on</IDName>
+      <FunctionIDNr>23</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>17</IDNr>
+      <IDName>Car stabilised</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>18</IDNr>
+      <IDName>Correct tyres available</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>19</IDNr>
+      <IDName>Front left OK</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>20</IDNr>
+      <IDName>Front right OK</IDName>
+      <FunctionIDNr>17</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>21</IDNr>
+      <IDName>Rear left OK</IDName>
+      <FunctionIDNr>21</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>22</IDNr>
+      <IDName>Rear right OK</IDName>
+      <FunctionIDNr>24</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>23</IDNr>
+      <IDName>Rear lowered</IDName>
+      <FunctionIDNr>25</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>24</IDNr>
+      <IDName>No fire</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>25</IDNr>
+      <IDName>No nose damage</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>26</IDNr>
+      <IDName>Front Lowered</IDName>
+      <FunctionIDNr>26</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>27</IDNr>
+      <IDName>Exit clear</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>28</IDNr>
+      <IDName>Monitor Gaps</IDName>
+      <FunctionIDNr>10</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>29</IDNr>
+      <IDName>Car in box</IDName>
+      <FunctionIDNr>29</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>30</IDNr>
+      <IDName>Replacement jacks available</IDName>
+      <FunctionIDNr>30</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>31</IDNr>
+      <IDName>Auto check complete</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>32</IDNr>
+      <IDName>Car ready fro release</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>33</IDNr>
+      <IDName>Release the car</IDName>
+      <FunctionIDNr>27</FunctionIDNr>
+    </Output>
+  </Outputs>
+  <Preconditions>
+    <Precondition orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Car stabilised</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Correct tyres available</IDName>
+      <FunctionIDNr>15</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Correct tyres available</IDName>
+      <FunctionIDNr>14</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Correct tyres available</IDName>
+      <FunctionIDNr>20</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Correct tyres available</IDName>
+      <FunctionIDNr>23</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>No fire</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>No nose damage</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>Car stabilised</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>Back of car lifted</IDName>
+      <FunctionIDNr>19</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>Back of car lifted</IDName>
+      <FunctionIDNr>22</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>10</IDNr>
+      <IDName>Front of car lifted</IDName>
+      <FunctionIDNr>12</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>11</IDNr>
+      <IDName>Front of car lifted</IDName>
+      <FunctionIDNr>13</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>12</IDNr>
+      <IDName>Front left OK</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>13</IDNr>
+      <IDName>Front right OK</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>14</IDNr>
+      <IDName>Rear left OK</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>15</IDNr>
+      <IDName>Rear right OK</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>16</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>17</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>18</IDNr>
+      <IDName>Rear right OK</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>19</IDNr>
+      <IDName>Rear left OK</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>20</IDNr>
+      <IDName>Front right OK</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>21</IDNr>
+      <IDName>Front left OK</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>22</IDNr>
+      <IDName>Rear lowered</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>23</IDNr>
+      <IDName>Front Lowered</IDName>
+      <FunctionIDNr>31</FunctionIDNr>
+    </Precondition>
+  </Preconditions>
+  <Resources>
+    <Resource orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Replacement jacks available</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Replacement jacks available</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>18</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>16</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Auto check complete</IDName>
+      <FunctionIDNr>28</FunctionIDNr>
+    </Resource>
+    <Resource orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>Car stops</IDName>
+      <FunctionIDNr>11</FunctionIDNr>
+    </Resource>
+  </Resources>
+  <Times/>
+  <Aspects scaleFunction="1.4" scaleAspect="1" scaleZoom="0.95" Enhanced="true" WebEnhanced="notupdated">
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="0" toFn="12">
+      <Name>0|Front left locking nut off|12|I</Name>
+      <Curve>734.19|276.32|809.65|277.75|790.79|277.75|753.06|276.32|771.92|277.03</Curve>
+      <Curve2>M 809.65 277.75 Q 790.79 277.75 771.92 277.03 Q 753.06 276.32 734.19 276.32</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="2" toFn="14">
+      <Name>2|Correct tyres available|14|P</Name>
+      <Curve>183.3|332.5|978.1|456.95|580.7|456.95|382|332.5|481.35|394.73</Curve>
+      <Curve2>M 978.1 456.95 Q 580.7 456.95 481.35 394.73 Q 382 332.5 183.3 332.5</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="2" toFn="15">
+      <Name>2|Correct tyres available|15|P</Name>
+      <Curve>183.3|332.5|971.2|316.1|774.23|324.3|380.28|332.5|577.25|328.4</Curve>
+      <Curve2>M 971.2 316.1 Q 774.23 324.3 577.25 328.4 Q 380.28 332.5 183.3 332.5</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="2" toFn="20">
+      <Name>2|Correct tyres available|20|P</Name>
+      <Curve>183.3|332.5|972.85|585.8|578.08|585.8|380.69|332.5|479.38|459.15</Curve>
+      <Curve2>M 972.85 585.8 Q 578.08 585.8 479.38 459.15 Q 380.69 332.5 183.3 332.5</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="2" toFn="23">
+      <Name>2|Correct tyres available|23|P</Name>
+      <Curve>183.3|332.5|983.3|721.65|583.3|721.65|383.3|332.5|483.3|527.08</Curve>
+      <Curve2>M 983.3 721.65 Q 583.3 721.65 483.3 527.08 Q 383.3 332.5 183.3 332.5</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="5">
+      <Name>3|Car stabilised|5|P</Name>
+      <Curve>567.3|81.2|434.54|235.71|434.54|255.71|587.3|255.71|467.73|255.71</Curve>
+      <Curve2>M 434.54 235.71 Q 434.54 255.71 467.73 255.71 Q 587.3 255.71 567.3 81.2</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="3" toFn="6">
+      <Name>3|Car stabilised|6|P</Name>
+      <Curve>567.3|81.2|436.33|851.45|436.33|871.45|587.3|871.45|469.07|871.45</Curve>
+      <Curve2>M 436.33 851.45 Q 436.33 871.45 469.07 871.45 Q 587.3 871.45 567.3 81.2</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="4" toFn="28">
+      <Name>4|No nose damage|28|P</Name>
+      <Curve>882.2|170.15|1381.31|416.19|1131.75|416.19|1006.98|170.15|1069.36|293.17</Curve>
+      <Curve2>M 1381.31 416.19 Q 1131.75 416.19 1069.36 293.17 Q 1006.98 170.15 882.2 170.15</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="7" toFn="28">
+      <Name>7|No fire|28|P</Name>
+      <Curve>875.95|73.8|1381.31|416.19|1128.63|416.19|1002.29|73.8|1065.46|245</Curve>
+      <Curve2>M 1381.31 416.19 Q 1128.63 416.19 1065.46 245 Q 1002.29 73.8 875.95 73.8</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="3">
+      <Name>9|Car stops|3|I</Name>
+      <Curve>397.25|577.6|479.8|81.2|459.16|81.2|417.89|577.6|438.53|329.4</Curve>
+      <Curve2>M 479.8 81.2 Q 459.16 81.2 438.53 329.4 Q 417.89 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="4">
+      <Name>9|Car stops|4|I</Name>
+      <Curve>397.25|577.6|794.7|170.15|695.34|170.15|496.61|577.6|595.98|373.88</Curve>
+      <Curve2>M 794.7 170.15 Q 695.34 170.15 595.98 373.88 Q 496.61 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="7">
+      <Name>9|Car stops|7|I</Name>
+      <Curve>397.25|577.6|788.45|73.8|690.65|73.8|495.05|577.6|592.85|325.7</Curve>
+      <Curve2>M 788.45 73.8 Q 690.65 73.8 592.85 325.7 Q 495.05 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="10" toFn="2">
+      <Name>10|prepare pit lane|2|I</Name>
+      <Curve>102.85|449.4|95.8|332.5|75.8|390.95|122.85|390.95|99.33|390.95</Curve>
+      <Curve2>M 95.8 332.5 Q 75.8 390.95 99.33 390.95 Q 122.85 390.95 102.85 449.4</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="11" toFn="13">
+      <Name>11|Front right lug off|13|I</Name>
+      <Curve>736.14|416.65|815.65|416.1|795.77|416.1|756.02|416.65|775.9|416.37</Curve>
+      <Curve2>M 815.65 416.1 Q 795.77 416.1 775.9 416.37 Q 756.02 416.65 736.14 416.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="12" toFn="15">
+      <Name>12|Front left tyre off|15|I</Name>
+      <Curve>897.15|277.75|949.2|278.1|936.19|278.1|910.16|277.75|923.18|277.93</Curve>
+      <Curve2>M 949.2 278.1 Q 936.19 278.1 923.18 277.93 Q 910.16 277.75 897.15 277.75</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="13" toFn="14">
+      <Name>13|Front right tyre off|14|I</Name>
+      <Curve>903.15|416.1|956.1|418.95|942.86|418.95|916.39|416.1|929.63|417.53</Curve>
+      <Curve2>M 956.1 418.95 Q 942.86 418.95 929.63 417.53 Q 916.39 416.1 903.15 416.1</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="14" toFn="17">
+      <Name>14|New front right on|17|I</Name>
+      <Curve>1043.6|418.95|1094.05|423.55|1081.44|423.55|1056.21|418.95|1068.83|421.25</Curve>
+      <Curve2>M 1094.05 423.55 Q 1081.44 423.55 1068.83 421.25 Q 1056.21 418.95 1043.6 418.95</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="15" toFn="1">
+      <Name>15|New front left on|1|I</Name>
+      <Curve>1036.7|278.1|1095.05|276.85|1080.46|276.85|1051.29|278.1|1065.88|277.48</Curve>
+      <Curve2>M 1095.05 276.85 Q 1080.46 276.85 1065.88 277.48 Q 1051.29 278.1 1036.7 278.1</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="16" toFn="22">
+      <Name>16|Rear right lug removed|22|I</Name>
+      <Curve>740.23|682.64|811.65|684.65|793.8|684.65|758.09|682.64|775.94|683.64</Curve>
+      <Curve2>M 811.65 684.65 Q 793.8 684.65 775.94 683.64 Q 758.09 682.64 740.23 682.64</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="18" toFn="19">
+      <Name>18|Rear left lug removed|19|I</Name>
+      <Curve>735.06|546.35|807.05|542.7|789.05|542.7|753.06|546.35|771.06|544.53</Curve>
+      <Curve2>M 807.05 542.7 Q 789.05 542.7 771.06 544.53 Q 753.06 546.35 735.06 546.35</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="19" toFn="20">
+      <Name>19|Rear left tyre removed|20|I</Name>
+      <Curve>894.55|542.7|950.85|547.8|936.78|547.8|908.63|542.7|922.7|545.25</Curve>
+      <Curve2>M 950.85 547.8 Q 936.78 547.8 922.7 545.25 Q 908.63 542.7 894.55 542.7</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="20" toFn="21">
+      <Name>20|New left rear tyre on|21|I</Name>
+      <Curve>1038.35|547.8|1098.2|542.95|1083.24|542.95|1053.31|547.8|1068.28|545.38</Curve>
+      <Curve2>M 1098.2 542.95 Q 1083.24 542.95 1068.28 545.38 Q 1053.31 547.8 1038.35 547.8</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="22" toFn="23">
+      <Name>22|Rear right tyre removed|23|I</Name>
+      <Curve>899.15|684.65|961.3|683.65|945.76|683.65|914.69|684.65|930.23|684.15</Curve>
+      <Curve2>M 961.3 683.65 Q 945.76 683.65 930.23 684.15 Q 914.69 684.65 899.15 684.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="23" toFn="24">
+      <Name>23|New right rear tyre on|24|I</Name>
+      <Curve>1048.8|683.65|1108.55|682.6|1093.61|682.6|1063.74|683.65|1078.68|683.13</Curve>
+      <Curve2>M 1108.55 682.6 Q 1093.61 682.6 1078.68 683.13 Q 1063.74 683.65 1048.8 683.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="6" toFn="19">
+      <Name>6|Back of car lifted|19|P</Name>
+      <Curve>501.83|813.45|829.05|580.7|747.25|697.07|583.64|813.45|665.44|755.26</Curve>
+      <Curve2>M 829.05 580.7 Q 747.25 697.07 665.44 755.26 Q 583.64 813.45 501.83 813.45</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="6" toFn="22">
+      <Name>6|Back of car lifted|22|P</Name>
+      <Curve>501.83|813.45|833.65|722.65|750.7|768.05|584.79|813.45|667.74|790.75</Curve>
+      <Curve2>M 833.65 722.65 Q 750.7 768.05 667.74 790.75 Q 584.79 813.45 501.83 813.45</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="5" toFn="12">
+      <Name>5|Front of car lifted|12|P</Name>
+      <Curve>500.04|197.71|831.65|315.75|665.85|315.75|582.94|197.71|624.4|256.73</Curve>
+      <Curve2>M 831.65 315.75 Q 665.85 315.75 624.4 256.73 Q 582.94 197.71 500.04 197.71</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="5" toFn="13">
+      <Name>5|Front of car lifted|13|P</Name>
+      <Curve>500.04|197.71|837.65|454.1|668.85|454.1|584.44|197.71|626.65|325.91</Curve>
+      <Curve2>M 837.65 454.1 Q 668.85 454.1 626.65 325.91 Q 584.44 197.71 500.04 197.71</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="23" toFn="25">
+      <Name>23|New right rear tyre on|25|I</Name>
+      <Curve>1048.8|683.65|1245.6|812.7|1196.4|812.7|1098|683.65|1147.2|748.18</Curve>
+      <Curve2>M 1245.6 812.7 Q 1196.4 812.7 1147.2 748.18 Q 1098 683.65 1048.8 683.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="15" toFn="26">
+      <Name>15|New front left on|26|I</Name>
+      <Curve>1036.7|278.1|1192.35|172.6|1153.44|172.6|1075.61|278.1|1114.53|225.35</Curve>
+      <Curve2>M 1192.35 172.6 Q 1153.44 172.6 1114.53 225.35 Q 1075.61 278.1 1036.7 278.1</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="10" toFn="8">
+      <Name>10|Monitor Gaps|8|I</Name>
+      <Curve>102.85|449.4|1020.5|82.9|791.09|82.9|332.26|449.4|561.68|266.15</Curve>
+      <Curve2>M 1020.5 82.9 Q 791.09 82.9 561.68 266.15 Q 332.26 449.4 102.85 449.4</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="1" toFn="28">
+      <Name>1|Front left OK|28|P</Name>
+      <Curve>1182.55|276.85|1381.31|416.19|1281.93|416.19|1232.24|276.85|1257.08|346.52</Curve>
+      <Curve2>M 1381.31 416.19 Q 1281.93 416.19 1257.08 346.52 Q 1232.24 276.85 1182.55 276.85</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="17" toFn="28">
+      <Name>17|Front right OK|28|P</Name>
+      <Curve>1181.55|423.55|1381.31|416.19|1331.37|419.87|1231.49|423.55|1281.43|421.71</Curve>
+      <Curve2>M 1381.31 416.19 Q 1331.37 419.87 1281.43 421.71 Q 1231.49 423.55 1181.55 423.55</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="21" toFn="28">
+      <Name>21|Rear left OK|28|P</Name>
+      <Curve>1185.7|542.95|1381.31|416.19|1332.4|479.57|1234.6|542.95|1283.5|511.26</Curve>
+      <Curve2>M 1381.31 416.19 Q 1332.4 479.57 1283.5 511.26 Q 1234.6 542.95 1185.7 542.95</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="24" toFn="28">
+      <Name>24|Rear right OK|28|P</Name>
+      <Curve>1196.05|682.6|1381.31|416.19|1334.99|549.4|1242.36|682.6|1288.68|616</Curve>
+      <Curve2>M 1381.31 416.19 Q 1334.99 549.4 1288.68 616 Q 1242.36 682.6 1196.05 682.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="10" toFn="29">
+      <Name>10|Car comes in|29|I</Name>
+      <Curve>102.85|449.4|110.05|573.65|108.25|573.65|104.65|449.4|106.45|511.53</Curve>
+      <Curve2>M 110.05 573.65 Q 108.25 573.65 106.45 511.53 Q 104.65 449.4 102.85 449.4</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="9">
+      <Name>29|Car in box|9|I</Name>
+      <Curve>197.55|573.65|309.75|577.6|281.7|577.6|225.6|573.65|253.65|575.63</Curve>
+      <Curve2>M 309.75 577.6 Q 281.7 577.6 253.65 575.63 Q 225.6 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="10" toFn="30">
+      <Name>10|prepare pit lane|30|I</Name>
+      <Curve>102.85|449.4|182.2|70.41|162.36|70.41|122.69|449.4|142.52|259.9</Curve>
+      <Curve2>M 182.2 70.41 Q 162.36 70.41 142.52 259.9 Q 122.69 449.4 102.85 449.4</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="30" toFn="5">
+      <Name>30|Replacement jacks available|5|R</Name>
+      <Curve>269.7|70.41|478.04|235.71|478.04|255.71|289.7|255.71|425.96|255.71</Curve>
+      <Curve2>M 478.04 235.71 Q 478.04 255.71 425.96 255.71 Q 289.7 255.71 269.7 70.41</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="30" toFn="6">
+      <Name>30|Replacement jacks available|6|R</Name>
+      <Curve>269.7|70.41|479.83|851.45|479.83|871.45|289.7|871.45|427.3|871.45</Curve>
+      <Curve2>M 479.83 851.45 Q 479.83 871.45 427.3 871.45 Q 289.7 871.45 269.7 70.41</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="5">
+      <Name>29|Car in box|5|I</Name>
+      <Curve>197.55|573.65|412.54|197.71|358.79|197.71|251.3|573.65|305.05|385.68</Curve>
+      <Curve2>M 412.54 197.71 Q 358.79 197.71 305.05 385.68 Q 251.3 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="5">
+      <Name>9|Car stops|5|P</Name>
+      <Curve>397.25|577.6|434.54|235.71|425.22|406.66|406.57|577.6|415.9|492.13</Curve>
+      <Curve2>M 434.54 235.71 Q 425.22 406.66 415.9 492.13 Q 406.57 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="6">
+      <Name>9|Car stops|6|P</Name>
+      <Curve>397.25|577.6|436.33|851.45|416.79|851.45|407.02|577.6|411.91|714.52</Curve>
+      <Curve2>M 436.33 851.45 Q 416.79 851.45 411.91 714.52 Q 407.02 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="6">
+      <Name>29|Car in box|6|I</Name>
+      <Curve>197.55|573.65|414.33|813.45|360.14|813.45|251.75|573.65|305.94|693.55</Curve>
+      <Curve2>M 414.33 813.45 Q 360.14 813.45 305.94 693.55 Q 251.75 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="0">
+      <Name>29|Car in box|0|I</Name>
+      <Curve>197.55|573.65|646.69|276.32|534.41|276.32|309.84|573.65|422.12|424.98</Curve>
+      <Curve2>M 646.69 276.32 Q 534.41 276.32 422.12 424.98 Q 309.84 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="0">
+      <Name>9|Car stops|0|R</Name>
+      <Curve>397.25|577.6|712.19|314.32|712.19|445.96|554.72|577.6|633.46|511.78</Curve>
+      <Curve2>M 712.19 314.32 Q 712.19 445.96 633.46 511.78 Q 554.72 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="11">
+      <Name>29|Car in box|11|I</Name>
+      <Curve>197.55|573.65|648.64|416.65|535.87|416.65|310.32|573.65|423.1|495.15</Curve>
+      <Curve2>M 648.64 416.65 Q 535.87 416.65 423.1 495.15 Q 310.32 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="18">
+      <Name>29|Car in box|18|I</Name>
+      <Curve>197.55|573.65|647.56|546.35|535.06|546.35|310.05|573.65|422.56|560</Curve>
+      <Curve2>M 647.56 546.35 Q 535.06 546.35 422.56 560 Q 310.05 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="29" toFn="16">
+      <Name>29|Car in box|16|I</Name>
+      <Curve>197.55|573.65|652.73|682.64|538.94|682.64|311.35|573.65|425.14|628.14</Curve>
+      <Curve2>M 652.73 682.64 Q 538.94 682.64 425.14 628.14 Q 311.35 573.65 197.55 573.65</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="26" toFn="28">
+      <Name>26|Front Lowered|28|I</Name>
+      <Curve>1279.85|172.6|1359.31|378.19|1339.44|378.19|1299.71|172.6|1319.58|275.4</Curve>
+      <Curve2>M 1359.31 378.19 Q 1339.44 378.19 1319.58 275.4 Q 1299.71 172.6 1279.85 172.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="25" toFn="28">
+      <Name>25|Rear lowered|28|I</Name>
+      <Curve>1333.1|812.7|1359.31|378.19|1352.75|378.19|1339.65|812.7|1346.2|595.45</Curve>
+      <Curve2>M 1359.31 378.19 Q 1352.75 378.19 1346.2 595.45 Q 1339.65 812.7 1333.1 812.7</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="31">
+      <Name>9|Car stops|31|I</Name>
+      <Curve>397.25|577.6|1342.25|627.35|1106|627.35|633.5|577.6|869.75|602.48</Curve>
+      <Curve2>M 1342.25 627.35 Q 1106 627.35 869.75 602.48 Q 633.5 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="31" toFn="28">
+      <Name>31|Auto check complete|28|R</Name>
+      <Curve>1429.75|627.35|1424.81|416.19|1447.28|416.19|1449.75|521.77|1448.51|468.98</Curve>
+      <Curve2>M 1424.81 416.19 Q 1447.28 416.19 1448.51 468.98 Q 1449.75 521.77 1429.75 627.35</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="24" toFn="31">
+      <Name>24|Rear right OK|31|P</Name>
+      <Curve>1196.05|682.6|1364.25|665.35|1322.2|673.98|1238.1|682.6|1280.15|678.29</Curve>
+      <Curve2>M 1364.25 665.35 Q 1322.2 673.98 1280.15 678.29 Q 1238.1 682.6 1196.05 682.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="21" toFn="31">
+      <Name>21|Rear left OK|31|P</Name>
+      <Curve>1185.7|542.95|1364.25|665.35|1274.98|665.35|1230.34|542.95|1252.66|604.15</Curve>
+      <Curve2>M 1364.25 665.35 Q 1274.98 665.35 1252.66 604.15 Q 1230.34 542.95 1185.7 542.95</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="17" toFn="31">
+      <Name>17|Front right OK|31|P</Name>
+      <Curve>1181.55|423.55|1364.25|665.35|1272.9|665.35|1227.23|423.55|1250.06|544.45</Curve>
+      <Curve2>M 1364.25 665.35 Q 1272.9 665.35 1250.06 544.45 Q 1227.23 423.55 1181.55 423.55</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="1" toFn="31">
+      <Name>1|Front left OK|31|P</Name>
+      <Curve>1182.55|276.85|1364.25|665.35|1273.4|665.35|1227.98|276.85|1250.69|471.1</Curve>
+      <Curve2>M 1364.25 665.35 Q 1273.4 665.35 1250.69 471.1 Q 1227.98 276.85 1182.55 276.85</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="25" toFn="31">
+      <Name>25|Rear lowered|31|P</Name>
+      <Curve>1333.1|812.7|1364.25|665.35|1356.46|739.03|1340.89|812.7|1348.68|775.86</Curve>
+      <Curve2>M 1364.25 665.35 Q 1356.46 739.03 1348.68 775.86 Q 1340.89 812.7 1333.1 812.7</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="26" toFn="31">
+      <Name>26|Front Lowered|31|P</Name>
+      <Curve>1279.85|172.6|1364.25|665.35|1322.05|665.35|1300.95|172.6|1311.5|418.98</Curve>
+      <Curve2>M 1364.25 665.35 Q 1322.05 665.35 1311.5 418.98 Q 1300.95 172.6 1279.85 172.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="11">
+      <Name>9|Car stops|11|R</Name>
+      <Curve>397.25|577.6|714.14|454.65|714.14|516.12|555.7|577.6|634.92|546.86</Curve>
+      <Curve2>M 714.14 454.65 Q 714.14 516.12 634.92 546.86 Q 555.7 577.6 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="18">
+      <Name>9|Car stops|18|R</Name>
+      <Curve>397.25|577.6|713.06|584.35|713.06|604.35|417.25|604.35|634.11|604.35</Curve>
+      <Curve2>M 713.06 584.35 Q 713.06 604.35 634.11 604.35 Q 417.25 604.35 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="9" toFn="16">
+      <Name>9|Car stops|16|R</Name>
+      <Curve>397.25|577.6|718.23|720.64|718.23|740.64|417.25|740.64|637.99|740.64</Curve>
+      <Curve2>M 718.23 720.64 Q 718.23 740.64 637.99 740.64 Q 417.25 740.64 397.25 577.6</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="8" toFn="27">
+      <Name>8|Exit clear|27|C</Name>
+      <Curve>1108|82.9|1500.84|197.43|1500.84|140.16|1304.42|82.9|1402.63|111.53</Curve>
+      <Curve2>M 1500.84 197.43 Q 1500.84 140.16 1402.63 111.53 Q 1304.42 82.9 1108 82.9</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="28" toFn="27">
+      <Name>28|Car ready fro release|27|I</Name>
+      <Curve>1446.81|378.19|1435.34|235.43|1415.34|288.97|1466.81|324.66|1441.07|306.81</Curve>
+      <Curve2>M 1435.34 235.43 Q 1415.34 288.97 1441.07 306.81 Q 1466.81 324.66 1446.81 378.19</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" notGroup="true" outputFn="27" toFn="32">
+      <Name>27|Release the car|32|I</Name>
+      <Curve>1522.84|235.43|1531.47|440.89|1529.31|440.89|1525|235.43|1527.16|338.16</Curve>
+      <Curve2>M 1531.47 440.89 Q 1529.31 440.89 1527.16 338.16 Q 1525 235.43 1522.84 235.43</Curve2>
+    </Aspect>
+  </Aspects>
+</FM>

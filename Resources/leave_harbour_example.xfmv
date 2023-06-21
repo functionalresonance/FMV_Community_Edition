@@ -1,0 +1,262 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,0,2,0">
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="" tracer_p="">
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="436.87" y="112.11" fnType="3" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="true">
+      <IDNr>0</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>To leave harbour</IDName>
+      <Description>Vessel leaves the berth and sails through the inner harbour to start the sea voyage.</Description>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="190.68" y="122.86" fnType="2" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="true">
+      <IDNr>1</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Close bow doors</IDName>
+      <Description>Closing the bow doors before the vessel leaves harbour. This is done by  the assistant bosun.</Description>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="171.96" y="16.65" fnType="2" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="true">
+      <IDNr>2</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Trim vessel</IDName>
+      <Description>This re-establishes the natural trim of the vessel. This can take considerable time.</Description>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="318.3" y="256.22" fnType="2" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="None" profileT="All" isInput="true">
+      <IDNr>3</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Drop moorings</IDName>
+      <Description>Dropping the moorings is part of the departure procedure.</Description>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="37.97" y="64.87" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="false">
+      <IDNr>4</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Finish loading</IDName>
+      <Description>These are the operations that complete the loading, including putting the chain in place.</Description>
+    </Function>
+    <Function fnStyle="0" Tp="-1" Pp="-1" x="51.75" y="214.85" fnType="3" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="true">
+      <IDNr>5</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Man harbour station</IDName>
+      <Description>This is the signal for the crew to take their positions for leaving the harbour.</Description>
+    </Function>
+    <Function fnStyle="0" x="619.78" y="154.7" Tp="-1" Pp="-1" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="true">
+      <IDNr>6</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Start sea passage</IDName>
+      <Description>The vessels sets out to sea</Description>
+    </Function>
+    <Function fnStyle="0" x="335.81" y="7.12" Tp="-1" Pp="-1" Kt="" Kp="" orphans="0" profileFn="0" profileI="All" profileP="All" profileR="All" profileC="All" profileT="All" isInput="false">
+      <IDNr>7</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Issue company rules</IDName>
+      <Description>The company's guidelines and procedures for the vessel.</Description>
+    </Function>
+  </Functions>
+  <Controls>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Ship Standing Orders</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Control>
+    <Control orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Ship Standing Orders</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Control>
+  </Controls>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Harbour stations are manned</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Assistant bosun at bow doors</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Loading is completed</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Harbour stations are manned</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Clear to call for harbour stations</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Input>
+    <Input orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Vessel has left harbour</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+    </Input>
+  </Inputs>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Vessel has left harbour</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Bow doors are closed</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Vessel is trimmed</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Moorings have been dropped</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Loading is completed</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>5</IDNr>
+      <IDName>Clear to call for harbour stations</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>6</IDNr>
+      <IDName>Harbour stations are manned</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>7</IDNr>
+      <IDName>Assistant bosun at bow doors</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>8</IDNr>
+      <IDName>Loading officer on bridge</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>9</IDNr>
+      <IDName>Ship Standing Orders</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+    </Output>
+    <Output orphan="false">
+      <IDNr>10</IDNr>
+      <IDName>Chain in place</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+    </Output>
+  </Outputs>
+  <Preconditions>
+    <Precondition orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Vessel is trimmed</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Bow doors are closed</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>2</IDNr>
+      <IDName>Moorings have been dropped</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>3</IDNr>
+      <IDName>Chain in place</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Precondition>
+    <Precondition orphan="false">
+      <IDNr>4</IDNr>
+      <IDName>Harbour stations are manned</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+    </Precondition>
+  </Preconditions>
+  <Resources>
+    <Resource orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Loading officer on bridge</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+    </Resource>
+  </Resources>
+  <Times/>
+  <Aspects scaleFunction="1" scaleAspect="1" scaleZoom="1.5" Enhanced="true" WebEnhanced="notupdated">
+    <Aspect x="-.15" y=".09" directionX="to" directionY="from" outputFn="0" toFn="6" notGroup="true">
+      <Name>0|Vessel has left harbour|6|I</Name>
+      <Curve>530.350|162.100|625.750|204.700|601.900|204.700|554.200|162.100|578.050|183.400</Curve>
+      <Curve2>M 625.78 204.7 Q 601.93 204.7 578.08 183.41 Q 554.22 162.11 530.37 162.11</Curve2>
+    </Aspect>
+    <Aspect x=".35" y="1.71" directionX="from" directionY="from" outputFn="1" toFn="0" notGroup="true">
+      <Name>1|Bow doors are closed|0|P</Name>
+      <Curve>284.150|172.850|464.850|200.100|374.500|200.100|329.325|172.850|351.913|186.475</Curve>
+      <Curve2>M 464.87 200.11 Q 374.53 200.11 351.94 186.49 Q 329.35 172.86 284.18 172.86</Curve2>
+    </Aspect>
+    <Aspect x=".12" y=".4" directionX="from" directionY="from" outputFn="2" toFn="0" notGroup="true">
+      <Name>2|Vessel is trimmed|0|P</Name>
+      <Curve>265.450|66.650|464.850|200.100|365.150|200.100|315.300|66.650|340.225|133.375</Curve>
+      <Curve2>M 464.87 200.11 Q 365.17 200.11 340.24 133.38 Q 315.31 66.65 265.46 66.65</Curve2>
+    </Aspect>
+    <Aspect x=".32" y=".32" directionX="from" directionY="from" outputFn="3" toFn="0" notGroup="true">
+      <Name>3|Moorings have been dropped|0|P</Name>
+      <Curve>411.800|306.200|464.850|200.100|451.588|253.150|425.063|306.200|438.325|279.675</Curve>
+      <Curve2>M 464.87 200.11 Q 451.6 253.17 438.34 279.69 Q 425.07 306.22 411.8 306.22</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="2" notGroup="true">
+      <Name>4|Loading is completed|2|I</Name>
+      <Curve>131.450|114.850|177.950|66.650|166.325|66.650|143.075|114.850|154.700|90.750</Curve>
+      <Curve2>M 177.96 66.65 Q 166.34 66.65 154.72 90.76 Q 143.09 114.87 131.47 114.87</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="5" notGroup="true">
+      <Name>4|Clear to call for harbour stations|5|I</Name>
+      <Curve>131.450|114.850|57.750|264.850|37.750|208.600|151.450|171.100|94.600|189.850</Curve>
+      <Curve2>M 57.75 264.85 Q 37.75 208.61 94.61 189.86 Q 151.47 171.11 131.47 114.87</Curve2>
+    </Aspect>
+    <Aspect x=".7" y=".65" directionX="from" directionY="from" outputFn="5" toFn="0" notGroup="true">
+      <Name>5|Harbour stations are manned|0|I</Name>
+      <Curve>145.250|264.850|442.850|162.100|368.450|162.100|219.650|264.850|294.050|213.475</Curve>
+      <Curve2>M 442.87 162.11 Q 368.47 162.11 294.06 213.48 Q 219.66 264.85 145.25 264.85</Curve2>
+    </Aspect>
+    <Aspect x=".45" y=".77" directionX="from" directionY="from" outputFn="5" toFn="3" notGroup="true">
+      <Name>5|Harbour stations are manned|3|I</Name>
+      <Curve>145.250|264.850|324.300|306.200|279.538|306.200|190.012|264.850|234.775|285.525</Curve>
+      <Curve2>M 324.3 306.22 Q 279.54 306.22 234.78 285.54 Q 190.01 264.85 145.25 264.85</Curve2>
+    </Aspect>
+    <Aspect x=".4" y=".33" directionX="from" directionY="from" outputFn="5" toFn="1" notGroup="true">
+      <Name>5|Harbour stations are manned|1|P</Name>
+      <Curve>145.250|264.850|218.650|210.850|200.300|237.850|163.600|264.850|181.950|251.350</Curve>
+      <Curve2>M 218.68 210.86 Q 200.32 237.86 181.97 251.35 Q 163.61 264.85 145.25 264.85</Curve2>
+    </Aspect>
+    <Aspect x=".07" y=".07" directionX="from" directionY="from" outputFn="5" toFn="1" notGroup="true">
+      <Name>5|Assistant bosun at bow doors|1|I</Name>
+      <Curve>145.250|264.850|196.650|172.850|183.800|172.850|158.100|264.850|170.950|218.850</Curve>
+      <Curve2>M 196.68 172.86 Q 183.82 172.86 170.97 218.86 Q 158.11 264.85 145.25 264.85</Curve2>
+    </Aspect>
+    <Aspect x=".68" y=".08" directionX="from" directionY="from" outputFn="5" toFn="0" notGroup="true">
+      <Name>5|Loading officer on bridge|0|R</Name>
+      <Curve>145.250|264.850|508.350|200.100|508.350|232.475|326.800|264.850|417.575|248.663</Curve>
+      <Curve2>M 508.37 200.11 Q 508.37 232.48 417.59 248.67 Q 326.81 264.85 145.25 264.85</Curve2>
+    </Aspect>
+    <Aspect x=".61" y=".4" directionX="from" directionY="from" outputFn="7" toFn="0" notGroup="true">
+      <Name>7|Ship Standing Orders|0|C</Name>
+      <Curve>429.300|57.100|508.350|124.100|508.350|90.600|468.825|57.100|488.588|73.850</Curve>
+      <Curve2>M 508.37 124.11 Q 508.37 90.62 488.61 73.87 Q 468.84 57.12 429.31 57.12</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="7" toFn="1" notGroup="true">
+      <Name>7|Ship Standing Orders|1|C</Name>
+      <Curve>429.300|57.100|262.150|134.850|365.725|134.850|449.300|95.975|407.512|115.412</Curve>
+      <Curve2>M 262.18 134.86 Q 365.75 134.86 407.53 115.43 Q 449.31 95.99 429.31 57.12</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="1" notGroup="true">
+      <Name>4|Chain in place|1|P</Name>
+      <Curve>131.450|114.850|218.650|210.850|175.050|210.850|153.250|114.850|164.150|162.850</Curve>
+      <Curve2>M 218.68 210.86 Q 175.08 210.86 164.17 162.87 Q 153.27 114.87 131.47 114.87</Curve2>
+    </Aspect>
+  </Aspects>
+  <Groups/>
+</FM>
