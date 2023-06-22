@@ -1,0 +1,241 @@
+<?xml version="1.0" standalone="yes"?>
+<FM Version="0,3,0,0">
+  <Functions colour_t0="-1" colour_t1="0" colour_t2="0.5" colour_t3="1" colour_t4="2" c_t0_value="0x40cfff" c_t2_value="0xffff00" c_t4_value="0xf00000" colour_p0="-1" colour_p1="0" colour_p2="0.5" colour_p3="1" colour_p4="2" c_p0_value="0x40cfff" c_p2_value="0xffff00" c_p4_value="0xf00000" tracer_t="" tracer_p="">
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="39.33" y="160.67" Tp="-1" Pp="-1" Kt="" Kp="" isInput="false">
+      <IDNr>0</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Perform primary functions</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="40.67" y="236.66" style="" color="" Kt="" Kp="" isInput="false" Tp="-1" Pp="-1">
+      <IDNr>1</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Respond</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="242" y="174" style="custom" color="15007744" Kt="" Kp="" isInput="true">
+      <IDNr>2</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Learn</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="509.33" y="317.33" style="" color="" Kt="" Kp="" isInput="true" Tp="-1" Pp="-1">
+      <IDNr>3</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Anticipate</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="525.33" y="162" style="custom" color="15007744" Kt="" Kp="" isInput="false">
+      <IDNr>4</IDNr>
+      <FunctionType>0</FunctionType>
+      <IDName>Monitor</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="114" y="104" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>5</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Reach equilibrium</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="266" y="8.67" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>6</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Develop business strategy</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="358.67" y="321.33" isInput="true" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>7</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Update / revise responding and monitoring</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="523.33" y="248" isInput="true" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>8</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Update indicator list</IDName>
+    </Function>
+    <Function fnStyle="1" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="91.33" y="298" isInput="false" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>9</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Manage operational capabilities</IDName>
+    </Function>
+    <Function fnStyle="1" isInput="false" orphans="0" profileFn="" profileI="" profileP="" profileR="" profileC="" profileT="" x="50" y="40.67" Tp="-1" Pp="-1" Kt="" Kp="">
+      <IDNr>10</IDNr>
+      <FunctionType>2</FunctionType>
+      <IDName>Ensure operational readiness</IDName>
+    </Function>
+  </Functions>
+  <Aspects scaleFunction="1" scaleAspect="1" scaleZoom="1.5" Enhanced="true" WebEnhanced="notupdated">
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="1" toFn="4" notGroup="true">
+      <Name>1|Responses|2|I</Name>
+      <Curve>134.17|286.66|248|224|219.54|224|162.63|286.66|191.08|255.33</Curve>
+      <Curve2>M 248 224 Q 219.54 224 191.08 255.33 Q 162.63 286.66 134.17 286.66</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="5" notGroup="true">
+      <Name>2|Lessons learned|3|I</Name>
+      <Curve>335.5|224|515.33|367.33|470.38|367.33|380.46|224|425.42|295.67</Curve>
+      <Curve2>M 515.33 367.33 Q 470.38 367.33 425.42 295.67 Q 380.46 224 335.5 224</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="6" notGroup="true">
+      <Name>2|Lessons learned|4|C</Name>
+      <Curve>335.5|224|596.83|174|596.83|154|355.5|154|531.5|154</Curve>
+      <Curve2>M 596.83 174 Q 596.83 154 531.5 154 Q 355.5 154 335.5 224</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="4" toFn="6" notGroup="true">
+      <Name>2|Sampling frequency|4|T</Name>
+      <Curve>335.5|224|553.33|174|444.42|174|389.96|224|417.19|199</Curve>
+      <Curve2>M 553.33 174 Q 444.42 174 417.19 199 Q 389.96 224 335.5 224</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="0" toFn="3" notGroup="true">
+      <Name>0|Process trends|2|I</Name>
+      <Curve>132.83|210.67|248|224|219.21|224|161.62|210.67|190.42|217.33</Curve>
+      <Curve2>M 248 224 Q 219.21 224 190.42 217.33 Q 161.62 210.67 132.83 210.67</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="6" toFn="3" notGroup="true">
+      <Name>5|Latency of results|2|T</Name>
+      <Curve>207.5|154|270|186|254.37|170|223.12|154|238.75|162</Curve>
+      <Curve2>M 270 186 Q 254.37 170 238.75 162 Q 223.12 154 207.5 154</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="3" toFn="8" notGroup="true">
+      <Name>2|Lessons learned|7|I</Name>
+      <Curve>335.5|224|364.67|371.33|357.38|371.33|342.79|224|350.08|297.66</Curve>
+      <Curve2>M 364.67 371.33 Q 357.38 371.33 350.08 297.66 Q 342.79 224 335.5 224</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="3" toFn="9" notGroup="true">
+      <Name>2|Lessons learned|8|I</Name>
+      <Curve>335.5|224|529.33|298|480.87|298|383.96|224|432.42|261</Curve>
+      <Curve2>M 529.33 298 Q 480.87 298 432.42 261 Q 383.96 224 335.5 224</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="10" toFn="3" notGroup="true">
+      <Name>9|Staff and equipment|2|R</Name>
+      <Curve>184.83|348|313.5|262|313.5|305|249.17|348|281.33|326.5</Curve>
+      <Curve2>M 313.5 262 Q 313.5 305 281.33 326.5 Q 249.17 348 184.83 348</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="11" toFn="3" notGroup="true">
+      <Name>10|Learning strategy|2|C</Name>
+      <Curve>143.5|90.67|313.5|186|313.5|138.33|228.5|90.67|271|114.5</Curve>
+      <Curve2>M 313.5 186 Q 313.5 138.33 271 114.5 Q 228.5 90.67 143.5 90.67</Curve2>
+    </Aspect>
+    <Aspect x="0" y="0" directionX="from" directionY="to" outputFn="7" toFn="3" notGroup="true">
+      <Name>6|Business strategy|2|C</Name>
+      <Curve>359.5|58.67|313.5|186|356.5|186|379.5|122.33|368|154.17</Curve>
+      <Curve2>M 313.5 186 Q 356.5 186 368 154.17 Q 379.5 122.33 359.5 58.67</Curve2>
+    </Aspect>
+  </Aspects>
+  <Outputs>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Process trends</IDName>
+      <FunctionIDNr>0</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Responses</IDName>
+      <FunctionIDNr>1</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Sampling frequency</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Latency of results</IDName>
+      <FunctionIDNr>5</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Business strategy</IDName>
+      <FunctionIDNr>6</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Staff and equipment</IDName>
+      <FunctionIDNr>9</FunctionIDNr>
+      <Description/>
+    </Output>
+    <Output orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Learning strategy</IDName>
+      <FunctionIDNr>10</FunctionIDNr>
+      <Description/>
+    </Output>
+  </Outputs>
+  <Inputs>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Responses</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>3</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Process trends</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>7</FunctionIDNr>
+      <Description/>
+    </Input>
+    <Input orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>8</FunctionIDNr>
+      <Description/>
+    </Input>
+  </Inputs>
+  <Controls>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Lessons learned</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+      <Description/>
+    </Control>
+    <Control orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Learning strategy</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Control>
+    <Control orphan="false">
+      <IDNr>1</IDNr>
+      <IDName>Business strategy</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Control>
+  </Controls>
+  <Times>
+    <Time orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Sampling frequency</IDName>
+      <FunctionIDNr>4</FunctionIDNr>
+      <Description/>
+    </Time>
+    <Time orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Latency of results</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Time>
+  </Times>
+  <Resources>
+    <Resource orphan="false">
+      <IDNr>0</IDNr>
+      <IDName>Staff and equipment</IDName>
+      <FunctionIDNr>2</FunctionIDNr>
+      <Description/>
+    </Resource>
+  </Resources>
+</FM>
