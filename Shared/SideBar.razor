@@ -24,7 +24,7 @@
                 <button id="newOButton" class="btn btn-menu btn-textp" title=@Loc["OUTPUT"] tabindex="5" @onclick="@((e) => NewAspect(e, "Output"))" @onkeydown=NextFn>O</button>
                 <AuthorizeView>
                     <Authorized>
-                        <input type="text" class="btn btn-menu btn-menu-s" title=@profileFnTooltip() tabindex="27" value=@showFnProfile() disabled=@disableFnProfile() @onchange="@((e) => changeFnProfile(e, "Fn"))"></input>
+                        <input type="text" class="btn btn-menu btn-menu-s" title=@profileFnTooltip() tabindex="27" value=@showFnProfile() disabled=@disableFnProfile() @onchange="@((e) => changeFnProfile(e, "Fn"))">
                     </Authorized>
                 </AuthorizeView>
             </div>
