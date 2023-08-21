@@ -1,4 +1,6 @@
-﻿namespace FMV_Standard.Shared
+﻿using System.Globalization;
+
+namespace FMV_Standard.Shared
 {
     public class Coupling
     {
@@ -163,16 +165,16 @@
             {
                 string[] _curve = new string[10]
                 {
-            drawTox.ToString("0.##"),
-            drawToy.ToString("0.##"),
-            drawFromx.ToString("0.##"),
-            drawFromy.ToString("0.##"),
-            drawAx.ToString("0.##"),
-            drawAy.ToString("0.##"),
-            drawBx.ToString("0.##"),
-            drawBy.ToString("0.##"),
-            drawIntx.ToString("0.##"),
-            drawInty.ToString("0.##")
+            drawTox.ToString("0.##", CultureInfo.InvariantCulture),
+            drawToy.ToString("0.##", CultureInfo.InvariantCulture),
+            drawFromx.ToString("0.##", CultureInfo.InvariantCulture),
+            drawFromy.ToString("0.##", CultureInfo.InvariantCulture),
+            drawAx.ToString("0.##", CultureInfo.InvariantCulture),
+            drawAy.ToString("0.##", CultureInfo.InvariantCulture),
+            drawBx.ToString("0.##", CultureInfo.InvariantCulture),
+            drawBy.ToString("0.##", CultureInfo.InvariantCulture),
+            drawIntx.ToString("0.##", CultureInfo.InvariantCulture),
+            drawInty.ToString("0.##", CultureInfo.InvariantCulture)
                 };
                 return string.Join("|", _curve);
             }
@@ -182,9 +184,9 @@
             get
             {
                 string[] _curve2 = new string[13] {
-            "M", drawFromx.ToString("0.##"), drawFromy.ToString("0.##"),
-            "Q", drawAx.ToString("0.##"), drawAy.ToString("0.##"), drawIntx.ToString("0.##"), drawInty.ToString("0.##"),
-            "Q", drawBx.ToString("0.##"), drawBy.ToString("0.##"), drawTox.ToString("0.##"), drawToy.ToString("0.##")
+            "M", drawFromx.ToString("0.##", CultureInfo.InvariantCulture), drawFromy.ToString("0.##", CultureInfo.InvariantCulture),
+            "Q", drawAx.ToString("0.##", CultureInfo.InvariantCulture), drawAy.ToString("0.##", CultureInfo.InvariantCulture), drawIntx.ToString("0.##", CultureInfo.InvariantCulture), drawInty.ToString("0.##", CultureInfo.InvariantCulture),
+            "Q", drawBx.ToString("0.##", CultureInfo.InvariantCulture), drawBy.ToString("0.##", CultureInfo.InvariantCulture), drawTox.ToString("0.##", CultureInfo.InvariantCulture), drawToy.ToString("0.##", CultureInfo.InvariantCulture)
             };
                 return string.Join(" ", _curve2);
             }
@@ -438,9 +440,9 @@
             }
 
             string[] curve2 = new string[13] {
-            "M", drawFromx.ToString("0.##"), drawFromy.ToString("0.##"),
-            "Q", drawAx.ToString("0.##"), drawAy.ToString("0.##"), drawIntx.ToString("0.##"), drawInty.ToString("0.##"),
-            "Q", drawBx.ToString("0.##"), drawBy.ToString("0.##"), drawTox.ToString("0.##"), drawToy.ToString("0.##")
+            "M", drawFromx.ToString("0.##", CultureInfo.InvariantCulture), drawFromy.ToString("0.##", CultureInfo.InvariantCulture),
+            "Q", drawAx.ToString("0.##", CultureInfo.InvariantCulture), drawAy.ToString("0.##", CultureInfo.InvariantCulture), drawIntx.ToString("0.##", CultureInfo.InvariantCulture), drawInty.ToString("0.##", CultureInfo.InvariantCulture),
+            "Q", drawBx.ToString("0.##", CultureInfo.InvariantCulture), drawBy.ToString("0.##", CultureInfo.InvariantCulture), drawTox.ToString("0.##", CultureInfo.InvariantCulture), drawToy.ToString("0.##", CultureInfo.InvariantCulture)
         };
             resetLabel();
             return string.Join(" ", curve2);

@@ -21,28 +21,28 @@
         }
         <AuthorizeView>
             <Authorized>
-                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabel @onmousedown=MoveLabelStart @onmousemove=MoveLabel @onmouseup=MoveLabelStop>
+                <g transform="scale(@(stateContainer.tempZoomA.ToString("0.##", CultureInfo.InvariantCulture)))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabel @onmousedown=MoveLabelStart @onmousemove=MoveLabel @onmouseup=MoveLabelStop>
                     @if (coupling.dragAspect)
                     {
                         <circle cx="50" cy="50" fill="white" opacity="0" r="100%" />
                         //this increases the size of the Aspect (Coupling Label) during dragging so we don't lose the mouse pointer
                     }
-                    <rect x=@(coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) width=@coupling.Twidth height=@(Math.Min(5 + (aspectTextCount) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-                    <text x=@(coupling.labelX/stateContainer.tempZoomA) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+                    <rect x=@((coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2).ToString("0.##", CultureInfo.InvariantCulture)) y=@((coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5).ToString("0.##", CultureInfo.InvariantCulture)) width=@coupling.Twidth.ToString("0.##", CultureInfo.InvariantCulture) height=@(Math.Min(5 + (aspectTextCount) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+                    <text x=@((coupling.labelX/stateContainer.tempZoomA).ToString("0.##", CultureInfo.InvariantCulture)) y=@((coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5).ToString("0.##", CultureInfo.InvariantCulture)) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
                         @for (int i = 0; i < aspectTextCount; i++)
                         {
-                            <tspan x=@(coupling.labelX/stateContainer.tempZoomA) dy="8">@displayAspectText[i]</tspan>
+                            <tspan x=@((coupling.labelX/stateContainer.tempZoomA).ToString("0.##", CultureInfo.InvariantCulture)) dy="8">@displayAspectText[i]</tspan>
                         }
                     </text>
                 </g>
             </Authorized>
             <NotAuthorized>
-                <g transform="scale(@(stateContainer.tempZoomA))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabelBasic>
-                    <rect x=@(coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) width=@coupling.Twidth height=@(Math.Min(5 + (aspectTextCount) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-                    <text x=@(coupling.labelX/stateContainer.tempZoomA) y=@(coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
+                <g transform="scale(@(stateContainer.tempZoomA.ToString("0.##", CultureInfo.InvariantCulture)))" display="@stateContainer.aspectLabelsDisplay" class="@coupling.aspectClass" @onclick=SelectLabelBasic>
+                    <rect x=@((coupling.labelX/stateContainer.tempZoomA - coupling.Twidth / 2).ToString("0.##", CultureInfo.InvariantCulture)) y=@((coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5).ToString("0.##", CultureInfo.InvariantCulture)) width=@coupling.Twidth.ToString("0.##", CultureInfo.InvariantCulture) height=@(Math.Min(5 + (aspectTextCount) * 8, 50)) style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+                    <text x=@((coupling.labelX/stateContainer.tempZoomA).ToString("0.##", CultureInfo.InvariantCulture)) y=@((coupling.labelY/stateContainer.tempZoomA - aspectTextCount * 5).ToString("0.##", CultureInfo.InvariantCulture)) font-size="5pt" text-anchor="middle" font-family="'PT Sans Caption', sans-serif">
                         @for (int i = 0; i < aspectTextCount; i++)
                         {
-                            <tspan x=@(coupling.labelX/stateContainer.tempZoomA) dy="8">@displayAspectText[i]</tspan>
+                            <tspan x=@((coupling.labelX/stateContainer.tempZoomA).ToString("0.##", CultureInfo.InvariantCulture)) dy="8">@displayAspectText[i]</tspan>
                         }
                     </text>
                 </g>

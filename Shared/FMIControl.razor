@@ -394,7 +394,7 @@
                 {
                     //CYCLE TEST
                     double checkProfileFn = 0;
-                    double.TryParse(fnBG2.profileFn, out checkProfileFn);
+                    double.TryParse(fnBG2.profileFn, CultureInfo.InvariantCulture, out checkProfileFn);
                     if (checkProfileFn > 0)
                     {
                         var cycleFn = false;

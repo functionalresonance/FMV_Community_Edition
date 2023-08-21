@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Xml;
+using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FMV_Standard.Shared
@@ -13,10 +14,10 @@ namespace FMV_Standard.Shared
             this.IDNr = fn.SelectSingleNode("IDNr")!.InnerText;
             var _x = fn.SelectSingleNode("@x")?.Value ?? "50";
             if (_x == "") _x = "50";
-            this.x = double.Parse(_x);
+            this.x = double.Parse(_x, CultureInfo.InvariantCulture);
             var _y = fn.SelectSingleNode("@y")?.Value ?? "50";
             if (_y == "") _y = "50";
-            this.y = double.Parse(_y);
+            this.y = double.Parse(_y, CultureInfo.InvariantCulture);
             _fnStyle = fn.SelectSingleNode("@fnStyle")?.Value ?? "0";
             _FunctionType = fn.SelectSingleNode("FunctionType")?.InnerText ?? "2";
             this.IDName = fn.SelectSingleNode("IDName")?.InnerText ?? "";

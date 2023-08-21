@@ -148,13 +148,13 @@ namespace FMV_Standard.Shared
         }
         public void updateFnXY(double x, double y)
         {
-            projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={selectedFn}]/@x")!.InnerText = x.ToString("0.##");
-            projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={selectedFn}]/@y")!.InnerText = y.ToString("0.##");
+            projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={selectedFn}]/@x")!.InnerText = x.ToString("0.##", CultureInfo.InvariantCulture);
+            projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={selectedFn}]/@y")!.InnerText = y.ToString("0.##", CultureInfo.InvariantCulture);
         }
         public void updateAspectXY(double x, double y, string directionX, string directionY)
         {
-            projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@x")!.InnerText = x.ToString("0.##");
-            projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@y")!.InnerText = y.ToString("0.##");
+            projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@x")!.InnerText = x.ToString("0.##", CultureInfo.InvariantCulture);
+            projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@y")!.InnerText = y.ToString("0.##", CultureInfo.InvariantCulture);
             projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@directionX")!.InnerText = directionX;
             projectData_Undo[0].SelectSingleNode($"//FM/Aspects/Aspect[Name=\"{selectedLabel}\"]/@directionY")!.InnerText = directionY;
         }
@@ -242,8 +242,8 @@ namespace FMV_Standard.Shared
             {
                 labelDx = 0;
                 labelDy = 0;
-                double.TryParse(aspectI.SelectSingleNode("@x")?.InnerText ?? "0", out labelDx);
-                double.TryParse(aspectI.SelectSingleNode("@y")?.InnerText ?? "0", out labelDy);
+                double.TryParse(aspectI.SelectSingleNode("@x")?.InnerText ?? "0", CultureInfo.InvariantCulture, out labelDx);
+                double.TryParse(aspectI.SelectSingleNode("@y")?.InnerText ?? "0", CultureInfo.InvariantCulture, out labelDy);
                 directionX = aspectI.SelectSingleNode("@directionX")?.InnerText ?? "from";
                 directionY = aspectI.SelectSingleNode("@directionY")?.InnerText ?? "to";
                 if (aspectI.SelectSingleNode("Curve") != null)

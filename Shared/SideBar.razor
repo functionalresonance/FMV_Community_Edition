@@ -653,8 +653,8 @@
                     string[] dictArray = new string[4] { stateContainer.selectedFn, tempNewName, aspect.FunctionIDNr, aspect.Type.Substring(0, 1) };
                     if (tempNewName != "")
                     {
-                        stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!),
-                            double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!),
+                        stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!, CultureInfo.InvariantCulture),
+                            double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!, CultureInfo.InvariantCulture),
                             int.Parse(render[$"{stateContainer.newFnStyle}:aspect-font-wrap"]!));
                     }
                     hasOrphan = false;
@@ -756,8 +756,8 @@
                 string[] dictArray = new string[4] { itemI_IDNr, tempNewName, stateContainer.selectedFn, tempType.Substring(0, 1) };
                 if (tempNewName != "")
                 {
-                    stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!),
-                        double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!),
+                    stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!, CultureInfo.InvariantCulture),
+                        double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!, CultureInfo.InvariantCulture),
                         int.Parse(render[$"{stateContainer.newFnStyle}:aspect-font-wrap"]!));
                 }
                 itemI.SelectSingleNode("@orphan")!.Value = "false";
@@ -887,7 +887,7 @@
     private void zoomFout()
     {
         focusCheck = "";
-        var newZoomText = stateContainer.tempZoomF.ToString("#.#");
+        var newZoomText = stateContainer.tempZoomF.ToString("0.##", CultureInfo.InvariantCulture);
         if (newZoomText != oldZoomText && stateContainer.projectData_Undo[0] is not null)
         {
             stateContainer.updateUndo();
@@ -929,7 +929,7 @@
     private void zoomAout()
     {
         focusCheck = "";
-        var newZoomText = stateContainer.tempZoomA.ToString("#.#");
+        var newZoomText = stateContainer.tempZoomA.ToString("0.##", CultureInfo.InvariantCulture);
         if (newZoomText != oldZoomText && stateContainer.projectData_Undo[0] is not null)
         {
             stateContainer.updateUndo();

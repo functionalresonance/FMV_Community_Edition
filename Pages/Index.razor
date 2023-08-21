@@ -36,7 +36,7 @@
             {
                 <div class="file-input-zone-drop"><InputFile OnChange="OnInputFileChange" single accept=".xfmv" title=@Loc["OPEN_TOOLTIP"] /></div>
             }
-            <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth @stateContainer.viewHeight" width=@stateContainer.canvasWidth height=@stateContainer.canvasHeight xmlns="http://www.w3.org/2000/svg">
+            <svg id="canvas_1" viewBox="0 0 @stateContainer.viewWidth.ToString("0.##", CultureInfo.InvariantCulture) @stateContainer.viewHeight.ToString("0.##", CultureInfo.InvariantCulture)" width=@stateContainer.canvasWidth.ToString("0.##", CultureInfo.InvariantCulture) height=@stateContainer.canvasHeight.ToString("0.##", CultureInfo.InvariantCulture) xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <style type="text/css">
                         @@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Caption")
@@ -319,8 +319,8 @@
         stateContainer.selectedLabel = "";
         XmlAttribute fnX = stateContainer.projectData_Undo[0].CreateAttribute("x");
         XmlAttribute fnY = stateContainer.projectData_Undo[0].CreateAttribute("y");
-        fnX.Value = newFnX.ToString();
-        fnY.Value = newFnY.ToString();
+        fnX.Value = newFnX.ToString("0.##", CultureInfo.InvariantCulture);
+        fnY.Value = newFnY.ToString("0.##", CultureInfo.InvariantCulture);
         itemF.Attributes.Append(fnX);
         itemF.Attributes.Append(fnY);
         stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Functions")!.AppendChild(itemF);
@@ -429,8 +429,8 @@
                     _y = "50";
                     fn.SelectSingleNode("@y")!.Value = "50";
                 }
-                stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, double.Parse(_x) + 120);
-                stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, double.Parse(_y) + 120);
+                stateContainer.viewWidth = Math.Max(stateContainer.viewWidth, double.Parse(_x, CultureInfo.InvariantCulture) + 120);
+                stateContainer.viewHeight = Math.Max(stateContainer.viewHeight, double.Parse(_y, CultureInfo.InvariantCulture) + 120);
             }
         }
         if (stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects") == null)
@@ -563,8 +563,8 @@
                 {
                     dictArray[2] = aspect.FunctionIDNr;
                     dictArray[3] = aspect.Type.Substring(0, 1);
-                    stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!),
-                        double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!),
+                    stateContainer.reSetAspect(dictArray, double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:O"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:O"]!, CultureInfo.InvariantCulture),
+                        double.Parse(render[$"{stateContainer.newFnStyle}:aspectX:{dictArray[3]}"]!, CultureInfo.InvariantCulture), double.Parse(render[$"{stateContainer.newFnStyle}:aspectY:{dictArray[3]}"]!, CultureInfo.InvariantCulture),
                         int.Parse(render[$"{stateContainer.newFnStyle}:aspect-font-wrap"]!));
                     aspect.Orphan = "false";
                     stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/{aspect.Type}s/{aspect.Type}[IDNr=\"{aspect.IDNr}\"]/@orphan")!.Value = "false";
@@ -604,9 +604,9 @@
         double tryZoomA = 1;
         double tryZoomF = 1;
         double tryZoomS = 1.5;
-        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value, out tryZoomA);
-        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value, out tryZoomF);
-        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value, out tryZoomS);
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleAspect")!.Value, CultureInfo.InvariantCulture, out tryZoomA);
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleFunction")!.Value, CultureInfo.InvariantCulture, out tryZoomF);
+        double.TryParse(stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value, CultureInfo.InvariantCulture, out tryZoomS);
         stateContainer.tempZoomA = tryZoomA;
         stateContainer.tempZoomF = tryZoomF;
         stateContainer.scaleZoom = tryZoomS;

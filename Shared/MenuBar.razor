@@ -93,7 +93,7 @@
             }
             stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString("0.##", CultureInfo.InvariantCulture);
             refreshParent.InvokeAsync();
         }
     }
@@ -108,7 +108,7 @@
             }
             stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             stateContainer.canvasHeight = stateContainer.viewHeight * stateContainer.scaleZoom;
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString("0.##", CultureInfo.InvariantCulture);
             refreshParent.InvokeAsync();
         }
     }
@@ -129,7 +129,7 @@
                 stateContainer.scaleZoom = stateContainer.canvasHeight / stateContainer.viewHeight;
                 stateContainer.canvasWidth = stateContainer.viewWidth * stateContainer.scaleZoom;
             }
-            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString();
+            stateContainer.projectData_Undo[0].SelectSingleNode("//FM/Aspects/@scaleZoom")!.Value = stateContainer.scaleZoom.ToString("0.##", CultureInfo.InvariantCulture);
             await refreshParent.InvokeAsync();
         }
     }
