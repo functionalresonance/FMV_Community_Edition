@@ -114,10 +114,10 @@
                 @if (stateContainer.cycleFMI > -1)
                 {
                     var Ttext = $"Cycle = {stateContainer.cycleFMI}"; //Here is the Cycle count text in the upper left corner
-                    var Twidth = Ttext.Length * 4 + 4;
-                    <g transform="scale(@(stateContainer.tempZoomA.ToString("0.##", CultureInfo.InvariantCulture)))">
-                        <rect x="3" y="3" width=@Twidth.ToString("0.##", CultureInfo.InvariantCulture) height="12" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
-                        <text x="8" y="11" font-size="5pt" font-family="'PT Sans Caption', sans-serif">
+                    var Twidth = Ttext.Length * 4 + 4; //transform="scale(@((stateContainer.tempZoomA).ToString("0.##", CultureInfo.InvariantCulture)))
+                    <g transform="scale(@((1/stateContainer.scaleZoom).ToString("0.##", CultureInfo.InvariantCulture)))">
+                        <rect x="3" y="3" width=@Twidth.ToString("0.##", CultureInfo.InvariantCulture) height="20" style="fill: #FFFFFF; stroke: none; opacity: 0.6" rx="5" ry="5" />
+                        <text x="8" y="11" font-size="8pt" font-family="'PT Sans Caption', sans-serif">
                             @Ttext
                         </text>
                     </g>
@@ -755,8 +755,16 @@
                 stateContainer.undoIndex = 0;
                 stateContainer.projectData_Undo = new XmlDocument[stateContainer.undoLength];
                 stateContainer.projectData_Undo[0] = new XmlDocument();
-                stateContainer.projectData_Undo[0].LoadXml(await localStorage.GetItemAsync<string>("backupData"));
-                stateContainer.fileName = await localStorage.GetItemAsync<string>("backupFileName");
+                var xml = await localStorage.GetItemAsync<string>("backupData");
+                if (!string.IsNullOrEmpty(xml))
+                {
+                    stateContainer.projectData_Undo[0].LoadXml(xml);
+                }
+                var bFilename = await localStorage.GetItemAsync<string>("backupFileName");
+                if (!string.IsNullOrEmpty(bFilename)) 
+                {
+                    stateContainer.fileName = bFilename;
+                }
                 stateContainer.inputDropStatus = "file-input-zone-hide";
                 stateContainer.isBackup = false;
                 FileIsLoaded();

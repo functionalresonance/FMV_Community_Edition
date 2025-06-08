@@ -24,10 +24,12 @@
     public EventCallback refreshParent { get; set; }
 
     private List<Coupling> activeAspectsArray = new List<Coupling>();
+    private List<Coupling> toActivateAspectsArray = new List<Coupling>();
     private List<string> trackExitFunctions = new List<string>();
     private int? stepTOTAL = null;
     private bool isPlaying = false;
     private Random rnd = new Random();
+    private int trackHighlights = 0;
 
     private void bFMI_wasActive()
     {
@@ -112,9 +114,9 @@
             isPlaying = false;
             if (checkCycle == "End")
             {
-                foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
+                foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit" && !trackExitFunctions.Contains(x.IDNr)))
                 {
-                    trackExitFunctions.Add(Exitfn.IDName);
+                    trackExitFunctions.Add(Exitfn.IDNr);
                     Exitfn.fmiHighlight = "exit-fill";
                 }
             }
@@ -129,7 +131,7 @@
             bFMI_play();
         }
     }
-    private void bFMI_step()
+    private async void bFMI_step()
     {
         if (isPlaying)
         {
@@ -138,12 +140,12 @@
         }
         var checkCycle = bFMI_cycle();
         bFMI_cycle_Couplings();
-        refreshParent.InvokeAsync();
+        await refreshParent.InvokeAsync();
         if (checkCycle == "End")
         {
-            foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit"))
+            foreach (var Exitfn in stateContainer.functionList.FindAll(x => x.fmiType == "Exit" && !trackExitFunctions.Contains(x.IDNr)))
             {
-                trackExitFunctions.Add(Exitfn.IDName);
+                trackExitFunctions.Add(Exitfn.IDNr);
                 Exitfn.fmiHighlight = "exit-fill";
             }
         }
@@ -166,14 +168,6 @@
                     case "C": if (!nextFn.activeC.Contains(coupling.Name)) nextFn.activeC.Add(coupling.Name); break;
                     case "T": if (!nextFn.activeT.Contains(coupling.Name)) nextFn.activeT.Add(coupling.Name); break;
                 }
-                //var outputFn = stateContainer.functionList.Find(x => x.IDNr == coupling.outputFn);
-                //if (outputFn is not null)
-                //{
-                //    foreach (var meta in outputFn.metadata)
-                //    {
-                //        nextFn.newVariable($"{coupling.toType}{coupling.outputFn}_{meta[0]}", meta[1]);
-                //    }
-                //}
             }
         }
     }
@@ -183,7 +177,8 @@
         var returnString = "error";
         var check1 = 0;
         var fmiError = false;
-        var trackHighlights = 0;
+        trackHighlights = 0;
+        toActivateAspectsArray = new List<Coupling>();
         foreach (var pCoupling in stateContainer.couplingList) //.FindAll(x => x.activated == true))
         {
             pCoupling.activated = false;
@@ -275,33 +270,8 @@
                         //if (fnBG.profileFn == "") fnBG.profileFn = "0"; // changed, blank FMI Profile is ok, will default
                         stateContainer.fmiMessage += $"Entry function <{fnBG.IDName}>\n";
                         ICycle0 += $"Entry function <{fnBG.IDName}> has been activated\n";
-                        // if (enableTheLab) evaluate(iBG);
-                        var canActivate = true;
-                        /*
-                        var getMetaData:XML = projectData_Undo[0].Functions.Function.(Number(IDNr)==iBG).metadata[0];
-                                if (getMetaData!=null) {
-                                if (getMetaData.elements("Activate").length()>0) {
-                                    var fnMD:XML = getMetaData.elements("Activate")[0];
-                                    if (fnMD.text() == "0" || fnMD.text() == "false") {
-                                        canActivate = false;
-                        }
-                        }
-                        }
-                        */
-                        if (canActivate)
-                        {
-                            fnBG.wasActive = true;
-                            fnBG.fmiHighlight = "entry-fill";
-                            trackHighlights += 1;
-                            foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG.IDNr))
-                            {
-                                activeAspectsArray.Add(coupling);
-                            }
-                        }
-                        else
-                        {
-                            fnBG.fmiHighlight = "hold-fill";
-                        }
+                        // if (enableTheLab) evaluate(fnBG);
+                        activateFunction(fnBG);
                         IProfile = $"Function <{fnBG.IDName}>:\n    Output: {(fnBG.profileFn == "" ? "0" : fnBG.profileFn)}\n{IProfile}";
                     }
                     else if (check2 == 0 && check3 > 0) //is Exit function
@@ -310,54 +280,15 @@
                         stateContainer.fmiMessage += $"Exit function <{fnBG.IDName}>\n";
                         fnBG.fmiHighlight = "exit-fill";
                         trackHighlights += 1;
-                        trackExitFunctions.Add(fnBG.IDName);
+                        trackExitFunctions.Add(fnBG.IDNr);
                         IProfileExit += $"Function <{fnBG.IDName}>:\n    Input: {(fnBG.profileI == "" ? "All" : fnBG.profileI)}{"        ".Substring(0, 8 - 3)}\n";
                     }
                     else if (check2 == 0 || check3 == 0)
                     { //other Background functions (not Entry or Exit)
                         fnBG.fmiType = "Background";
                         ICycle0 += $"Background function <{fnBG.IDName}> has been activated\n";
-                        //if (enableTheLab) evaluate(iBG);
-                        var canActivate0 = true;
-                        /*
-                        var getMetaData0:XML = projectData_Undo[0].Functions.Function.(Number(IDNr)==iBG).metadata[0];
-                            if (getMetaData0!=null) {
-                            if (getMetaData0.elements("Activate").length()>0) {
-                                var fnMD0:XML = getMetaData0.elements("Activate")[0];
-                                if (fnMD0.text() == "0" || fnMD0.text() == "false") {
-                                    canActivate = false;
-                        }
-                        }
-                        }
-                        */
-                        if (canActivate0)
-                        {
-                            fnBG.wasActive = true;
-                            fnBG.fmiHighlight = "background-fill";
-                            trackHighlights += 1;
-                            foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG.IDNr))
-                            {
-                                coupling.wasActive = true;
-                                coupling.activated = true;
-                                coupling.fmiHighlight = "background-fill";
-                                var nextFn = stateContainer.functionList.Find(x => x.IDNr == coupling.toFn);
-                                if (nextFn is not null)
-                                {
-                                    switch (coupling.toType)
-                                    {
-                                        case "I": nextFn.activeI.Add(coupling.Name); break;
-                                        case "P": nextFn.activeP.Add(coupling.Name); break;
-                                        case "R": nextFn.activeR.Add(coupling.Name); break;
-                                        case "C": nextFn.activeC.Add(coupling.Name); break;
-                                        case "T": nextFn.activeT.Add(coupling.Name); break;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            fnBG.fmiHighlight = "hold-fill";
-                        }
+                        //if (enableTheLab) evaluate(fnBG);
+                        activateFunction(fnBG);
                     }
                     else
                     { //else Passthrough function (Input and Output but no other Aspects)
@@ -389,7 +320,7 @@
         else if (stateContainer.cycleFMI > 0)
         {
             stateContainer.fmiMessage += $"BEGIN CYCLE {stateContainer.cycleFMI.ToString()}\n";
-            foreach (var fnBG2 in stateContainer.functionList)
+            foreach (var fnBG2 in stateContainer.functionList.FindAll(x => x.fmiType != "Background"))
             {
                 if (fnBG2.fmiType == "Entry")
                 {
@@ -416,35 +347,15 @@
                         }
                         if (cycleFn)
                         {
-                            //if (enableTheLab) evaluate(iBG2);
-                            var canActivate1 = true;
-                            /*
-                            var getMetaData1:XML = projectData_Undo[0].Functions.Function.(Number(IDNr) == iBG2).metadata[0];
-                                if (getMetaData1 != null)
-                                {
-                                if (getMetaData1.elements("Activate").length() > 0)
-                                    {
-                                    var fnMD1:XML = getMetaData1.elements("Activate")[0];
-                                    if (fnMD1.text() == "0" || fnMD1.text() == "false")
-                                        {
-                                        canActivate1 = false;
-                            }
-                            }
-                            }*/
-                            if (canActivate1)
+                            //if (enableTheLab) evaluate(fnBG2);
+                            if (activateFunction(fnBG2))
                             {
-                                fnBG2.wasActive = true;
-                                fnBG2.fmiHighlight = "entry-fill";
-                                trackHighlights += 1;
                                 stateContainer.fmiMessage += $"Entry Function <{fnBG2.IDName}> has been activated\n";
-                                foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn))
-                                { //This activates the Outputs of the current Function
-                                    activeAspectsArray.Add(coupling);
-                                }
                             }
-                            else
+                            foreach (var fnBGb in stateContainer.functionList.FindAll(x => x.fmiType == "Background"))
                             {
-                                fnBG2.fmiHighlight = "hold-fill";
+                                //evaluate(fnBGb);
+                                activateFunction(fnBGb);
                             }
                         }
                         else
@@ -458,26 +369,42 @@
                     }
                     //CYCLE TEST
                 }
-                else if (fnBG2.fmiType != "Background")
+                else //all other Functions that are not Entry and not Background (Exit not excluded)
                 {
                     if (fnBG2.isActive())
                     {
-                        //if (enableTheLab) evaluate(iBG2);
+                        //if (enableTheLab) evaluate(fnBG2);
                         var canActivate2 = true;
-                        /*
-                        var getMetaData2:XML = projectData_Undo[0].Functions.Function.(Number(IDNr) == iBG2).metadata[0];
-                            if (getMetaData2 != null)
+                        var activateAll2 = true;
+                        var activateOnly = "";
+                        var fnMD2 = fnBG2.metadata.Find(x => x[0] == "Activate");
+                        if (fnMD2 is not null)
+                        {
+                            if (fnMD2[1] == "0" || fnMD2[1] == "false")
                             {
-                            if (getMetaData2.elements("Activate").length() > 0)
-                                {
-                                var fnMD2:XML = getMetaData2.elements("Activate")[0];
-                                if (fnMD2.text() == "0" || fnMD2.text() == "false")
-                                    {
-                                    canActivate2 = false;
+                                canActivate2 = false;
+                            }
+                            if (fnMD2[1] != "1" && fnMD2[1] != "true")
+                            {
+                                activateAll2 = false;
+                                activateOnly = fnMD2[1];
+                            }
                         }
+                        var fnMDv2 = fnBG2.metadata.Find(x => x[0] == "Variable");
+                        if (fnMDv2 is not null && fnBG2.FunctionType != "2")
+                        {
+                            stateContainer.updateUndo();
+                            if (fnMDv2[1] == "1" || fnMDv2[1] == "true")
+                            {
+                                fnBG2.FunctionType = "1";
+                                stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={fnBG2.IDNr}]/FunctionType")!.InnerText = "1";
+                            }
+                            else
+                            {
+                                fnBG2.FunctionType = "0";
+                                stateContainer.projectData_Undo[0].SelectSingleNode($"//FM/Functions/Function[IDNr={fnBG2.IDNr}]/FunctionType")!.InnerText = "0";
+                            }
                         }
-                        }
-                        */
                         if (canActivate2)
                         {
                             fnBG2.wasActive = true;
@@ -492,7 +419,7 @@
                             {
                                 fnBG2.fmiHighlight = "exit-fill";
                                 trackHighlights += 1;
-                                trackExitFunctions.Remove(fnBG2.IDName);
+                                trackExitFunctions.Remove(fnBG2.IDNr);
                                 stateContainer.fmiMessage += $"Exit function <{fnBG2.IDName}> has been activated\n";
                             }
                             foreach (var coupling in stateContainer.couplingList.FindAll(x => x.toFn == fnBG2.IDNr && !x.activated))
@@ -508,12 +435,20 @@
                                         case "T": fnBG2.activeT.Remove(coupling.Name); break;
                                     }
                                     activeAspectsArray.Remove(coupling);
-                                    coupling.fmiHighlight = "";
+                                    //Console.WriteLine("=====================");
+                                    //Console.WriteLine($"Coupling: {coupling.Name}, {coupling.toType}{coupling.outputFn}_");
+                                    //Console.WriteLine($"Function: {fnBG2.IDNr}, {fnBG2.IDName}");
+                                    //Console.WriteLine("=====================");
+                                    fnBG2.removeVariable($"{coupling.toType}{coupling.outputFn}_");
                                 }
+                                coupling.fmiHighlight = "";
                             }
-                            foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn))
+                            foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG2.IDNr && x.outputFn != x.toFn && (activateAll2 || activateOnly.Contains(x.label))))
                             { //This activates the Outputs of the current Function
-                                activeAspectsArray.Add(coupling);
+                                if (!toActivateAspectsArray.Contains(coupling))
+                                {
+                                    toActivateAspectsArray.Add(coupling);
+                                }
                             }
                         }
                         else
@@ -523,11 +458,11 @@
                     }
                     else
                     {
-                        if (fnBG2.fmiType != "Exit" || trackExitFunctions.Count > 0)
-                        {
+                        //if (fnBG2.fmiType != "Exit" || trackExitFunctions.Count > 0)
+                        //{
                             //check for group?
                             fnBG2.fmiHighlight = "";
-                        }
+                        //}
                     }
                 }
             }
@@ -548,6 +483,7 @@
                 returnString = "End";
             }
         }
+        activeAspectsArray.AddRange(toActivateAspectsArray);
         if (trackHighlights == 0)
         {
             stateContainer.fmiMessage += "No functions were activated during this cycle.\n";
@@ -559,5 +495,72 @@
             }
         }
         return returnString;
+    }
+    private bool activateFunction(Function fnBG)
+    {
+        var canActivate = true;
+        var activateAll = true;
+        var fnMD = fnBG.metadata.Find(x => x[0] == "Activate");
+        if (fnMD is not null)
+        {
+            if (fnMD[1] == "0" || fnMD[1] == "false")
+            {
+                canActivate = false;
+            }
+            if (fnMD[1] != "1" && fnMD[1] != "true")
+            {
+                activateAll = false;
+            }
+        }
+        if (canActivate)
+        {
+            fnBG.wasActive = true;
+            trackHighlights += 1;
+            fnBG.fmiHighlight = $"{fnBG.fmiType.ToLower()}-fill";
+            if (fnBG.fmiType == "Entry")
+            {
+                foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG.IDNr && (activateAll || fnMD![1].Contains(x.label))))
+                {
+                    if (!toActivateAspectsArray.Contains(coupling))
+                    {
+                        toActivateAspectsArray.Add(coupling);
+                    }
+                }
+            }
+            else if (fnBG.fmiType == "Background") // && stateContainer.cycleFMI == 0)
+            {
+                foreach (var coupling in stateContainer.couplingList.FindAll(x => x.outputFn == fnBG.IDNr && (activateAll || fnMD![1].Contains(x.label))))
+                {
+                    coupling.wasActive = true;
+                    coupling.activated = true;
+                    coupling.fmiHighlight = "background-fill";
+                    var nextFn = stateContainer.functionList.Find(x => x.IDNr == coupling.toFn);
+                    if (nextFn is not null)
+                    {
+                        switch (coupling.toType)
+                        {
+                            case "I": nextFn.activeI.Add(coupling.Name); break;
+                            case "P": nextFn.activeP.Add(coupling.Name); break;
+                            case "R": nextFn.activeR.Add(coupling.Name); break;
+                            case "C": nextFn.activeC.Add(coupling.Name); break;
+                            case "T": nextFn.activeT.Add(coupling.Name); break;
+                        }
+                        var outputFn = stateContainer.functionList.Find(x => x.IDNr == coupling.outputFn);
+                        if (outputFn is not null)
+                        {
+                            foreach (var meta in outputFn.metadata)
+                            {
+                                nextFn.newVariable($"{coupling.toType}{coupling.outputFn}_{meta[0]}", new string[] { meta[1], meta[1] });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            fnBG.fmiHighlight = "hold-fill";
+        }
+        return canActivate;
     }
 }
